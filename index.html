@@ -1,0 +1,945 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Syeda Husna Tabassum | AI Creative • Entrepreneur • Digital Creator</title>
+  <meta name="description" content="Portfolio of Syeda Husna Tabassum — exploring AI, digital marketing, creative technology, video creation, entrepreneurship and digital experiences." />
+  <meta name="theme-color" content="#070707" />
+  <meta property="og:title" content="Syeda Husna Tabassum | SH" />
+  <meta property="og:description" content="Building ideas. Creating experiences. Shaping digital futures." />
+  <meta property="og:type" content="website" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+
+    :root {
+      --bg: #070707;
+      --bg-2: #0c0c0d;
+      --surface: rgba(255,255,255,.055);
+      --surface-strong: rgba(255,255,255,.09);
+      --line: rgba(255,255,255,.13);
+      --muted: #a3a3a8;
+      --text: #f5f4f0;
+      --neon: #c6ff3d;
+      --violet: #a66cff;
+      --orange: #ff824d;
+      --hot: #ff5a16;
+      --max: 1240px;
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 85% 11%, rgba(166,108,255,.11), transparent 22rem),
+        radial-gradient(circle at 4% 33%, rgba(198,255,61,.06), transparent 18rem),
+        var(--bg);
+      font: 15px/1.7 Manrope, system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .18;
+      z-index: 20;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.23'/%3E%3C/svg%3E");
+      mix-blend-mode: soft-light;
+    }
+    ::selection { color: #050505; background: var(--neon); }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea, select { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .wrap { width: min(calc(100% - 48px), var(--max)); margin: auto; }
+    .eyebrow {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      color: var(--neon);
+      font: 500 11px/1.2 "DM Mono", monospace;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 26px; height: 1px; background: currentColor; }
+    .muted { color: var(--muted); }
+    h1, h2, h3, p { margin-top: 0; }
+    h2 { font-size: clamp(2.3rem, 5vw, 5rem); letter-spacing: -.065em; line-height: .98; margin-bottom: 22px; }
+    h3 { line-height: 1.1; }
+    .display { font-weight: 700; letter-spacing: -.075em; }
+
+    /* Navigation */
+    .nav {
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 30;
+      width: min(calc(100% - 32px), 1120px);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(10,10,10,.66);
+      box-shadow: 0 16px 40px rgba(0,0,0,.22);
+      backdrop-filter: blur(18px);
+    }
+    .nav-inner { min-height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px 0 18px; }
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 700; letter-spacing: -.02em; }
+    .brand-mark, .footer-mark { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid rgba(198,255,61,.65); border-radius: 50%; color: var(--neon); font: 500 12px "DM Mono", monospace; box-shadow: inset 0 0 18px rgba(198,255,61,.08), 0 0 20px rgba(198,255,61,.06); }
+    .nav-links { display: flex; gap: 4px; align-items: center; }
+    .nav-links a { padding: 9px 12px; color: #bdbdc1; font-size: 12px; transition: color .2s, background .2s; border-radius: 999px; }
+    .nav-links a:hover, .nav-links a:focus-visible { color: var(--text); background: var(--surface-strong); outline: none; }
+    .nav-cta { background: var(--neon); color: #070707 !important; font-weight: 800; }
+    .menu { display: none; border: 0; background: transparent; color: var(--text); padding: 10px; cursor: pointer; }
+    .menu span { display: block; width: 21px; height: 1px; margin: 5px 0; background: currentColor; transition: transform .2s; }
+
+    /* Hero */
+    .hero { min-height: max(760px, 100svh); display: grid; align-items: center; padding: 150px 0 90px; position: relative; isolation: isolate; overflow: hidden; background: #050505; }
+    .hero::before { content: ""; position: absolute; z-index: -1; width: 58rem; height: 42rem; top: 3rem; right: -18rem; border-radius: 50%; background: radial-gradient(ellipse, rgba(255,90,22,.22), rgba(255,90,22,.07) 35%, transparent 72%); filter: blur(18px); pointer-events: none; }
+    .hero::after { content: ""; position: absolute; z-index: -1; width: 34rem; height: 12rem; left: 6%; bottom: 3rem; border-radius: 50%; background: rgba(255,90,22,.08); filter: blur(60px); pointer-events: none; }
+    .hero-background-video { position: absolute; inset: 0; z-index: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: center center; background: #050505; opacity: .58; filter: saturate(.72) contrast(1.08) brightness(.88); pointer-events: none; }
+    .hero-background-overlay { position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(7,7,7,.94) 0%, rgba(7,7,7,.76) 40%, rgba(7,7,7,.42) 73%, rgba(7,7,7,.7) 100%), linear-gradient(0deg, rgba(7,7,7,.92), transparent 45%, rgba(7,7,7,.38)); pointer-events: none; }
+    .hero-grid { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, .76fr); align-items: center; gap: 70px; }
+    .hero-copy { max-width: 720px; }
+    .hero h1 { font-size: clamp(3.8rem, 7.8vw, 8rem); line-height: .91; margin: 22px 0 26px; }
+    .hero h1 em { color: var(--hot); font-family: "Playfair Display", Georgia, serif; font-weight: 600; text-shadow: 0 0 28px rgba(255,90,22,.2); }
+    .hero-lead { max-width: 590px; color: #c0c0c4; font-size: 16px; }
+    .hero-intro { max-width: 490px; margin: 28px 0 30px; color: var(--muted); }
+    .actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 48px; padding: 0 20px; border: 1px solid var(--line); border-radius: 999px; font-weight: 700; font-size: 13px; transition: transform .2s, background .2s, border-color .2s, box-shadow .2s; }
+    .btn:hover, .btn:focus-visible { transform: translateY(-3px); border-color: rgba(198,255,61,.65); box-shadow: 0 10px 26px rgba(198,255,61,.11); outline: none; }
+    .btn-primary { color: #0a0a0a; background: var(--neon); border-color: var(--neon); }
+    .btn-ghost { color: var(--text); background: rgba(255,255,255,.025); }
+    .hero-meta { display: flex; gap: 28px; margin-top: 62px; color: var(--muted); font: 11px "DM Mono", monospace; text-transform: uppercase; letter-spacing: .09em; }
+    .hero-meta strong { display: block; color: var(--text); font: 600 13px Manrope, sans-serif; letter-spacing: 0; text-transform: none; }
+
+    /* Cinematic video card */
+    .hero-visual { position: relative; }
+    .hero-visual::before { content: ""; position: absolute; inset: -50px -35px; background: radial-gradient(ellipse, rgba(198,255,61,.11), transparent 65%); filter: blur(20px); }
+    .video-card { position: relative; aspect-ratio: 1; overflow: hidden; border: 1px solid rgba(255,255,255,.2); border-radius: 30px; background: #111; box-shadow: 0 30px 90px rgba(0,0,0,.5), 0 0 0 1px rgba(198,255,61,.05); isolation: isolate; }
+    .video-card::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(145deg, rgba(255,255,255,.16), transparent 25%, transparent 70%, rgba(198,255,61,.09)); pointer-events: none; }
+    .video-art { position: absolute; inset: 0; background: radial-gradient(ellipse at 68% 30%, rgba(198,255,61,.34), transparent 4%), radial-gradient(ellipse at 48% 57%, rgba(166,108,255,.42), transparent 26%), linear-gradient(155deg, #16151c 5%, #0b0b0c 42%, #151b10 100%); }
+    .video-art::before { content: "SH"; position: absolute; right: -12%; bottom: -13%; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.13); font: 700 290px/1 Manrope, sans-serif; letter-spacing: -.15em; transform: rotate(-12deg); }
+    .video-art::after { content: ""; position: absolute; width: 180%; height: 1px; top: 48%; left: -40%; background: linear-gradient(90deg, transparent, rgba(198,255,61,.8), transparent); box-shadow: 0 0 20px var(--neon); transform: rotate(-32deg); animation: scan 7s ease-in-out infinite; }
+    @keyframes scan { 0%, 100% { transform: translateY(-180px) rotate(-32deg); opacity: 0; } 40%, 65% { opacity: 1; } 80% { transform: translateY(180px) rotate(-32deg); opacity: 0; } }
+    .video-ui { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; justify-content: space-between; padding: 22px; }
+    .video-top, .video-bottom { display: flex; align-items: center; justify-content: space-between; color: rgba(255,255,255,.66); font: 10px "DM Mono", monospace; letter-spacing: .1em; text-transform: uppercase; }
+    .video-top span:last-child { color: var(--neon); }
+    .play { display: grid; place-items: center; align-self: center; width: 76px; height: 76px; border: 1px solid rgba(255,255,255,.55); border-radius: 50%; background: rgba(0,0,0,.23); color: white; cursor: pointer; transition: transform .2s, background .2s; }
+    .play:hover, .play:focus-visible { transform: scale(1.08); background: var(--neon); color: #070707; outline: none; }
+    .play::after { content: ""; margin-left: 4px; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 11px solid currentColor; }
+    .video-bottom { align-items: end; }
+    .video-bottom strong { display: block; max-width: 160px; color: white; font: 600 14px/1.2 Manrope, sans-serif; letter-spacing: -.03em; text-transform: none; }
+    .corner { position: absolute; width: 18px; height: 18px; border-color: var(--neon); z-index: 3; }
+    .corner.tl { top: 14px; left: 14px; border-top: 1px solid; border-left: 1px solid; }
+    .corner.br { bottom: 14px; right: 14px; border-bottom: 1px solid; border-right: 1px solid; }
+    .ecosystem { position: absolute; inset: 0; z-index: 1; overflow: hidden; background: radial-gradient(circle at 50% 50%, rgba(255,90,22,.17), transparent 27%), linear-gradient(140deg, rgba(0,0,0,.17), rgba(0,0,0,.58)); }
+    .ecosystem::before, .ecosystem::after { content: ""; position: absolute; left: 50%; top: 50%; border: 1px solid rgba(255,255,255,.1); border-radius: 50%; transform: translate(-50%, -50%) rotate(-22deg); pointer-events: none; }
+    .ecosystem::before { width: 72%; height: 38%; box-shadow: 0 0 40px rgba(255,90,22,.1); }
+    .ecosystem::after { width: 50%; height: 72%; transform: translate(-50%, -50%) rotate(28deg); border-color: rgba(198,255,61,.12); }
+    .ecosystem-label { position: absolute; top: 19px; left: 22px; z-index: 2; color: rgba(255,255,255,.58); font: 10px "DM Mono", monospace; letter-spacing: .11em; text-transform: uppercase; }
+    .ecosystem-label strong { display: block; margin-top: 5px; color: var(--hot); font-size: 12px; font-weight: 400; }
+    .orbit-core-large { position: absolute; left: 50%; top: 50%; z-index: 3; display: grid; place-items: center; width: 142px; height: 142px; border: 1px solid rgba(255,255,255,.5); border-radius: 50%; background: radial-gradient(circle at 38% 28%, rgba(255,255,255,.28), rgba(255,90,22,.2) 28%, rgba(0,0,0,.72) 68%); box-shadow: 0 0 0 8px rgba(255,255,255,.025), 0 0 55px rgba(255,90,22,.32), inset 0 0 35px rgba(255,255,255,.08); transform: translate(-50%, -50%); }
+    .orbit-core-large::after { content: ""; position: absolute; inset: -15px; border: 1px solid rgba(255,90,22,.45); border-radius: 50%; animation: core-pulse 4s ease-in-out infinite; }
+    @keyframes core-pulse { 50% { transform: scale(1.1); opacity: .25; } }
+    .orbit-core-large span { color: #fff; font: 600 39px "DM Mono", monospace; letter-spacing: -.14em; transform: translateX(-2px); text-shadow: 0 0 20px rgba(255,255,255,.38); }
+    .orbit-core-large small { position: absolute; bottom: -31px; white-space: nowrap; color: rgba(255,255,255,.8); font: 500 9px "DM Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
+    .orbit-node { position: absolute; z-index: 4; display: grid; place-items: center; min-width: 61px; height: 30px; padding: 0 9px; border: 1px solid rgba(255,255,255,.21); border-radius: 999px; color: rgba(255,255,255,.83); background: rgba(9,9,10,.56); box-shadow: 0 8px 22px rgba(0,0,0,.26), inset 0 1px rgba(255,255,255,.1); backdrop-filter: blur(9px); font: 9px "DM Mono", monospace; letter-spacing: .03em; translate: var(--mag-x, 0) var(--mag-y, 0); transition: translate .35s ease, transform .35s ease, border-color .25s, color .25s, background .25s; animation: node-float var(--float, 6s) ease-in-out infinite alternate; animation-delay: var(--delay, 0s); }
+    .orbit-node:hover { z-index: 6; color: #070707; border-color: var(--neon); background: var(--neon); transform: translate(var(--mag-x, 0), var(--mag-y, 0)) scale(1.16) !important; box-shadow: 0 0 24px rgba(198,255,61,.35); }
+    .orbit-node.far { opacity: .58; transform: scale(.78); }
+    .orbit-node.near { min-width: 72px; height: 34px; color: #fff; border-color: rgba(255,90,22,.48); transform: scale(1.12); }
+    @keyframes node-float { to { margin-top: 9px; transform: translate(4px, -5px) rotate(2deg); } }
+    .n-chatgpt { top: 22%; left: 23%; } .n-gemini { top: 14%; left: 55%; } .n-veo { top: 31%; right: 10%; }
+    .n-replit { top: 48%; left: 7%; } .n-aistudio { top: 56%; right: 6%; } .n-sora { bottom: 22%; left: 16%; }
+    .n-runway { bottom: 11%; left: 49%; } .n-claude { bottom: 22%; right: 15%; } .n-canva { top: 39%; left: 26%; }
+    .n-midjourney { top: 61%; left: 23%; } .n-kling { top: 73%; right: 24%; } .n-n8n { top: 72%; left: 4%; }
+    .n-adobe { top: 8%; right: 16%; } .n-printess { bottom: 9%; right: 4%; }
+
+    /* Sections */
+    section { padding: 130px 0; position: relative; }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 30px; margin-bottom: 52px; }
+    .section-head > div:first-child { max-width: 650px; }
+    .section-note { max-width: 340px; color: var(--muted); font-size: 13px; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .about-copy { color: #c7c7ca; font-size: 18px; line-height: 1.65; }
+    .about-copy p:last-child { margin-top: 24px; color: var(--muted); font-size: 14px; }
+    .about-sign { margin-top: 40px; color: var(--neon); font: italic 600 24px "Playfair Display", Georgia, serif; }
+    .orbit { min-height: 360px; display: grid; place-items: center; position: relative; }
+    .orbit::before, .orbit::after { content: ""; position: absolute; border: 1px solid rgba(198,255,61,.26); border-radius: 50%; transform: rotate(-24deg); }
+    .orbit::before { width: 290px; height: 150px; }
+    .orbit::after { width: 380px; height: 220px; border-color: rgba(166,108,255,.22); transform: rotate(28deg); }
+    .orbit-core { position: relative; z-index: 1; display: grid; place-items: center; width: 150px; height: 150px; border: 1px solid rgba(255,255,255,.22); border-radius: 50%; background: radial-gradient(circle, rgba(198,255,61,.18), rgba(255,255,255,.02) 62%); box-shadow: 0 0 80px rgba(198,255,61,.12); color: var(--neon); font: 600 32px "DM Mono", monospace; }
+    .orbit-label { position: absolute; color: var(--muted); font: 10px "DM Mono", monospace; letter-spacing: .1em; text-transform: uppercase; }
+    .label-1 { top: 12%; right: 12%; } .label-2 { bottom: 12%; left: 8%; } .label-3 { top: 49%; left: 1%; }
+
+    .marquee { padding: 16px 0; overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); white-space: nowrap; color: rgba(255,255,255,.5); font: 12px "DM Mono", monospace; letter-spacing: .14em; text-transform: uppercase; }
+    .marquee span { display: inline-block; animation: move 24s linear infinite; }
+    .marquee b { padding: 0 30px; color: var(--neon); font-weight: 400; }
+    @keyframes move { to { transform: translateX(-50%); } }
+
+    .skill-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; border: 1px solid var(--line); background: var(--line); }
+    .skill-card { min-height: 220px; padding: 25px 20px; background: var(--bg); transition: background .25s, transform .25s; }
+    .skill-card:hover { position: relative; z-index: 1; background: #111311; transform: translateY(-4px); }
+    .skill-number { color: var(--neon); font: 11px "DM Mono", monospace; }
+    .skill-card h3 { margin: 32px 0 18px; font-size: 16px; letter-spacing: -.03em; }
+    .skill-card p { color: var(--muted); font-size: 12px; }
+
+    .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .service-card { min-height: 230px; padding: 28px; border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(145deg, rgba(255,255,255,.065), rgba(255,255,255,.018)); transition: transform .25s, border-color .25s; }
+    .service-card:hover { transform: translateY(-7px); border-color: rgba(198,255,61,.55); }
+    .service-icon { color: var(--neon); font: 18px "DM Mono", monospace; }
+    .service-card h3 { margin: 55px 0 10px; font-size: 20px; }
+    .service-card p { color: var(--muted); font-size: 13px; }
+
+    .work-section { background: #0b0b0c; }
+    .work-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; }
+    .project { position: relative; min-height: 290px; padding: 24px; overflow: hidden; display: flex; flex-direction: column; justify-content: end; border: 1px solid var(--line); border-radius: 20px; isolation: isolate; }
+    .project[hidden] { display: none; }
+    .project:nth-child(1) { grid-column: span 7; min-height: 420px; }
+    .project:nth-child(2), .project:nth-child(3) { grid-column: span 5; }
+    .project:nth-child(4), .project:nth-child(5), .project:nth-child(6) { grid-column: span 4; }
+    .project-bg { position: absolute; inset: 0; z-index: -1; transition: transform .6s; }
+    .project:hover .project-bg { transform: scale(1.06); }
+    .p1 { background: radial-gradient(circle at 75% 25%, rgba(198,255,61,.55), transparent 5%), linear-gradient(140deg, #1d1e1d, #101110 46%, #3a2021); }
+    .p2 { background: radial-gradient(circle at 38% 45%, rgba(166,108,255,.7), transparent 15%), linear-gradient(140deg, #171420, #0e0e10); }
+    .p3 { background: repeating-linear-gradient(120deg, transparent 0 30px, rgba(255,130,77,.16) 31px 32px), #17110e; }
+    .p4 { background: radial-gradient(ellipse, rgba(198,255,61,.36), transparent 35%), #111511; }
+    .p5 { background: linear-gradient(135deg, #111, #241727); }
+    .p6 { background: radial-gradient(circle at 70% 30%, rgba(255,255,255,.25), transparent 2%), #171717; }
+    .project::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(transparent 35%, rgba(0,0,0,.88)); }
+    .project-media { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: center; opacity: .74; filter: saturate(.8) contrast(1.06); background: #0b0b0c; transition: transform .6s, opacity .3s; }
+    .project:hover .project-media { transform: scale(1.05); opacity: .9; }
+    .project-top { position: absolute; top: 22px; left: 24px; right: 24px; display: flex; justify-content: space-between; color: rgba(255,255,255,.7); font: 10px "DM Mono", monospace; text-transform: uppercase; letter-spacing: .1em; }
+    .project h3 { margin: 0 0 7px; font-size: 23px; }
+    .project p { max-width: 430px; margin: 0; color: #c2c2c4; font-size: 12px; }
+
+    .showreel-grid { display: grid; grid-template-columns: .8fr 1.5fr; gap: 70px; align-items: center; }
+    .showreel-copy h2 { max-width: 500px; }
+    .showreel-copy p { max-width: 390px; color: var(--muted); }
+    .reel-player { position: relative; aspect-ratio: 16/9; overflow: hidden; border: 1px solid var(--line); border-radius: 20px; background: linear-gradient(120deg, #101310, #1b1220); }
+    .reel-player::before { content: "REEL / 2026"; position: absolute; inset: 0; display: grid; place-items: center; color: rgba(255,255,255,.12); font: 700 clamp(30px, 6vw, 80px) Manrope, sans-serif; letter-spacing: -.08em; }
+    .reel-player::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 15%, rgba(198,255,61,.22), transparent 48%); transform: translateX(-100%); animation: beam 7s ease-in-out infinite; }
+    @keyframes beam { 55%, 100% { transform: translateX(100%); } }
+    .reel-player .play { position: absolute; inset: 50% auto auto 50%; transform: translate(-50%, -50%); z-index: 2; }
+    .reel-caption { position: absolute; bottom: 18px; left: 22px; z-index: 2; color: rgba(255,255,255,.65); font: 10px "DM Mono", monospace; text-transform: uppercase; }
+
+    .venture { border: 1px solid rgba(198,255,61,.22); border-radius: 28px; padding: clamp(28px, 7vw, 82px); background: radial-gradient(circle at 80% 10%, rgba(198,255,61,.12), transparent 30%), linear-gradient(110deg, rgba(255,255,255,.05), rgba(255,255,255,.01)); }
+    .venture h2 { max-width: 650px; }
+    .venture p { max-width: 650px; color: var(--muted); font-size: 16px; }
+    .pill-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px; }
+    .pill { padding: 9px 13px; border: 1px solid var(--line); border-radius: 999px; color: #cfcfd2; font: 11px "DM Mono", monospace; }
+
+    .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); }
+    .process-step { min-height: 250px; padding: 25px 24px 0 0; border-right: 1px solid var(--line); }
+    .process-step:not(:first-child) { padding-left: 24px; }
+    .process-step:last-child { border-right: 0; }
+    .process-step span { color: var(--neon); font: 11px "DM Mono", monospace; }
+    .process-step h3 { margin: 43px 0 12px; font-size: 20px; }
+    .process-step p { max-width: 210px; color: var(--muted); font-size: 13px; }
+
+    .contact-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 90px; align-items: start; }
+    .contact-copy h2 { max-width: 530px; }
+    .contact-copy > p { max-width: 380px; color: var(--muted); }
+    .socials { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 35px; }
+    .social { padding: 9px 13px; border: 1px solid var(--line); border-radius: 999px; color: #d8d8db; font: 11px "DM Mono", monospace; transition: color .2s, border .2s; }
+    .social:hover { color: var(--neon); border-color: rgba(198,255,61,.5); }
+    .contact-form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .field { display: flex; flex-direction: column; gap: 8px; }
+    .field.full { grid-column: 1/-1; }
+    .field label { color: #c9c9cc; font-size: 12px; }
+    .field input, .field select, .field textarea { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 13px 14px; color: var(--text); background: rgba(255,255,255,.04); outline: none; transition: border .2s, box-shadow .2s; }
+    .field textarea { min-height: 145px; resize: vertical; }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--neon); box-shadow: 0 0 0 3px rgba(198,255,61,.1); }
+    .field select { appearance: none; }
+    .form-note { grid-column: 1/-1; min-height: 24px; color: var(--neon); font-size: 12px; }
+
+    footer { padding: 34px 0 28px; border-top: 1px solid var(--line); }
+    .footer-top { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+    .footer-id { display: flex; align-items: center; gap: 12px; font-weight: 700; }
+    .footer-mark { width: 44px; height: 44px; }
+    footer p { margin: 0; color: var(--muted); font-size: 12px; }
+    .footer-bottom { display: flex; justify-content: space-between; gap: 20px; margin-top: 52px; color: #66666a; font: 10px "DM Mono", monospace; text-transform: uppercase; letter-spacing: .1em; }
+
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    @media (max-width: 950px) {
+      .nav-links { display: none; position: absolute; top: 72px; left: 0; right: 0; padding: 12px; flex-direction: column; align-items: stretch; border: 1px solid var(--line); border-radius: 18px; background: rgba(10,10,10,.95); }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 12px 14px; }
+      .menu { display: block; }
+      .hero-grid, .showreel-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+      .hero { min-height: auto; }
+      .hero-visual { width: min(100%, 520px); margin: 0 auto; }
+      .skill-grid { grid-template-columns: repeat(2, 1fr); }
+      .service-grid { grid-template-columns: repeat(2, 1fr); }
+      .about-grid { gap: 35px; }
+      .contact-grid { gap: 35px; }
+    }
+    @media (max-width: 650px) {
+      .wrap { width: min(calc(100% - 32px), var(--max)); }
+      .nav { top: 10px; width: calc(100% - 20px); }
+      .hero { padding: 125px 0 65px; }
+      .hero h1 { font-size: clamp(3.4rem, 15vw, 5.4rem); }
+      .hero-meta { gap: 18px; margin-top: 44px; flex-wrap: wrap; }
+      section { padding: 82px 0; }
+      .section-head { display: block; margin-bottom: 32px; }
+      .section-note { margin-top: 20px; }
+      .about-grid { grid-template-columns: 1fr; }
+      .orbit { min-height: 290px; transform: scale(.82); margin: -25px 0; }
+      .skill-grid, .service-grid { grid-template-columns: 1fr; }
+      .skill-card { min-height: 180px; }
+      .project, .project:nth-child(n) { grid-column: span 12; min-height: 280px; }
+      .project:nth-child(1) { min-height: 340px; }
+      .process-grid { grid-template-columns: 1fr 1fr; }
+      .process-step { min-height: 205px; border-bottom: 1px solid var(--line); }
+      .process-step:nth-child(2) { border-right: 0; }
+      .process-step:nth-child(3), .process-step:nth-child(4) { padding-top: 25px; }
+      .contact-form { grid-template-columns: 1fr; }
+      .field.full, .form-note { grid-column: auto; }
+      .footer-top, .footer-bottom { align-items: start; flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    /* Immersive ambient layer */
+    .ambient-scene { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; background: radial-gradient(circle at var(--mx, 50%) var(--my, 30%), rgba(198,255,61,.08), transparent 23rem); }
+    #fx-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .75; }
+    .ambient-orb { position: absolute; border-radius: 50%; filter: blur(1px); mix-blend-mode: screen; opacity: .24; }
+    .ambient-orb.one { width: 33rem; height: 33rem; top: 4%; right: -12rem; background: radial-gradient(circle, rgba(166,108,255,.42), transparent 67%); animation: drift-one 18s ease-in-out infinite alternate; }
+    .ambient-orb.two { width: 28rem; height: 28rem; top: 44%; left: -13rem; background: radial-gradient(circle, rgba(198,255,61,.3), transparent 68%); animation: drift-two 22s ease-in-out infinite alternate; }
+    .ambient-orb.three { width: 24rem; height: 24rem; bottom: -8rem; right: 22%; background: radial-gradient(circle, rgba(255,130,77,.2), transparent 68%); animation: drift-three 16s ease-in-out infinite alternate; }
+    @keyframes drift-one { to { transform: translate(-7rem, 6rem) scale(1.12); } }
+    @keyframes drift-two { to { transform: translate(8rem, -4rem) scale(1.14); } }
+    @keyframes drift-three { to { transform: translate(-4rem, -5rem) scale(.85); } }
+    .cursor-glow { position: fixed; z-index: 19; width: 220px; height: 220px; border-radius: 50%; pointer-events: none; background: radial-gradient(circle, rgba(198,255,61,.12), transparent 68%); transform: translate(-50%, -50%); mix-blend-mode: screen; opacity: .65; transition: opacity .2s; }
+    .sound-toggle, .admin-trigger { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 999px; padding: 9px 12px; color: var(--muted); background: rgba(255,255,255,.04); cursor: pointer; font: 10px "DM Mono", monospace; letter-spacing: .08em; text-transform: uppercase; transition: border .2s, color .2s, background .2s, transform .2s; }
+    .sound-toggle:hover, .sound-toggle:focus-visible, .sound-toggle.on, .admin-trigger:hover, .admin-trigger:focus-visible { border-color: rgba(198,255,61,.6); color: var(--neon); background: rgba(198,255,61,.08); outline: none; transform: translateY(-2px); }
+    .sound-dot { width: 7px; height: 7px; border-radius: 50%; background: #666; box-shadow: 0 0 0 transparent; }
+    .sound-toggle.on .sound-dot { background: var(--neon); box-shadow: 0 0 12px var(--neon); }
+    .nav-tools { display: flex; align-items: center; gap: 7px; }
+    .admin-trigger { padding: 9px; }
+    .admin-trigger span { font-size: 13px; }
+
+    /* Local control room */
+    .admin-overlay { position: fixed; inset: 0; z-index: 100; display: none; place-items: center; padding: 20px; background: rgba(0,0,0,.72); backdrop-filter: blur(18px); }
+    .admin-overlay.open { display: grid; animation: fade-in .25s ease both; }
+    @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+    .admin-panel { width: min(100%, 760px); max-height: min(840px, calc(100vh - 40px)); overflow: auto; border: 1px solid rgba(198,255,61,.32); border-radius: 26px; background: linear-gradient(145deg, rgba(25,25,26,.98), rgba(9,9,10,.98)); box-shadow: 0 30px 100px #000; }
+    .admin-head { display: flex; align-items: start; justify-content: space-between; gap: 20px; padding: 28px 30px; border-bottom: 1px solid var(--line); }
+    .admin-head h2 { margin: 8px 0 0; font-size: clamp(1.8rem, 4vw, 3rem); }
+    .admin-head p { max-width: 430px; margin: 10px 0 0; color: var(--muted); font-size: 12px; }
+    .admin-close { width: 34px; height: 34px; border: 1px solid var(--line); border-radius: 50%; color: var(--text); background: transparent; cursor: pointer; }
+    .admin-view { padding: 28px 30px 32px; }
+    .admin-view[hidden] { display: none; }
+    .admin-form { display: grid; gap: 15px; }
+    .admin-form .field input, .admin-form .field textarea { background: rgba(0,0,0,.3); }
+    .admin-form textarea { min-height: 86px; }
+    .admin-help { margin: 0; color: var(--muted); font-size: 12px; }
+    .admin-warning { margin: 0; padding: 11px 13px; border: 1px solid rgba(255,130,77,.3); border-radius: 10px; color: #ffb092; background: rgba(255,130,77,.07); font-size: 11px; }
+    .admin-status { min-height: 22px; margin: 0; color: var(--neon); font-size: 12px; }
+    .admin-toolbar { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding-top: 6px; }
+    .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .admin-grid .full { grid-column: 1 / -1; }
+    .work-admin-item { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255,255,255,.025); }
+    .work-admin-item .full { grid-column: 1 / -1; }
+    .work-admin-item .toggle-line { grid-column: 1 / -1; }
+    .contact-admin-field { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 10px; align-items: end; }
+    .contact-admin-field .toggle-line { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 11px; }
+    .toggle-line input { width: 15px; height: 15px; accent-color: var(--neon); }
+    .admin-section-title { margin: 24px 0 2px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--neon); font: 11px "DM Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
+    .admin-fab { position: fixed; right: 22px; bottom: 22px; z-index: 31; display: grid; place-items: center; width: 46px; height: 46px; border: 1px solid rgba(198,255,61,.45); border-radius: 50%; color: var(--neon); background: rgba(7,7,7,.72); box-shadow: 0 0 25px rgba(198,255,61,.12); cursor: pointer; transition: transform .2s, background .2s; }
+    .admin-fab:hover, .admin-fab:focus-visible { transform: rotate(18deg) scale(1.08); background: rgba(198,255,61,.12); outline: none; }
+    @media (max-width: 950px) { .nav-tools { margin-left: auto; margin-right: 5px; } .nav-tools .admin-trigger { display: none; } }
+    @media (max-width: 650px) {
+      .sound-toggle { padding: 8px 10px; }
+      .sound-toggle .sound-label { display: none; }
+      .admin-head, .admin-view { padding: 22px 20px; }
+      .admin-grid { grid-template-columns: 1fr; }
+      .admin-grid .full { grid-column: auto; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ambient-orb, .cursor-glow, #fx-canvas { animation: none !important; display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient-scene" aria-hidden="true">
+    <canvas id="fx-canvas"></canvas>
+    <div class="ambient-orb one"></div><div class="ambient-orb two"></div><div class="ambient-orb three"></div>
+  </div>
+  <div class="cursor-glow" aria-hidden="true"></div>
+  <header class="nav" aria-label="Primary navigation">
+    <div class="nav-inner">
+      <a href="#home" class="brand" aria-label="SH home"><span class="brand-mark">SH</span><span>Syeda Husna</span></a>
+      <div class="nav-tools">
+        <button class="sound-toggle" type="button" aria-pressed="false" title="Turn magical interface sounds on or off"><i class="sound-dot"></i><span class="sound-label">sound off</span></button>
+        <button class="admin-trigger" type="button" aria-label="Open admin control room" title="Open admin control room"><span>⌘</span> Admin</button>
+      </div>
+      <button class="menu" aria-label="Open navigation" aria-expanded="false"><span></span><span></span></button>
+      <nav class="nav-links">
+        <a href="#about">About</a><a href="#skills">Skills</a><a href="#services">Services</a><a href="#work">Work</a><a href="#process">Process</a><a href="#contact" class="nav-cta">Let's talk <span>↗</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <video class="hero-background-video" id="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/hero-poster.jpg" aria-label="Cinematic hero background video">
+        <source src="assets/hero-showreel.mp4" type="video/mp4" />
+      </video>
+      <div class="hero-background-overlay"></div>
+      <div class="wrap hero-grid">
+        <div class="hero-copy reveal">
+          <span class="eyebrow">Creative technologist / 2026</span>
+          <h1 class="display" id="hero-headline">Building ideas.<br><em>Creating</em> experiences.</h1>
+          <p class="hero-lead" id="hero-lead">Entrepreneur • AI Creative • Digital Marketing Enthusiast • Creative Technologist</p>
+          <p class="hero-intro" id="hero-intro">I explore the intersection of AI, marketing, digital experiences and online business—turning ideas into work that feels clear, useful and memorable.</p>
+          <div class="actions"><a class="btn btn-primary" id="hero-primary" href="#work">Explore my work <span>↗</span></a><a class="btn btn-ghost" href="#contact">Let's connect</a></div>
+          <div class="hero-meta"><span><strong>Sangareddy</strong>Telangana, India</span><span><strong>MBA</strong>Entrepreneurship / in progress</span><span id="age-meta" hidden><strong>Age</strong><span id="age-value"></span></span></div>
+        </div>
+        <div class="hero-visual reveal">
+          <div class="video-card" role="img" aria-label="AI Creative Ecosystem orbit visual">
+            <div class="video-art"></div>
+            <div class="ecosystem" aria-label="AI Creative Ecosystem">
+              <div class="ecosystem-label">AI creative ecosystem<strong>tools I explore / 2026</strong></div>
+              <div class="orbit-core-large"><span>SH</span><small>Syeda Husna Tabassum</small></div>
+              <span class="orbit-node near n-chatgpt" style="--float:7s;--delay:-1s">ChatGPT</span>
+              <span class="orbit-node far n-veo" style="--float:8.5s;--delay:-3s">Veo</span>
+              <span class="orbit-node n-replit" style="--float:7.8s;--delay:-4s">Replit</span>
+              <span class="orbit-node near n-aistudio" style="--float:6.8s;--delay:-2.5s">AI Studio</span>
+              <span class="orbit-node far n-sora" style="--float:9.2s;--delay:-5s">Sora</span>
+              <span class="orbit-node n-runway" style="--float:7.2s;--delay:-1.8s">Runway</span>
+              <span class="orbit-node n-claude" style="--float:8.8s;--delay:-3.8s">Claude</span>
+              <span class="orbit-node far n-canva" style="--float:6.1s;--delay:-4.5s">Canva</span>
+              <span class="orbit-node n-midjourney" style="--float:9s;--delay:-2.2s">Midjourney</span>
+              <span class="orbit-node far n-kling" style="--float:7.6s;--delay:-5.8s">Kling</span>
+              <span class="orbit-node n-n8n" style="--float:8.2s;--delay:-6s">n8n</span>
+              <span class="orbit-node n-adobe" style="--float:6.6s;--delay:-1.2s">Adobe</span>
+              <span class="orbit-node far n-printess" style="--float:8.6s;--delay:-4.9s">Printess</span>
+            </div>
+            <div class="corner tl"></div><div class="corner br"></div>
+            <div class="video-ui">
+              <div class="video-top"><span>Showreel / 00:45</span><span>Available for ideas</span></div>
+              <button class="play" aria-label="Showreel placeholder"></button>
+              <div class="video-bottom"><span><strong>Visual stories<br>for digital futures.</strong></span><span>SH — 01</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="marquee" aria-hidden="true"><span>AI creative <b>✳</b> digital experiences <b>✳</b> creative strategy <b>✳</b> online business <b>✳</b> AI creative <b>✳</b> digital experiences <b>✳</b> creative strategy <b>✳</b> online business <b>✳</b></span></div>
+
+    <section id="about">
+      <div class="wrap">
+        <div class="section-head reveal"><div><span class="eyebrow">01 / About</span><h2 class="display">Curiosity with<br><em>direction.</em></h2></div><p class="section-note">A personal practice where business thinking meets visual craft and emerging technology.</p></div>
+        <div class="about-grid">
+          <div class="about-copy reveal"><p>I’m an MBA Entrepreneurship student with a strong interest in AI, digital marketing, creative technology and online business. I enjoy transforming ideas into visual experiences, digital projects and practical business concepts.</p><p>Right now, I’m continuously learning and applying AI, video creation, automation, website creation, creative strategy and digital marketing—always looking for the clearest way to move an idea forward.</p><div class="about-sign">Syeda Husna Tabassum</div></div>
+          <div class="orbit reveal"><div class="orbit-core">SH</div><span class="orbit-label label-1">AI × creativity</span><span class="orbit-label label-2">learn / make / refine</span><span class="orbit-label label-3">entrepreneurship</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="wrap">
+        <div class="section-head reveal"><div><span class="eyebrow">02 / Capabilities</span><h2 class="display">Tools for<br><em>making.</em></h2></div><p class="section-note">No inflated percentages. Just a growing set of capabilities I use to turn rough thoughts into tangible work.</p></div>
+        <div class="skill-grid reveal">
+          <article class="skill-card"><span class="skill-number">01 —</span><h3>AI & Creative Tech</h3><p>AI video creation · content creation · AI advertising · creative workflows · automation</p></article>
+          <article class="skill-card"><span class="skill-number">02 —</span><h3>Digital & Marketing</h3><p>Digital marketing · social content · product marketing · brand promotion · strategy</p></article>
+          <article class="skill-card"><span class="skill-number">03 —</span><h3>Creative Production</h3><p>Video editing · cinematic videos · reels · shorts · UGC · product ads · poster design</p></article>
+          <article class="skill-card"><span class="skill-number">04 —</span><h3>Digital Projects</h3><p>Website creation · creative web projects · product launches · online business projects</p></article>
+          <article class="skill-card"><span class="skill-number">05 —</span><h3>Other Creative Skills</h3><p>Makeup artistry · mehndi design · visual storytelling · creative exploration</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="services">
+      <div class="wrap">
+        <div class="section-head reveal"><div><span class="eyebrow">03 / What I can make</span><h2 class="display">Ideas into<br><em>assets.</em></h2></div><p class="section-note">Focused creative support for brands, products and people who want their digital presence to feel intentional.</p></div>
+        <div class="service-grid reveal">
+          <article class="service-card"><span class="service-icon">↗ 01</span><h3>Video & Motion</h3><p>Editing, cinematic advertisements, AI videos, product ads, reels and shorts.</p></article>
+          <article class="service-card"><span class="service-icon">✳ 02</span><h3>Digital Content</h3><p>Social media content, UGC concepts, posters and promotional design systems.</p></article>
+          <article class="service-card"><span class="service-icon">⌁ 03</span><h3>Web & Launches</h3><p>Websites, creative digital projects and product launch content with a clear point of view.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="work-section" id="work">
+      <div class="wrap">
+        <div class="section-head reveal"><div><span class="eyebrow">04 / Selected work</span><h2 class="display">A canvas for<br><em>what’s next.</em></h2></div><p class="section-note">These are clean placeholders, ready for your real projects, videos, links and case studies.</p></div>
+        <div class="work-grid reveal">
+          <article class="project" data-work-index="0"><div class="project-bg p1"></div><video class="project-media" autoplay muted loop playsinline preload="metadata" poster="assets/work-ugc-ads.jpg"><source src="assets/work-ugc-ads.mp4" type="video/mp4" /></video><div class="project-top"><span class="project-category">01 / UGC ads</span><span>↗</span></div><h3>UGC Ads — Product Story</h3><p>Vertical short-form content built to feel native, human and scroll-stopping.</p></article>
+          <article class="project" data-work-index="1"><div class="project-bg p2"></div><video class="project-media" autoplay muted loop playsinline preload="metadata" poster="assets/work-cinematic-editing.jpg"><source src="assets/work-cinematic-editing.mp4" type="video/mp4" /></video><div class="project-top"><span class="project-category">02 / Cinematic editing</span><span>↗</span></div><h3>Cinematic Video Editing</h3><p>Atmosphere, pacing and light shaped into a cinematic visual experience.</p></article>
+          <article class="project" data-work-index="2"><div class="project-bg p3"></div><video class="project-media" autoplay muted loop playsinline preload="metadata" poster="assets/work-website-developer.jpg"><source src="assets/work-website-developer.mp4" type="video/mp4" /></video><div class="project-top"><span class="project-category">03 / Website developer</span><span>↗</span></div><h3>Website Developer</h3><p>A digital experience concept that connects story, structure and interaction.</p></article>
+          <article class="project" data-work-index="3"><div class="project-bg p4"></div><div class="project-top"><span class="project-category">04 / Web</span><span>↗</span></div><h3>Digital space</h3><p>A flexible home for an ambitious idea.</p></article>
+          <article class="project" data-work-index="4"><div class="project-bg p5"></div><div class="project-top"><span class="project-category">05 / Social</span><span>↗</span></div><h3>Soft launch</h3><p>Content designed to start a conversation.</p></article>
+          <article class="project" data-work-index="5"><div class="project-bg p6"></div><div class="project-top"><span class="project-category">06 / Experiments</span><span>↗</span></div><h3>In progress</h3><p>Small tests with a bigger direction.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="showreel">
+      <div class="wrap showreel-grid">
+        <div class="showreel-copy reveal"><span class="eyebrow">05 / Showreel</span><h2 class="display">A glimpse into my <em>creative world.</em></h2><p>This cinematic player is intentionally ready for your own video file or hosted showreel link. Replace the placeholder when your reel is ready.</p><a class="btn btn-ghost" href="#contact">Share a project <span>↗</span></a></div>
+        <div class="reel-player reveal"><button class="play" aria-label="Showreel placeholder"></button><span class="reel-caption">Replace with /assets/showreel.mp4</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap"><div class="venture reveal"><span class="eyebrow">06 / Entrepreneurship</span><h2 class="display">From ideas<br>to <em>execution.</em></h2><p>I’m interested in building online businesses, launching products, shaping digital marketing systems and using AI-powered workflows to make creative entrepreneurship more practical.</p><div class="pill-list"><span class="pill">online businesses</span><span class="pill">product launching</span><span class="pill">AI workflows</span><span class="pill">automation</span><span class="pill">digital products</span><span class="pill">creative strategy</span></div></div></div>
+    </section>
+
+    <section id="process">
+      <div class="wrap">
+        <div class="section-head reveal"><div><span class="eyebrow">07 / Process</span><h2 class="display">Make it<br><em>meaningful.</em></h2></div><p class="section-note">A simple way to keep the work focused—from the first question to the moment it goes live.</p></div>
+        <div class="process-grid reveal">
+          <article class="process-step"><span>01 —</span><h3>Discover</h3><p>Understand the idea, audience and objective.</p></article>
+          <article class="process-step"><span>02 —</span><h3>Create</h3><p>Develop the visual and creative concept.</p></article>
+          <article class="process-step"><span>03 —</span><h3>Refine</h3><p>Improve the design, content and experience.</p></article>
+          <article class="process-step"><span>04 —</span><h3>Launch</h3><p>Turn the finished idea into a usable digital experience.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="wrap contact-grid">
+        <div class="contact-copy reveal"><span class="eyebrow">08 / Contact</span><h2 class="display">Have an idea? Let's create something <em>meaningful.</em></h2><p>Tell me what you’re imagining. The form is ready for a backend or email service when you connect one.</p><div class="socials" aria-label="Contact and social links">
+          <a class="social" id="email-link" href="mailto:syedahusnashareef@gmail.com" aria-label="Email Syeda Husna">✉ Email ↗</a>
+          <a class="social" id="instagram-link" href="https://www.instagram.com/syeda_husna_tabassum?stkn=MXdjMGhqeWF5amtucg==" target="_blank" rel="noopener" aria-label="Instagram profile">◎ Instagram ↗</a>
+          <a class="social" id="phone-link" href="#" hidden>⌕ Phone ↗</a>
+          <a class="social" id="whatsapp-link" href="#" target="_blank" rel="noopener" hidden>◌ WhatsApp ↗</a>
+          <a class="social" id="facebook-link" href="#" target="_blank" rel="noopener" hidden>f Facebook ↗</a>
+          <a class="social" id="linkedin-link" href="#" target="_blank" rel="noopener" hidden>in LinkedIn ↗</a>
+          <a class="social" id="youtube-link" href="#" target="_blank" rel="noopener" hidden>▶ YouTube ↗</a>
+          <a class="social" id="github-link" href="#" target="_blank" rel="noopener" hidden>⌘ GitHub ↗</a>
+          <a class="social" id="website-link" href="#" target="_blank" rel="noopener" hidden>◩ Website ↗</a>
+          <a class="social" id="other-link" href="#" target="_blank" rel="noopener" hidden>↗ Other</a>
+        </div></div>
+        <form class="contact-form reveal">
+          <div class="field"><label for="name">Name</label><input id="name" name="name" required placeholder="Your name" /></div>
+          <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" required placeholder="you@example.com" /></div>
+          <div class="field full"><label for="type">Project type</label><select id="type" name="type"><option value="">Choose one</option><option>Video & motion</option><option>Digital content</option><option>Website / web project</option><option>Something else</option></select></div>
+          <div class="field full"><label for="message">Message</label><textarea id="message" name="message" required placeholder="What are you thinking about?"></textarea></div>
+          <div class="form-note" role="status"></div>
+          <button class="btn btn-primary" type="submit">Send message <span>↗</span></button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="footer-top"><div class="footer-id"><span class="footer-mark">SH</span><div><strong>Syeda Husna Tabassum</strong><p>Creating ideas that move from imagination to reality.</p></div></div><a class="btn btn-ghost" href="#home">Back to top ↑</a></div>
+      <div class="footer-bottom"><span>© 2026 Syeda Husna Tabassum. All rights reserved.</span><span>Made with intention / SH</span></div>
+    </div>
+  </footer>
+
+  <button class="admin-fab" type="button" aria-label="Open admin control room" title="Admin control room">✦</button>
+  <section class="admin-overlay" aria-label="Admin control room" aria-hidden="true">
+    <div class="admin-panel" role="dialog" aria-modal="true" aria-labelledby="admin-title">
+      <div class="admin-head">
+        <div><span class="eyebrow">Private control room</span><h2 id="admin-title" class="display">Shape your <em>world.</em></h2><p>Update the visible portfolio content without opening the main page code.</p></div>
+        <button class="admin-close" type="button" aria-label="Close admin panel">×</button>
+      </div>
+      <div class="admin-view" id="admin-auth-view">
+        <form class="admin-form" id="admin-auth-form">
+          <div class="field"><label for="admin-password">Admin password</label><input id="admin-password" type="password" required minlength="8" autocomplete="new-password" placeholder="Create or enter your password" /></div>
+          <p class="admin-help" id="admin-auth-help">First visit: create a password with at least 8 characters. It stays in this browser only.</p>
+          <p class="admin-warning">This standalone preview uses browser-only storage. It is not a secure multi-device login until connected to a backend.</p>
+          <p class="admin-status" id="admin-auth-status" role="status"></p>
+          <div class="admin-toolbar"><span class="muted">Local admin mode</span><button class="btn btn-primary" type="submit" id="admin-auth-submit">Create password <span>↗</span></button></div>
+        </form>
+      </div>
+      <div class="admin-view" id="admin-editor-view" hidden>
+        <form class="admin-form" id="admin-editor-form">
+          <p class="admin-status" id="admin-editor-status" role="status"></p>
+          <div class="admin-section-title">Identity & hero</div>
+          <div class="admin-grid">
+            <div class="field"><label for="edit-name">Name</label><input id="edit-name" required /></div>
+            <div class="field"><label for="edit-age">Age / label (optional)</label><input id="edit-age" placeholder="Leave blank to hide" /></div>
+            <div class="field full"><label for="edit-headline">Hero headline</label><textarea id="edit-headline" required></textarea></div>
+            <div class="field full"><label for="edit-lead">Hero role line</label><input id="edit-lead" required /></div>
+            <div class="field full"><label for="edit-intro">Hero introduction</label><textarea id="edit-intro" required></textarea></div>
+            <div class="field"><label for="edit-primary">Primary button</label><input id="edit-primary" required /></div>
+            <div class="field"><label for="edit-accent">Accent color</label><input id="edit-accent" type="color" /></div>
+          </div>
+          <div class="admin-section-title">Media & portfolio</div>
+          <div class="admin-grid">
+            <div class="field full"><label for="edit-video">Hero video path / URL</label><input id="edit-video" placeholder="assets/hero-showreel.mp4" /></div>
+            <div class="field full"><label for="edit-projects">Legacy project titles (one per line)</label><textarea id="edit-projects"></textarea></div>
+            <div class="field full"><p class="admin-help">Work slots below control the public portfolio. Add a new media path, change the title/category, or switch a slot off anytime.</p></div>
+            <div class="work-admin-item full"><div class="field"><label for="edit-work-0-title">Work 01 title</label><input id="edit-work-0-title" /></div><div class="field"><label for="edit-work-0-category">Category</label><input id="edit-work-0-category" /></div><div class="field full"><label for="edit-work-0-description">Description</label><input id="edit-work-0-description" /></div><div class="field full"><label for="edit-work-0-media">Video / image path</label><input id="edit-work-0-media" /></div><label class="toggle-line"><input id="edit-work-0-enabled" type="checkbox" /> Show work 01</label></div>
+            <div class="work-admin-item full"><div class="field"><label for="edit-work-1-title">Work 02 title</label><input id="edit-work-1-title" /></div><div class="field"><label for="edit-work-1-category">Category</label><input id="edit-work-1-category" /></div><div class="field full"><label for="edit-work-1-description">Description</label><input id="edit-work-1-description" /></div><div class="field full"><label for="edit-work-1-media">Video / image path</label><input id="edit-work-1-media" /></div><label class="toggle-line"><input id="edit-work-1-enabled" type="checkbox" /> Show work 02</label></div>
+            <div class="work-admin-item full"><div class="field"><label for="edit-work-2-title">Work 03 title</label><input id="edit-work-2-title" /></div><div class="field"><label for="edit-work-2-category">Category</label><input id="edit-work-2-category" /></div><div class="field full"><label for="edit-work-2-description">Description</label><input id="edit-work-2-description" /></div><div class="field full"><label for="edit-work-2-media">Video / image path</label><input id="edit-work-2-media" /></div><label class="toggle-line"><input id="edit-work-2-enabled" type="checkbox" /> Show work 03</label></div>
+            <div class="work-admin-item full"><div class="field"><label for="edit-work-3-title">Work 04 title</label><input id="edit-work-3-title" /></div><div class="field"><label for="edit-work-3-category">Category</label><input id="edit-work-3-category" /></div><div class="field full"><label for="edit-work-3-description">Description</label><input id="edit-work-3-description" /></div><div class="field full"><label for="edit-work-3-media">Video / image path</label><input id="edit-work-3-media" /></div><label class="toggle-line"><input id="edit-work-3-enabled" type="checkbox" /> Show work 04</label></div>
+            <div class="work-admin-item full"><div class="field"><label for="edit-work-4-title">Work 05 title</label><input id="edit-work-4-title" /></div><div class="field"><label for="edit-work-4-category">Category</label><input id="edit-work-4-category" /></div><div class="field full"><label for="edit-work-4-description">Description</label><input id="edit-work-4-description" /></div><div class="field full"><label for="edit-work-4-media">Video / image path</label><input id="edit-work-4-media" /></div><label class="toggle-line"><input id="edit-work-4-enabled" type="checkbox" /> Show work 05</label></div>
+            <div class="work-admin-item full"><div class="field"><label for="edit-work-5-title">Work 06 title</label><input id="edit-work-5-title" /></div><div class="field"><label for="edit-work-5-category">Category</label><input id="edit-work-5-category" /></div><div class="field full"><label for="edit-work-5-description">Description</label><input id="edit-work-5-description" /></div><div class="field full"><label for="edit-work-5-media">Video / image path</label><input id="edit-work-5-media" /></div><label class="toggle-line"><input id="edit-work-5-enabled" type="checkbox" /> Show work 06</label></div>
+          </div>
+          <div class="admin-section-title">Contact & social links</div>
+          <div class="admin-grid">
+            <div class="contact-admin-field"><div class="field"><label for="edit-email">Email address</label><input id="edit-email" type="email" /></div><label class="toggle-line"><input id="edit-email-enabled" type="checkbox" /> Show on website</label></div>
+            <div class="contact-admin-field"><div class="field"><label for="edit-phone">Phone number</label><input id="edit-phone" type="tel" placeholder="+91..." /></div><label class="toggle-line"><input id="edit-phone-enabled" type="checkbox" /> Show on website</label></div>
+            <div class="contact-admin-field"><div class="field"><label for="edit-whatsapp">WhatsApp number</label><input id="edit-whatsapp" type="tel" placeholder="+91..." /></div><label class="toggle-line"><input id="edit-whatsapp-enabled" type="checkbox" /> Show on website</label></div>
+            <div class="contact-admin-field"><div class="field"><label for="edit-instagram">Instagram URL</label><input id="edit-instagram" type="url" placeholder="https://instagram.com/..." /></div><label class="toggle-line"><input id="edit-instagram-enabled" type="checkbox" /> Show on website</label></div>
+            <div class="contact-admin-field"><div class="field"><label for="edit-facebook">Facebook URL</label><input id="edit-facebook" type="url" placeholder="https://facebook.com/..." /></div><label class="toggle-line"><input id="edit-facebook-enabled" type="checkbox" /> Show on website</label></div>
+            <div class="contact-admin-field"><div class="field"><label for="edit-linkedin">LinkedIn URL</label><input id="edit-linkedin" type="url" placeholder="https://linkedin.com/in/..." /></div><label class="toggle-line"><input id="edit-linkedin-enabled" type="checkbox" /> Show on website</label></div>
+            <div class="contact-admin-field"><div class="field"><label for="edit-youtube">YouTube URL</label><input id="edit-youtube" type="url" placeholder="https://youtube.com/..." /></div><label class="toggle-line"><input id="edit-youtube-enabled" type="checkbox" /> Show on website</label></div>
+            <div class="contact-admin-field"><div class="field"><label for="edit-github">GitHub URL</label><input id="edit-github" type="url" placeholder="https://github.com/..." /></div><label class="toggle-line"><input id="edit-github-enabled" type="checkbox" /> Show on website</label></div>
+            <div class="contact-admin-field"><div class="field"><label for="edit-website">Website URL</label><input id="edit-website" type="url" placeholder="https://..." /></div><label class="toggle-line"><input id="edit-website-enabled" type="checkbox" /> Show on website</label></div>
+            <div class="contact-admin-field"><div class="field"><label for="edit-other">Other link</label><input id="edit-other" type="url" placeholder="https://..." /></div><label class="toggle-line"><input id="edit-other-enabled" type="checkbox" /> Show on website</label></div>
+          </div>
+          <div class="admin-toolbar"><button class="btn btn-ghost" type="button" id="admin-reset">Reset local edits</button><button class="btn btn-primary" type="submit">Save changes <span>✓</span></button></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    /* Navigation and scroll reveal */
+    const menu = document.querySelector('.menu');
+    const links = document.querySelector('.nav-links');
+    menu.addEventListener('click', () => {
+      const open = links.classList.toggle('open');
+      menu.setAttribute('aria-expanded', open);
+      playSound(open ? 'open' : 'close');
+    });
+    document.querySelectorAll('.nav-links a').forEach(link => link.addEventListener('click', () => {
+      links.classList.remove('open');
+      playSound('nav');
+    }));
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: .12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    /* A small, optional Web Audio sound library: 20 distinct procedural cues, no audio files or autoplay. */
+    let audioContext;
+    let masterGain;
+    let soundOn = localStorage.getItem('shSoundOn') === 'true';
+    const soundButton = document.querySelector('.sound-toggle');
+    const soundNames = ['click', 'hover', 'nav', 'open', 'close', 'whoosh', 'shimmer', 'sparkle', 'chime', 'success', 'error', 'submit', 'focus', 'toggle', 'pulse', 'scan', 'page', 'magnetic', 'ambient', 'admin'];
+    function initAudio() {
+      if (audioContext) return;
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      masterGain = audioContext.createGain();
+      masterGain.gain.value = .14;
+      masterGain.connect(audioContext.destination);
+    }
+    function audioTone(freq, duration, type = 'sine', volume = .12, delay = 0, detune = 0) {
+      if (!soundOn) return;
+      initAudio();
+      if (audioContext.state === 'suspended') audioContext.resume();
+      const now = audioContext.currentTime + delay;
+      const oscillator = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      oscillator.type = type;
+      oscillator.frequency.setValueAtTime(freq, now);
+      oscillator.detune.setValueAtTime(detune, now);
+      gain.gain.setValueAtTime(.001, now);
+      gain.gain.exponentialRampToValueAtTime(Math.max(.002, volume), now + .015);
+      gain.gain.exponentialRampToValueAtTime(.001, now + duration);
+      oscillator.connect(gain).connect(masterGain);
+      oscillator.start(now);
+      oscillator.stop(now + duration + .04);
+    }
+    function playSound(name) {
+      if (!soundOn || !soundNames.includes(name)) return;
+      const cues = {
+        click: () => audioTone(420, .08, 'sine', .1),
+        hover: () => audioTone(720, .045, 'triangle', .035),
+        nav: () => audioTone(560, .09, 'sine', .06),
+        open: () => { audioTone(220, .28, 'sine', .08); audioTone(440, .34, 'sine', .04, .05); },
+        close: () => { audioTone(440, .18, 'sine', .05); audioTone(220, .22, 'sine', .04, .05); },
+        whoosh: () => { audioTone(170, .42, 'sawtooth', .025); audioTone(680, .3, 'triangle', .035, .08); },
+        shimmer: () => { [880, 1174, 1568].forEach((f, i) => audioTone(f, .32, 'sine', .045, i * .07)); },
+        sparkle: () => { [1320, 1760, 2093, 2637].forEach((f, i) => audioTone(f, .16, 'triangle', .04, i * .045)); },
+        chime: () => { audioTone(523, .5, 'sine', .06); audioTone(659, .55, 'sine', .045, .1); audioTone(784, .6, 'sine', .035, .2); },
+        success: () => { audioTone(523, .18, 'sine', .06); audioTone(659, .18, 'sine', .06, .1); audioTone(1046, .35, 'sine', .055, .2); },
+        error: () => { audioTone(180, .16, 'square', .06); audioTone(150, .2, 'square', .05, .1); },
+        submit: () => { audioTone(330, .14, 'triangle', .055); audioTone(660, .25, 'triangle', .05, .1); },
+        focus: () => audioTone(980, .07, 'sine', .035),
+        toggle: () => { audioTone(600, .1, 'triangle', .045); audioTone(900, .15, 'sine', .03, .07); },
+        pulse: () => { audioTone(90, .55, 'sine', .06); audioTone(180, .45, 'sine', .025, .15); },
+        scan: () => { audioTone(1200, .18, 'sine', .03); audioTone(1500, .22, 'sine', .02, .12); },
+        page: () => { audioTone(260, .3, 'sine', .025); audioTone(390, .34, 'sine', .02, .12); },
+        magnetic: () => { audioTone(400, .12, 'triangle', .03); audioTone(800, .18, 'triangle', .025, .08); },
+        ambient: () => { audioTone(130, 1.3, 'sine', .018); audioTone(195, 1.5, 'sine', .014, .2); },
+        admin: () => { audioTone(392, .12, 'sine', .06); audioTone(784, .24, 'sine', .04, .09); }
+      };
+      cues[name]();
+    }
+    function syncSoundButton() {
+      soundButton.classList.toggle('on', soundOn);
+      soundButton.setAttribute('aria-pressed', String(soundOn));
+      soundButton.querySelector('.sound-label').textContent = soundOn ? 'sound on' : 'sound off';
+    }
+    soundButton.addEventListener('click', () => {
+      soundOn = !soundOn;
+      localStorage.setItem('shSoundOn', String(soundOn));
+      syncSoundButton();
+      if (soundOn) { initAudio(); playSound('chime'); }
+    });
+    syncSoundButton();
+    document.querySelectorAll('button, a').forEach(element => {
+      element.addEventListener('mouseenter', () => playSound('hover'));
+      element.addEventListener('focus', () => playSound('focus'));
+      element.addEventListener('click', () => playSound('click'));
+    });
+
+    /* Animated particle field and cursor-reactive light. */
+    const canvas = document.getElementById('fx-canvas');
+    const ctx = canvas.getContext('2d');
+    const cursorGlow = document.querySelector('.cursor-glow');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let particles = [];
+    let pointer = { x: innerWidth / 2, y: innerHeight / 3 };
+    function resizeCanvas() {
+      const ratio = Math.min(devicePixelRatio || 1, 2);
+      canvas.width = innerWidth * ratio; canvas.height = innerHeight * ratio;
+      canvas.style.width = innerWidth + 'px'; canvas.style.height = innerHeight + 'px';
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      particles = Array.from({ length: Math.min(85, Math.floor(innerWidth / 15)) }, () => ({
+        x: Math.random() * innerWidth, y: Math.random() * innerHeight,
+        r: Math.random() * 1.5 + .3, dx: (Math.random() - .5) * .18, dy: (Math.random() - .5) * .18,
+        alpha: Math.random() * .5 + .1
+      }));
+    }
+    function paintFx() {
+      if (!reducedMotion) {
+        ctx.clearRect(0, 0, innerWidth, innerHeight);
+        particles.forEach((p, i) => {
+          p.x += p.dx; p.y += p.dy;
+          if (p.x < -5 || p.x > innerWidth + 5) p.dx *= -1;
+          if (p.y < -5 || p.y > innerHeight + 5) p.dy *= -1;
+          const distance = Math.hypot(p.x - pointer.x, p.y - pointer.y);
+          const alpha = p.alpha * (distance < 240 ? 1.5 : 1);
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = i % 5 === 0 ? `rgba(198,255,61,${alpha})` : `rgba(255,255,255,${alpha * .55})`;
+          ctx.fill();
+        });
+      }
+      requestAnimationFrame(paintFx);
+    }
+    resizeCanvas(); paintFx();
+    addEventListener('resize', resizeCanvas);
+    addEventListener('pointermove', event => {
+      pointer = { x: event.clientX, y: event.clientY };
+      cursorGlow.style.left = event.clientX + 'px'; cursorGlow.style.top = event.clientY + 'px';
+      document.documentElement.style.setProperty('--mx', `${(event.clientX / innerWidth) * 100}%`);
+      document.documentElement.style.setProperty('--my', `${(event.clientY / innerHeight) * 100}%`);
+      document.querySelectorAll('.orbit-node').forEach(node => {
+        const rect = node.getBoundingClientRect();
+        const distance = Math.hypot(event.clientX - (rect.left + rect.width / 2), event.clientY - (rect.top + rect.height / 2));
+        const influence = Math.max(0, 1 - distance / 240);
+        node.style.setProperty('--mag-x', `${((event.clientX - rect.left - rect.width / 2) * influence * .045).toFixed(1)}px`);
+        node.style.setProperty('--mag-y', `${((event.clientY - rect.top - rect.height / 2) * influence * .045).toFixed(1)}px`);
+      });
+    });
+
+    /* Local admin control room. Password is hashed; it never appears in the page config. */
+    const configKey = 'shPortfolioConfigV3';
+    const passwordKey = 'shPortfolioAdminHashV1';
+    const defaults = {
+      name: 'Syeda Husna Tabassum',
+      age: '',
+      headline: 'Building ideas.\nCreating experiences.',
+      lead: 'Entrepreneur • AI Creative • Digital Marketing Enthusiast • Creative Technologist',
+      intro: 'I explore the intersection of AI, marketing, digital experiences and online business—turning ideas into work that feels clear, useful and memorable.',
+      primary: 'Explore my work',
+      accent: '#c6ff3d',
+      video: 'assets/hero-showreel.mp4',
+      contacts: {
+        email: { value: 'syedahusnashareef@gmail.com', enabled: true },
+        phone: { value: '', enabled: false },
+        whatsapp: { value: '', enabled: false },
+        instagram: { value: 'https://www.instagram.com/syeda_husna_tabassum?stkn=MXdjMGhqeWF5amtucg==', enabled: true },
+        facebook: { value: '', enabled: false },
+        linkedin: { value: '', enabled: false },
+        youtube: { value: '', enabled: false },
+        github: { value: '', enabled: false },
+        website: { value: '', enabled: false },
+        other: { value: '', enabled: false }
+      },
+      projects: ['UGC Ads — Product Story', 'Cinematic Video Editing', 'Website Developer', 'Digital space', 'Soft launch', 'In progress'],
+      work: [
+        { enabled: true, title: 'UGC Ads — Product Story', category: '01 / UGC ads', description: 'Vertical short-form content built to feel native, human and scroll-stopping.', media: 'assets/work-ugc-ads.mp4' },
+        { enabled: true, title: 'Cinematic Video Editing', category: '02 / Cinematic editing', description: 'Atmosphere, pacing and light shaped into a cinematic visual experience.', media: 'assets/work-cinematic-editing.mp4' },
+        { enabled: true, title: 'Website Developer', category: '03 / Website developer', description: 'A digital experience concept that connects story, structure and interaction.', media: 'assets/work-website-developer.mp4' },
+        { enabled: false, title: 'Digital space', category: '04 / Web', description: 'A flexible home for an ambitious idea.', media: '' },
+        { enabled: false, title: 'Soft launch', category: '05 / Social', description: 'Content designed to start a conversation.', media: '' },
+        { enabled: false, title: 'In progress', category: '06 / Experiments', description: 'Small tests with a bigger direction.', media: '' }
+      ]
+    };
+    const storedConfig = JSON.parse(localStorage.getItem(configKey) || 'null') || {};
+    let config = { ...defaults, ...storedConfig, contacts: { ...defaults.contacts, ...(storedConfig.contacts || {}) } };
+    const esc = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+    const validLink = value => /^(https?:\/\/|mailto:|#)/i.test(value || '') ? value : '#';
+    function applyConfig() {
+      document.title = `${config.name} | AI Creative • Entrepreneur • Digital Creator`;
+      document.querySelector('.brand span:last-child').textContent = config.name.split(' ').slice(0, 2).join(' ');
+      document.getElementById('hero-headline').innerHTML = esc(config.headline).replace(/\n/g, '<br>');
+      document.getElementById('hero-lead').textContent = config.lead;
+      document.getElementById('hero-intro').textContent = config.intro;
+      document.getElementById('hero-primary').firstChild.textContent = config.primary + ' ';
+      document.documentElement.style.setProperty('--neon', config.accent || defaults.accent);
+      const ageMeta = document.getElementById('age-meta');
+      ageMeta.hidden = !config.age;
+      document.getElementById('age-value').textContent = config.age || '';
+      const heroVideo = document.getElementById('hero-video');
+      const source = document.querySelector('#hero-video source');
+      if (source.src !== new URL(config.video || defaults.video, document.baseURI).href) { source.src = config.video || defaults.video; heroVideo.load(); heroVideo.play().catch(() => {}); }
+      const contactMeta = {
+        email: { id: 'email-link', href: value => value ? `mailto:${value}` : '' },
+        phone: { id: 'phone-link', href: value => value ? `tel:${value.replace(/[^\d+*#;]/g, '')}` : '' },
+        whatsapp: { id: 'whatsapp-link', href: value => { const digits = value.replace(/\D/g, ''); return digits ? `https://wa.me/${digits}` : ''; } },
+        instagram: { id: 'instagram-link', href: validLink },
+        facebook: { id: 'facebook-link', href: validLink },
+        linkedin: { id: 'linkedin-link', href: validLink },
+        youtube: { id: 'youtube-link', href: validLink },
+        github: { id: 'github-link', href: validLink },
+        website: { id: 'website-link', href: validLink },
+        other: { id: 'other-link', href: validLink }
+      };
+      Object.entries(contactMeta).forEach(([key, meta]) => {
+        const entry = config.contacts[key] || { value: '', enabled: false };
+        const link = document.getElementById(meta.id);
+        const href = meta.href(entry.value || '');
+        link.href = href || '#';
+        link.hidden = !(entry.enabled && href);
+      });
+      (config.work || defaults.work).forEach((item, i) => {
+        const card = document.querySelector(`.project[data-work-index="${i}"]`);
+        if (!card) return;
+        card.hidden = !item.enabled;
+        const title = card.querySelector('h3');
+        const description = card.querySelector('p');
+        const category = card.querySelector('.project-category');
+        if (title) title.textContent = item.title || '';
+        if (description) description.textContent = item.description || '';
+        if (category) category.textContent = item.category || `${String(i + 1).padStart(2, '0')} / Work`;
+        let media = card.querySelector('.project-media');
+        if (item.media && /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(item.media)) {
+          if (!media) {
+            media = document.createElement('video');
+            media.className = 'project-media';
+            media.autoplay = true; media.muted = true; media.loop = true; media.playsInline = true;
+            card.insertBefore(media, card.querySelector('.project-top'));
+          }
+          const current = media.querySelector('source');
+          if (!current || current.src !== new URL(item.media, document.baseURI).href) {
+            media.innerHTML = '';
+            const source = document.createElement('source');
+            source.src = item.media; source.type = 'video/mp4'; media.appendChild(source); media.load();
+          }
+          media.hidden = false; media.play().catch(() => {});
+          card.style.backgroundImage = '';
+        } else if (item.media) {
+          if (media) media.hidden = true;
+          card.style.backgroundImage = `url("${item.media.replace(/"/g, '%22')}")`;
+        } else {
+          if (media) media.hidden = true;
+          card.style.backgroundImage = '';
+        }
+      });
+    }
+    function fillEditor() {
+      const fields = { name: 'edit-name', age: 'edit-age', headline: 'edit-headline', lead: 'edit-lead', intro: 'edit-intro', primary: 'edit-primary', accent: 'edit-accent', video: 'edit-video' };
+      Object.entries(fields).forEach(([key, id]) => { document.getElementById(id).value = config[key] || ''; });
+      ['email', 'phone', 'whatsapp', 'instagram', 'facebook', 'linkedin', 'youtube', 'github', 'website', 'other'].forEach(key => {
+        const entry = config.contacts[key] || { value: '', enabled: false };
+        document.getElementById(`edit-${key}`).value = entry.value || '';
+        document.getElementById(`edit-${key}-enabled`).checked = Boolean(entry.enabled);
+      });
+      document.getElementById('edit-projects').value = (config.projects || []).join('\n');
+      (config.work || defaults.work).forEach((item, i) => {
+        document.getElementById(`edit-work-${i}-title`).value = item.title || '';
+        document.getElementById(`edit-work-${i}-category`).value = item.category || '';
+        document.getElementById(`edit-work-${i}-description`).value = item.description || '';
+        document.getElementById(`edit-work-${i}-media`).value = item.media || '';
+        document.getElementById(`edit-work-${i}-enabled`).checked = Boolean(item.enabled);
+      });
+    }
+    async function hashPassword(password) {
+      const bytes = new TextEncoder().encode(password);
+      const hash = await crypto.subtle.digest('SHA-256', bytes);
+      return Array.from(new Uint8Array(hash)).map(byte => byte.toString(16).padStart(2, '0')).join('');
+    }
+    const adminOverlay = document.querySelector('.admin-overlay');
+    const authView = document.getElementById('admin-auth-view');
+    const editorView = document.getElementById('admin-editor-view');
+    const authHelp = document.getElementById('admin-auth-help');
+    const authSubmit = document.getElementById('admin-auth-submit');
+    function openAdmin() {
+      const hasPassword = Boolean(localStorage.getItem(passwordKey));
+      authView.hidden = hasPassword && sessionStorage.getItem('shAdminSession') === 'true';
+      editorView.hidden = !authView.hidden;
+      if (!hasPassword) { authHelp.textContent = 'First visit: create a password with at least 8 characters. It stays in this browser only.'; authSubmit.innerHTML = 'Create password <span>↗</span>'; }
+      else if (!authView.hidden) { authHelp.textContent = 'Enter the admin password saved in this browser.'; authSubmit.innerHTML = 'Unlock control room <span>↗</span>'; }
+      if (editorView.hidden) fillEditor();
+      adminOverlay.classList.add('open'); adminOverlay.setAttribute('aria-hidden', 'false'); playSound('admin');
+      if (!editorView.hidden) document.getElementById('edit-name').focus(); else document.getElementById('admin-password').focus();
+    }
+    function closeAdmin() { adminOverlay.classList.remove('open'); adminOverlay.setAttribute('aria-hidden', 'true'); }
+    document.querySelectorAll('.admin-trigger, .admin-fab').forEach(button => button.addEventListener('click', openAdmin));
+    document.querySelector('.admin-close').addEventListener('click', closeAdmin);
+    adminOverlay.addEventListener('click', event => { if (event.target === adminOverlay) closeAdmin(); });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape' && adminOverlay.classList.contains('open')) closeAdmin(); });
+    document.getElementById('admin-auth-form').addEventListener('submit', async event => {
+      event.preventDefault();
+      const input = document.getElementById('admin-password');
+      const status = document.getElementById('admin-auth-status');
+      if (input.value.length < 8) { status.textContent = 'Use at least 8 characters.'; playSound('error'); return; }
+      const existing = localStorage.getItem(passwordKey);
+      const hashed = await hashPassword(input.value);
+      if (!existing) {
+        localStorage.setItem(passwordKey, hashed); sessionStorage.setItem('shAdminSession', 'true');
+        authView.hidden = true; editorView.hidden = false; fillEditor(); status.textContent = ''; document.getElementById('edit-name').focus(); playSound('success');
+      } else if (existing === hashed) {
+        sessionStorage.setItem('shAdminSession', 'true'); authView.hidden = true; editorView.hidden = false; fillEditor(); status.textContent = ''; document.getElementById('edit-name').focus(); playSound('success');
+      } else { status.textContent = 'Password did not match.'; input.select(); playSound('error'); }
+    });
+    document.getElementById('admin-editor-form').addEventListener('submit', event => {
+      event.preventDefault();
+      const value = id => document.getElementById(id).value.trim();
+      const contactKeys = ['email', 'phone', 'whatsapp', 'instagram', 'facebook', 'linkedin', 'youtube', 'github', 'website', 'other'];
+      const contacts = {};
+      contactKeys.forEach(key => { contacts[key] = { value: value(`edit-${key}`), enabled: document.getElementById(`edit-${key}-enabled`).checked }; });
+      const work = Array.from({ length: 6 }, (_, i) => ({ enabled: document.getElementById(`edit-work-${i}-enabled`).checked, title: value(`edit-work-${i}-title`), category: value(`edit-work-${i}-category`), description: value(`edit-work-${i}-description`), media: value(`edit-work-${i}-media`) }));
+      config = { ...config, name: value('edit-name'), age: value('edit-age'), headline: value('edit-headline'), lead: value('edit-lead'), intro: value('edit-intro'), primary: value('edit-primary'), accent: value('edit-accent') || defaults.accent, video: value('edit-video') || defaults.video, contacts, projects: value('edit-projects').split('\n').map(item => item.trim()).filter(Boolean).slice(0, 6), work };
+      localStorage.setItem(configKey, JSON.stringify(config)); applyConfig();
+      document.getElementById('admin-editor-status').textContent = 'Saved locally — your live page is updated.';
+      playSound('success');
+    });
+    document.getElementById('admin-reset').addEventListener('click', () => {
+      if (!confirm('Reset your local portfolio edits?')) return;
+      localStorage.removeItem(configKey); config = { ...defaults }; applyConfig(); fillEditor();
+      document.getElementById('admin-editor-status').textContent = 'Local edits reset.'; playSound('close');
+    });
+    applyConfig();
+    const heroVideo = document.getElementById('hero-video');
+    const startHeroVideo = () => {
+      heroVideo.currentTime = 0;
+      const playback = heroVideo.play();
+      if (playback && playback.catch) playback.catch(() => {});
+    };
+    if (heroVideo.readyState >= 2) startHeroVideo();
+    else heroVideo.addEventListener('canplay', startHeroVideo, { once: true });
+    window.addEventListener('pageshow', startHeroVideo);
+
+    document.querySelector('.contact-form').addEventListener('submit', event => {
+      event.preventDefault();
+      const note = event.currentTarget.querySelector('.form-note');
+      note.textContent = 'Thanks — the form is ready. Connect your email service to send this message.';
+      event.currentTarget.reset(); playSound('submit');
+    });
+    document.querySelectorAll('.play').forEach(button => button.addEventListener('click', () => {
+      const video = document.getElementById('hero-video');
+      if (video.paused) { video.play().catch(() => {}); playSound('whoosh'); } else { video.pause(); playSound('pulse'); }
+    }));
+  </script>
+</body>
+</html>
