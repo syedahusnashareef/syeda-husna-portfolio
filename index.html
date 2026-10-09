@@ -31,6 +31,7 @@
     }
 
     * { box-sizing: border-box; }
+    body { font-family: var(--portfolio-font, Manrope, system-ui, sans-serif); font-size: var(--portfolio-font-size, 17px); font-weight: var(--portfolio-font-weight, 400); }
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
@@ -598,6 +599,15 @@
             <div class="field"><label for="edit-theme-preset">Professional colour theme</label><select id="edit-theme-preset"><option value="neon">Neon Lime / Black</option><option value="rose-gold">Black / Rose Gold</option><option value="violet">Midnight Violet</option><option value="ocean">Deep Ocean</option><option value="ivory">Ivory Editorial</option><option value="cherry">Cherry Noir</option></select></div>
             <div class="field"><label for="edit-accent">Custom accent colour</label><input id="edit-accent" type="color" /></div>
           </div>
+          <div class="admin-section-title">Studio controls · typography & sound</div>
+          <div class="admin-grid">
+            <div class="field"><label for="edit-font-family">Website font</label><select id="edit-font-family"><option value="Manrope">Modern Sans · Manrope</option><option value="Arial">Clean Sans · Arial</option><option value="Georgia">Editorial Serif · Georgia</option><option value="DM Mono">Digital Mono · DM Mono</option><option value="Playfair Display">Luxury Serif · Playfair Display</option></select></div>
+            <div class="field"><label for="edit-font-size">Base font size</label><select id="edit-font-size"><option value="15">Compact · 15px</option><option value="16">Standard · 16px</option><option value="17">Comfort · 17px</option><option value="18">Large · 18px</option><option value="20">Extra large · 20px</option></select></div>
+            <div class="field"><label for="edit-font-weight">Text weight</label><select id="edit-font-weight"><option value="400">Regular</option><option value="500">Medium</option><option value="600">Semi-bold</option><option value="700">Bold</option></select></div>
+            <div class="field"><label for="edit-sound-volume">UI sound volume</label><input id="edit-sound-volume" type="range" min="0" max="100" value="55" /></div>
+            <label class="toggle-line full"><input id="edit-sound-enabled" type="checkbox" checked /> Enable interface sound effects (video audio stays separate)</label>
+            <div class="field full"><button class="btn btn-ghost" type="button" id="edit-sound-test">▶ Preview UI sound</button><p class="admin-help">Sound effects require a tap/click first on mobile. Background voice is not added; video audio remains controlled by the video player.</p></div>
+          </div>
           <div class="admin-section-title">Media & portfolio</div>
           <div class="admin-grid">
             <div class="field full"><label for="edit-video">Hero video URL (optional)</label><input id="edit-video" placeholder="Paste a public .mp4 URL" /></div>
@@ -887,6 +897,14 @@
         return fallback;
       }
     }
+    function applyTypographySettings() {
+      const t = config.typography || {};
+      document.documentElement.style.setProperty('--portfolio-font', '"' + String(t.family || 'Manrope').replace(/[^a-zA-Z0-9 _-]/g, '') + '", system-ui, sans-serif');
+      document.documentElement.style.setProperty('--portfolio-font-size', (Number(t.size) || 17) + 'px');
+      document.documentElement.style.setProperty('--portfolio-font-weight', String(Number(t.weight) || 400));
+      if (typeof soundOn !== 'undefined') soundOn = config.soundEnabled !== false;
+      if (typeof masterGain !== 'undefined' && masterGain) masterGain.gain.value = Math.max(0, Math.min(1, Number(config.soundVolume ?? 0.55)));
+    }
     function applyTheme(preset = config.themePreset, accent = config.accent) {
       const theme = themePresets[preset] || themePresets.neon;
       const root = document.documentElement.style;
@@ -900,6 +918,7 @@
     const isVideoPath = (path, item = {}) => item.mediaType === 'video' || /^idb:/i.test(path || '') || /\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i.test(path || '');
     async function applyConfig() {
       applyTheme(config.themePreset || 'neon', config.accent || defaults.accent);
+      applyTypographySettings();
       document.title = `${config.name} | AI Creative • Entrepreneur • Digital Creator`;
       document.querySelector('.brand span:last-child').textContent = config.name.split(' ').slice(0, 2).join(' ');
       document.getElementById('hero-headline').innerHTML = esc(config.headline).replace(/\n/g, '<br>');
@@ -1025,6 +1044,11 @@
       document.getElementById('edit-theme-preset').value = themePresets[config.themePreset] ? config.themePreset : 'neon';
       document.getElementById('edit-accent').value = config.accent || themePresets[config.themePreset]?.neon || defaults.accent;
       document.getElementById('edit-video').value = config.video?.startsWith('idb:') ? '' : (config.video || '');
+      document.getElementById('edit-font-family').value = config.typography?.family || 'Manrope';
+      document.getElementById('edit-font-size').value = String(config.typography?.size || 17);
+      document.getElementById('edit-font-weight').value = String(config.typography?.weight || 400);
+      document.getElementById('edit-sound-volume').value = String(Math.round((config.soundVolume ?? 0.55) * 100));
+      document.getElementById('edit-sound-enabled').checked = config.soundEnabled !== false;
       ['email', 'phone', 'whatsapp', 'instagram', 'facebook', 'linkedin', 'youtube', 'github', 'website', 'other'].forEach(key => {
         const entry = config.contacts[key] || { value: '', enabled: false };
         document.getElementById(`edit-${key}`).value = entry.value || '';
@@ -1101,6 +1125,11 @@
         };
       });
     }
+    document.getElementById('edit-sound-test')?.addEventListener('click', () => playSound('shimmer'));
+    document.getElementById('edit-sound-volume')?.addEventListener('input', event => {
+      if (typeof masterGain !== 'undefined' && masterGain) masterGain.gain.value = Number(event.target.value) / 100;
+    });
+    document.getElementById('edit-sound-enabled')?.addEventListener('change', event => { soundOn = event.target.checked; if (soundOn) playSound('success'); });
     document.getElementById('edit-theme-preset').addEventListener('change', event => {
       config.themePreset = event.target.value;
       config.accent = themePresets[config.themePreset].neon;
@@ -1140,7 +1169,7 @@
     });
     document.getElementById('add-work').addEventListener('click', () => {
       config.work = collectWorkDraft();
-      if (config.work.length >= 24) { editorStatus.textContent = 'You can add up to 24 work cards.'; return; }
+      if (config.work.length >= 500) { editorStatus.textContent = 'Browser performance limit reached. Connect shared storage for large portfolios.'; return; }
       config.work.push({ enabled: true, title: 'New project', category: '', description: '', media: '' });
       renderWorkEditor();
       document.getElementById(`edit-work-${config.work.length - 1}-title`).focus();
@@ -1215,6 +1244,9 @@
           intro: value('edit-intro'),
           primary: value('edit-primary'),
           themePreset: document.getElementById('edit-theme-preset').value,
+          typography: { family: document.getElementById('edit-font-family').value, size: Number(document.getElementById('edit-font-size').value), weight: Number(document.getElementById('edit-font-weight').value) },
+          soundVolume: Number(document.getElementById('edit-sound-volume').value) / 100,
+          soundEnabled: document.getElementById('edit-sound-enabled').checked,
           accent: value('edit-accent') || defaults.accent,
           video, videoFileName, contacts, work
         };
