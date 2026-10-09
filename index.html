@@ -1424,7 +1424,27 @@
     });
     document.querySelectorAll('.play').forEach(button => button.addEventListener('click', () => {
       const video = document.getElementById('hero-video');
-      if (video.paused) { video.play().catch(() => {}); playSound('whoosh'); } else { video.pause(); playSound('pulse'); }
+      // The hero is a silent ambient background until the visitor explicitly asks to hear it.
+      document.querySelectorAll('.work-grid video').forEach(otherVideo => otherVideo.pause());
+      if (video.paused || video.muted) {
+        video.defaultMuted = false;
+        video.muted = false;
+        video.removeAttribute('muted');
+        video.volume = 1;
+        video.loop = false;
+        video.play().then(() => { button.setAttribute('aria-label', 'Pause showreel with sound'); }).catch(() => {
+          button.setAttribute('aria-label', 'Play showreel with sound');
+        });
+        playSound('whoosh');
+      } else {
+        video.pause();
+        button.setAttribute('aria-label', 'Play showreel with sound');
+        playSound('pulse');
+      }
+    }));
+    document.querySelectorAll('.work-grid video').forEach(video => video.addEventListener('play', () => {
+      const hero = document.getElementById('hero-video');
+      if (hero && !hero.paused) hero.pause();
     }));
   </script>
 </body>
