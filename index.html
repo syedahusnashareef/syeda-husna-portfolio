@@ -213,7 +213,7 @@
     .p4 { background: radial-gradient(ellipse, color-mix(in srgb, var(--neon) 36%, transparent), transparent 35%), var(--bg-2); }
     .p5 { background: linear-gradient(135deg, #111, #241727); }
     .p6 { background: radial-gradient(circle at 70% 30%, rgba(255,255,255,.25), transparent 2%), #171717; }
-    .project::after { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(transparent 35%, rgba(0,0,0,.88)); }
+    .project::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(transparent 35%, rgba(0,0,0,.88)); }
     .project-media { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; opacity: .74; filter: saturate(.8) contrast(1.06); background: #0b0b0c; transition: transform .6s, opacity .3s; }
     .project:hover .project-media { transform: scale(1.05); opacity: .9; }
     .project-play { position: absolute; z-index: 2; top: 46%; left: 50%; transform: translate(-50%, -50%); min-width: 58px; min-height: 58px; padding: 0 15px; border: 1px solid rgba(255,255,255,.66); border-radius: 999px; color: #fff; background: rgba(0,0,0,.58); box-shadow: 0 8px 28px rgba(0,0,0,.35); cursor: pointer; font-size: 18px; }
@@ -995,39 +995,31 @@
         const backdrop = document.createElement('div');
         backdrop.className = `project-bg p${(i % 6) + 1}`;
         card.append(backdrop);
-        let video = null;
-        let playButton = null;
         const publicFallbackMedia = defaults.work[i]?.media || '';
         const mediaUrl = await resolveMediaUrl(item.media || '', publicFallbackMedia);
         if (mediaUrl && isVideoPath(item.media, item)) {
-          video = document.createElement('video');
+          const video = document.createElement('video');
           video.className = 'project-media';
-          video.autoplay = true; video.muted = true; video.loop = true; video.playsInline = true; video.preload = 'metadata';
+          video.controls = true;
+          video.autoplay = false;
+          video.muted = false;
+          video.loop = true;
+          video.playsInline = true;
+          video.preload = 'metadata';
           video.setAttribute('playsinline', '');
+          video.setAttribute('controls', '');
+          video.setAttribute('aria-label', `${item.title || 'Portfolio video'} with sound`);
+          video.addEventListener('play', () => {
+            document.querySelectorAll('.work-grid .project-media').forEach(otherVideo => {
+              if (otherVideo !== video && !otherVideo.paused) otherVideo.pause();
+            });
+          });
           const source = document.createElement('source');
           source.src = mediaUrl;
           const extension = (item.fileName || item.media || '').split('?')[0].split('.').pop().toLowerCase();
           source.type = ({ webm:'video/webm', ogg:'video/ogg', mov:'video/quicktime' })[extension] || 'video/mp4';
           video.append(source);
           card.append(video);
-          playButton = document.createElement('button');
-          playButton.type = 'button';
-          playButton.className = 'project-play';
-          playButton.setAttribute('aria-label', `Play ${item.title || 'video'}`);
-          playButton.textContent = '▶';
-          playButton.hidden = true;
-          video.addEventListener('play', () => { playButton.hidden = true; });
-          video.addEventListener('pause', () => { playButton.hidden = false; });
-          video.addEventListener('error', () => { playButton.hidden = false; playButton.textContent = 'Video unavailable'; });
-          const toggleVideo = () => {
-            if (video.paused) video.play().catch(() => { playButton.hidden = false; });
-            else video.pause();
-          };
-          playButton.addEventListener('click', event => { event.stopPropagation(); toggleVideo(); });
-          card.addEventListener('click', toggleVideo);
-          card.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); toggleVideo(); } });
-          card.append(playButton);
-          video.play().catch(() => { playButton.hidden = false; });
         } else if (mediaUrl) {
           backdrop.style.backgroundImage = `url("${mediaUrl.replace(/"/g, '%22')}")`;
           backdrop.style.backgroundSize = 'cover';
