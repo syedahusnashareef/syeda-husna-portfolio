@@ -160,7 +160,7 @@
     .n-replit { top: 48%; left: 7%; } .n-aistudio { top: 56%; right: 6%; } .n-sora { bottom: 22%; left: 16%; }
     .n-runway { bottom: 11%; left: 49%; } .n-claude { bottom: 22%; right: 15%; } .n-canva { top: 39%; left: 26%; }
     .n-midjourney { top: 61%; left: 23%; } .n-kling { top: 73%; right: 24%; } .n-n8n { top: 72%; left: 4%; }
-    .n-adobe { top: 8%; right: 16%; } .n-printess { bottom: 9%; right: 4%; }\n    .n-perplexity { top: 42%; right: 3%; } .n-capcut { top: 84%; left: 34%; } .n-elevenlabs { top: 8%; left: 8%; } .n-firefly { bottom: 38%; right: 2%; }
+    .n-adobe { top: 8%; right: 16%; } .n-pinterest { bottom: 9%; right: 4%; }\n    .n-perplexity { top: 42%; right: 3%; } .n-capcut { top: 84%; left: 34%; } .n-elevenlabs { top: 8%; left: 8%; } .n-firefly { bottom: 38%; right: 2%; }
 
     /* Sections */
     section { padding: 142px 0; position: relative; }
@@ -444,7 +444,7 @@
     .n-runway { bottom:11%; left:49%; } .n-claude { bottom:22%; right:15%; }
     .n-canva { top:39%; left:26%; } .n-midjourney { top:61%; left:23%; }
     .n-kling { top:73%; right:24%; } .n-n8n { top:72%; left:4%; }
-    .n-adobe { top:8%; right:16%; } .n-printess { bottom:9%; right:4%; }
+    .n-adobe { top:8%; right:16%; } .n-pinterest { bottom:9%; right:4%; }
     .n-perplexity { top:42%; right:3%; } .n-capcut { top:84%; left:34%; }
     .n-elevenlabs { top:8%; left:8%; } .n-firefly { bottom:38%; right:2%; }
     @media (max-width:700px) {
@@ -457,6 +457,16 @@
       .n-aistudio { top:56%; right:3%; } .n-canva { top:39%; left:20%; }
       .n-midjourney { top:62%; left:15%; } .n-n8n { top:72%; left:2%; }
       .n-elevenlabs { top:8%; left:4%; } .n-firefly { bottom:38%; right:1%; }
+    }
+
+  
+    /* The orbit rings turn at different speeds around the SH core */
+    .ecosystem::before { animation: orbit-ring-spin 32s linear infinite; }
+    .ecosystem::after { animation: orbit-ring-spin-reverse 46s linear infinite; }
+    @keyframes orbit-ring-spin { from { transform:translate(-50%,-50%) rotate(-22deg); } to { transform:translate(-50%,-50%) rotate(338deg); } }
+    @keyframes orbit-ring-spin-reverse { from { transform:translate(-50%,-50%) rotate(28deg); } to { transform:translate(-50%,-50%) rotate(-332deg); } }
+    @media (prefers-reduced-motion: reduce) {
+      .orbit-node, .ecosystem::before, .ecosystem::after, .orbit-core-large::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
     }
 
   </style>
@@ -516,7 +526,7 @@
               <span class="orbit-node far n-kling" style="--float:7.6s;--delay:-5.8s"><img src="https://www.google.com/s2/favicons?domain=klingai.com&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Kling AI</span></span>
               <span class="orbit-node  n-n8n" style="--float:8.2s;--delay:-6s"><img src="https://www.google.com/s2/favicons?domain=n8n.io&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>n8n</span></span>
               <span class="orbit-node  n-adobe" style="--float:6.6s;--delay:-1.2s"><img src="https://www.google.com/s2/favicons?domain=firefly.adobe.com&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Adobe Firefly</span></span>
-              <span class="orbit-node far n-printess" style="--float:8.6s;--delay:-4.9s"><img src="https://www.google.com/s2/favicons?domain=printess.com&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Printess</span></span>
+              <span class="orbit-node far n-printess" style="--float:5.8s;--delay:-4.9s"><img src="https://www.google.com/s2/favicons?domain=pinterest.com&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Pinterest</span></span>
               <span class="orbit-node far n-perplexity" style="--float:7.1s;--delay:-3.4s"><img src="https://www.google.com/s2/favicons?domain=perplexity.ai&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Perplexity</span></span>
               <span class="orbit-node far n-capcut" style="--float:7.9s;--delay:-2.9s"><img src="https://www.google.com/s2/favicons?domain=capcut.com&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>CapCut</span></span>
               <span class="orbit-node far n-elevenlabs" style="--float:8.3s;--delay:-1.5s"><img src="https://www.google.com/s2/favicons?domain=elevenlabs.io&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>ElevenLabs</span></span>
