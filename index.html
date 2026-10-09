@@ -1247,6 +1247,20 @@
     function uniqueMediaKey(kind, file) {
       return `${kind}-${Date.now()}-${Math.random().toString(36).slice(2, 9)}-${file.name.replace(/[^a-z0-9.-]/gi, '-').slice(-36)}`;
     }
+    async function uploadSavedLocalMediaToShared(localPath, folder, fallbackName) {
+      if (!String(localPath || '').startsWith('idb:')) return localPath || '';
+      if (!supabaseClient) throw new Error('Shared media storage is not available.');
+      const saved = await getMediaFile(String(localPath).slice(4));
+      if (!saved?.blob) throw new Error(`The saved video "${fallbackName || 'portfolio video'}" is missing from this browser. Please choose it from your gallery again.`);
+      const name = saved.name || fallbackName || 'portfolio-video.mp4';
+      const key = uniqueMediaKey(folder, { name });
+      const objectPath = `${folder}/${key}`;
+      const contentType = saved.type || saved.blob.type || 'video/mp4';
+      const { error: uploadError } = await supabaseClient.storage.from('portfolio-media').upload(objectPath, saved.blob, { upsert: true, contentType });
+      if (uploadError) throw uploadError;
+      const { data: publicUrl } = supabaseClient.storage.from('portfolio-media').getPublicUrl(objectPath);
+      return publicUrl.publicUrl;
+    }
     async function resolveMediaUrl(path, fallback = '') {
       if (!path || !path.startsWith('idb:')) return path || fallback;
       const key = path.slice(4);
@@ -1625,7 +1639,7 @@
       heroPreview.load();
       heroPreview.play().catch(() => {});
       document.getElementById('hero-upload-name').textContent = `${file.name} · ${(file.size / (1024 * 1024)).toFixed(1)} MB`;
-      editorStatus.textContent = 'Video selected. Tap Save on this device to store it here.';
+      editorStatus.textContent = 'Video selected. Sign in with the owner account, then Save to publish it for everyone.';
     });
     document.getElementById('edit-video').addEventListener('input', event => {
       if (!event.target.value.trim()) return;
@@ -1676,7 +1690,7 @@
       preview.hidden = false;
       preview.load();
       preview.play().catch(() => {});
-      editorStatus.textContent = `${file.name} selected for work card ${index + 1}. Save to keep it on this device.`;
+      editorStatus.textContent = `${file.name} selected for work card ${index + 1}. Sign in with the owner account, then Save to publish it for everyone.`;
     });
     document.getElementById('admin-editor-form').addEventListener('submit', async event => {
       event.preventDefault();
@@ -1710,6 +1724,15 @@
           work[index].mediaType = 'video';
           work[index].fileName = file.name;
         }
+        if (canPublishShared) {
+          for (let index = 0; index < work.length; index++) {
+            if (String(work[index]?.media || '').startsWith('idb:')) {
+              editorStatus.textContent = `Publishing saved work video ${index + 1} of ${work.length}… keep this panel open.`;
+              work[index].media = await uploadSavedLocalMediaToShared(work[index].media, 'work', work[index].fileName || work[index].title || `work-${index + 1}.mp4`);
+              work[index].mediaType = 'video';
+            }
+          }
+        }
         let video = value('edit-video') || config.video || defaults.video;
         let videoFileName = config.videoFileName || '';
         if (pendingHeroFile && !canPublishShared) {
@@ -1727,6 +1750,10 @@
           const { data: publicUrl } = supabaseClient.storage.from('portfolio-media').getPublicUrl(objectPath);
           video = publicUrl.publicUrl;
           videoFileName = pendingHeroFile.name;
+        }
+        if (canPublishShared && !pendingHeroFile && String(video || '').startsWith('idb:')) {
+          editorStatus.textContent = 'Publishing your saved hero video… keep this panel open.';
+          video = await uploadSavedLocalMediaToShared(video, 'hero', videoFileName || 'hero-video.mp4');
         }
         config = {
           ...config,
