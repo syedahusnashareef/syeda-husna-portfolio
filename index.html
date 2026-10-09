@@ -505,9 +505,9 @@
       <div class="wrap">
         <div class="section-head reveal"><div><span class="eyebrow">04 / Selected work</span><h2 class="display">A canvas for<br><em>what’s next.</em></h2></div><p class="section-note">These are clean placeholders, ready for your real projects, videos, links and case studies.</p></div>
         <div class="work-grid reveal">
-          <article class="project" data-work-index="0"><div class="project-bg p1"></div><video class="project-media" autoplay muted loop playsinline preload="metadata" poster="assets/work-ugc-ads.jpg"><source src="assets/work-ugc-ads.mp4" type="video/mp4" /></video><div class="project-top"><span class="project-category">01 / UGC ads</span><span>↗</span></div><h3>UGC Ads — Product Story</h3><p>Vertical short-form content built to feel native, human and scroll-stopping.</p></article>
-          <article class="project" data-work-index="1"><div class="project-bg p2"></div><video class="project-media" autoplay muted loop playsinline preload="metadata" poster="assets/work-cinematic-editing.jpg"><source src="assets/work-cinematic-editing.mp4" type="video/mp4" /></video><div class="project-top"><span class="project-category">02 / Cinematic editing</span><span>↗</span></div><h3>Cinematic Video Editing</h3><p>Atmosphere, pacing and light shaped into a cinematic visual experience.</p></article>
-          <article class="project" data-work-index="2"><div class="project-bg p3"></div><video class="project-media" autoplay muted loop playsinline preload="metadata" poster="assets/work-website-developer.jpg"><source src="assets/work-website-developer.mp4" type="video/mp4" /></video><div class="project-top"><span class="project-category">03 / Website developer</span><span>↗</span></div><h3>Website Developer</h3><p>A digital experience concept that connects story, structure and interaction.</p></article>
+          <article class="project" data-work-index="0"><div class="project-bg p1"></div><video class="project-media" controls playsinline preload="metadata" poster="assets/work-ugc-ads.jpg"><source src="assets/work-ugc-ads.mp4" type="video/mp4" /></video><div class="project-top"><span class="project-category">01 / UGC ads</span><span>↗</span></div><h3>UGC Ads — Product Story</h3><p>Vertical short-form content built to feel native, human and scroll-stopping.</p></article>
+          <article class="project" data-work-index="1"><div class="project-bg p2"></div><video class="project-media" controls playsinline preload="metadata" poster="assets/work-cinematic-editing.jpg"><source src="assets/work-cinematic-editing.mp4" type="video/mp4" /></video><div class="project-top"><span class="project-category">02 / Cinematic editing</span><span>↗</span></div><h3>Cinematic Video Editing</h3><p>Atmosphere, pacing and light shaped into a cinematic visual experience.</p></article>
+          <article class="project" data-work-index="2"><div class="project-bg p3"></div><video class="project-media" controls playsinline preload="metadata" poster="assets/work-website-developer.jpg"><source src="assets/work-website-developer.mp4" type="video/mp4" /></video><div class="project-top"><span class="project-category">03 / Website developer</span><span>↗</span></div><h3>Website Developer</h3><p>A digital experience concept that connects story, structure and interaction.</p></article>
           <article class="project" data-work-index="3"><div class="project-bg p4"></div><div class="project-top"><span class="project-category">04 / Web</span><span>↗</span></div><h3>Digital space</h3><p>A flexible home for an ambitious idea.</p></article>
           <article class="project" data-work-index="4"><div class="project-bg p5"></div><div class="project-top"><span class="project-category">05 / Social</span><span>↗</span></div><h3>Soft launch</h3><p>Content designed to start a conversation.</p></article>
           <article class="project" data-work-index="5"><div class="project-bg p6"></div><div class="project-top"><span class="project-category">06 / Experiments</span><span>↗</span></div><h3>In progress</h3><p>Small tests with a bigger direction.</p></article>
@@ -1371,6 +1371,18 @@
       await applyConfig(); await fillEditor();
       editorStatus.textContent = 'This browser’s edits and uploaded videos were reset.';
       playSound('close');
+    });
+    // Keep the built-in work videos audible and use one-at-a-time playback.
+    document.querySelectorAll('.work-grid .project-media').forEach(video => {
+      video.controls = true;
+      video.autoplay = false;
+      video.muted = false;
+      video.loop = false;
+      video.addEventListener('play', () => {
+        document.querySelectorAll('.work-grid .project-media').forEach(otherVideo => {
+          if (otherVideo !== video) otherVideo.pause();
+        });
+      });
     });
     applyConfig();
     loadSharedConfig();
