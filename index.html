@@ -24,7 +24,9 @@
       --violet: #a66cff;
       --orange: #ff824d;
       --hot: #ff5a16;
-      --max: 1240px;
+      --glow-a: rgba(166,108,255,.11);
+      --glow-b: rgba(198,255,61,.06);
+      --max: 1520px;
       --radius: 24px;
     }
 
@@ -34,10 +36,10 @@
       margin: 0;
       color: var(--text);
       background:
-        radial-gradient(circle at 85% 11%, rgba(166,108,255,.11), transparent 22rem),
-        radial-gradient(circle at 4% 33%, rgba(198,255,61,.06), transparent 18rem),
+        radial-gradient(circle at 85% 11%, var(--glow-a), transparent 24rem),
+        radial-gradient(circle at 4% 33%, var(--glow-b), transparent 20rem),
         var(--bg);
-      font: 15px/1.7 Manrope, system-ui, sans-serif;
+      font: 17px/1.72 Manrope, system-ui, sans-serif;
       overflow-x: hidden;
     }
     body::before {
@@ -54,7 +56,7 @@
     a { color: inherit; text-decoration: none; }
     button, input, textarea, select { font: inherit; }
     button, a { -webkit-tap-highlight-color: transparent; }
-    .wrap { width: min(calc(100% - 48px), var(--max)); margin: auto; }
+    .wrap { width: min(calc(100% - 64px), var(--max)); margin: auto; }
     .eyebrow {
       display: inline-flex;
       gap: 10px;
@@ -67,18 +69,18 @@
     .eyebrow::before { content: ""; width: 26px; height: 1px; background: currentColor; }
     .muted { color: var(--muted); }
     h1, h2, h3, p { margin-top: 0; }
-    h2 { font-size: clamp(2.3rem, 5vw, 5rem); letter-spacing: -.065em; line-height: .98; margin-bottom: 22px; }
+    h2 { font-size: clamp(2.7rem, 5.4vw, 5.35rem); letter-spacing: -.065em; line-height: .98; margin-bottom: 24px; }
     h3 { line-height: 1.1; }
     .display { font-weight: 700; letter-spacing: -.075em; }
 
     /* Navigation */
-    .nav {
+    .nav { 
       position: fixed;
       top: 18px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 30;
-      width: min(calc(100% - 32px), 1120px);
+      width: min(calc(100% - 32px), 1320px);
       border: 1px solid var(--line);
       border-radius: 999px;
       background: rgba(10,10,10,.66);
@@ -87,42 +89,44 @@
     }
     .nav-inner { min-height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px 0 18px; }
     .brand { display: flex; align-items: center; gap: 11px; font-weight: 700; letter-spacing: -.02em; }
-    .brand-mark, .footer-mark { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid rgba(198,255,61,.65); border-radius: 50%; color: var(--neon); font: 500 12px "DM Mono", monospace; box-shadow: inset 0 0 18px rgba(198,255,61,.08), 0 0 20px rgba(198,255,61,.06); }
+    .brand-mark, .footer-mark { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid color-mix(in srgb, var(--neon) 65%, transparent); border-radius: 50%; color: var(--neon); font: 500 12px "DM Mono", monospace; box-shadow: inset 0 0 18px color-mix(in srgb, var(--neon) 8%, transparent), 0 0 20px color-mix(in srgb, var(--neon) 6%, transparent); }
     .nav-links { display: flex; gap: 4px; align-items: center; }
-    .nav-links a { padding: 9px 12px; color: #bdbdc1; font-size: 12px; transition: color .2s, background .2s; border-radius: 999px; }
+    .nav-links a { padding: 10px 14px; color: #bdbdc1; font-size: 14px; transition: color .2s, background .2s, box-shadow .2s, border-color .2s; border: 1px solid transparent; border-radius: 999px; }
     .nav-links a:hover, .nav-links a:focus-visible { color: var(--text); background: var(--surface-strong); outline: none; }
+    .nav-links a.active:not(.nav-cta) { color: var(--text); border-color: color-mix(in srgb, var(--neon) 72%, transparent); background: color-mix(in srgb, var(--neon) 11%, transparent); box-shadow: 0 0 20px color-mix(in srgb, var(--neon) 22%, transparent), inset 0 0 16px color-mix(in srgb, var(--neon) 8%, transparent); }
+    .nav-links a.active:not(.nav-cta)::before { content: ""; display: inline-block; width: 6px; height: 6px; margin: 0 7px 1px 0; border-radius: 50%; background: var(--neon); box-shadow: 0 0 10px var(--neon); }
     .nav-cta { background: var(--neon); color: #070707 !important; font-weight: 800; }
     .menu { display: none; border: 0; background: transparent; color: var(--text); padding: 10px; cursor: pointer; }
     .menu span { display: block; width: 21px; height: 1px; margin: 5px 0; background: currentColor; transition: transform .2s; }
 
     /* Hero */
     .hero { min-height: max(760px, 100svh); display: grid; align-items: center; padding: 150px 0 90px; position: relative; isolation: isolate; overflow: hidden; background: #050505; }
-    .hero::before { content: ""; position: absolute; z-index: -1; width: 58rem; height: 42rem; top: 3rem; right: -18rem; border-radius: 50%; background: radial-gradient(ellipse, rgba(255,90,22,.22), rgba(255,90,22,.07) 35%, transparent 72%); filter: blur(18px); pointer-events: none; }
-    .hero::after { content: ""; position: absolute; z-index: -1; width: 34rem; height: 12rem; left: 6%; bottom: 3rem; border-radius: 50%; background: rgba(255,90,22,.08); filter: blur(60px); pointer-events: none; }
+    .hero::before { content: ""; position: absolute; z-index: -1; width: 58rem; height: 42rem; top: 3rem; right: -18rem; border-radius: 50%; background: radial-gradient(ellipse, color-mix(in srgb, var(--hot) 22%, transparent), color-mix(in srgb, var(--hot) 7%, transparent) 35%, transparent 72%); filter: blur(18px); pointer-events: none; }
+    .hero::after { content: ""; position: absolute; z-index: -1; width: 34rem; height: 12rem; left: 6%; bottom: 3rem; border-radius: 50%; background: color-mix(in srgb, var(--hot) 8%, transparent); filter: blur(60px); pointer-events: none; }
     .hero-background-video { position: absolute; inset: 0; z-index: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: center center; background: #050505; opacity: .58; filter: saturate(.72) contrast(1.08) brightness(.88); pointer-events: none; }
     .hero-background-overlay { position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(7,7,7,.94) 0%, rgba(7,7,7,.76) 40%, rgba(7,7,7,.42) 73%, rgba(7,7,7,.7) 100%), linear-gradient(0deg, rgba(7,7,7,.92), transparent 45%, rgba(7,7,7,.38)); pointer-events: none; }
     .hero-grid { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, .76fr); align-items: center; gap: 70px; }
     .hero-copy { max-width: 720px; }
-    .hero h1 { font-size: clamp(3.8rem, 7.8vw, 8rem); line-height: .91; margin: 22px 0 26px; }
-    .hero h1 em { color: var(--hot); font-family: "Playfair Display", Georgia, serif; font-weight: 600; text-shadow: 0 0 28px rgba(255,90,22,.2); }
-    .hero-lead { max-width: 590px; color: #c0c0c4; font-size: 16px; }
-    .hero-intro { max-width: 490px; margin: 28px 0 30px; color: var(--muted); }
+    .hero h1 { font-size: clamp(4.15rem, 8vw, 9rem); line-height: .98; margin: 24px 0 30px; }
+    .hero h1 em, h2.display em { color: var(--hot); font-family: "Playfair Display", Georgia, serif; font-style: italic; font-weight: 600; text-shadow: 0 0 28px color-mix(in srgb, var(--hot) 24%, transparent); }
+    .hero-lead { max-width: 670px; color: #c0c0c4; font-size: 18px; line-height: 1.55; }
+    .hero-intro { max-width: 610px; margin: 30px 0 34px; color: var(--muted); font-size: 17px; }
     .actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 48px; padding: 0 20px; border: 1px solid var(--line); border-radius: 999px; font-weight: 700; font-size: 13px; transition: transform .2s, background .2s, border-color .2s, box-shadow .2s; }
-    .btn:hover, .btn:focus-visible { transform: translateY(-3px); border-color: rgba(198,255,61,.65); box-shadow: 0 10px 26px rgba(198,255,61,.11); outline: none; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 50px; padding: 0 22px; border: 1px solid var(--line); border-radius: 999px; font-weight: 700; font-size: 15px; transition: transform .2s, background .2s, border-color .2s, box-shadow .2s; }
+    .btn:hover, .btn:focus-visible { transform: translateY(-3px); border-color: color-mix(in srgb, var(--neon) 65%, transparent); box-shadow: 0 10px 26px color-mix(in srgb, var(--neon) 16%, transparent); outline: none; }
     .btn-primary { color: #0a0a0a; background: var(--neon); border-color: var(--neon); }
     .btn-ghost { color: var(--text); background: rgba(255,255,255,.025); }
-    .hero-meta { display: flex; gap: 28px; margin-top: 62px; color: var(--muted); font: 11px "DM Mono", monospace; text-transform: uppercase; letter-spacing: .09em; }
+    .hero-meta { display: flex; gap: 32px; margin-top: 62px; color: var(--muted); font: 12px "DM Mono", monospace; text-transform: uppercase; letter-spacing: .09em; }
     .hero-meta strong { display: block; color: var(--text); font: 600 13px Manrope, sans-serif; letter-spacing: 0; text-transform: none; }
 
     /* Cinematic video card */
     .hero-visual { position: relative; }
-    .hero-visual::before { content: ""; position: absolute; inset: -50px -35px; background: radial-gradient(ellipse, rgba(198,255,61,.11), transparent 65%); filter: blur(20px); }
-    .video-card { position: relative; aspect-ratio: 1; overflow: hidden; border: 1px solid rgba(255,255,255,.2); border-radius: 30px; background: #111; box-shadow: 0 30px 90px rgba(0,0,0,.5), 0 0 0 1px rgba(198,255,61,.05); isolation: isolate; }
-    .video-card::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(145deg, rgba(255,255,255,.16), transparent 25%, transparent 70%, rgba(198,255,61,.09)); pointer-events: none; }
-    .video-art { position: absolute; inset: 0; background: radial-gradient(ellipse at 68% 30%, rgba(198,255,61,.34), transparent 4%), radial-gradient(ellipse at 48% 57%, rgba(166,108,255,.42), transparent 26%), linear-gradient(155deg, #16151c 5%, #0b0b0c 42%, #151b10 100%); }
+    .hero-visual::before { content: ""; position: absolute; inset: -50px -35px; background: radial-gradient(ellipse, color-mix(in srgb, var(--neon) 11%, transparent), transparent 65%); filter: blur(20px); }
+    .video-card { position: relative; aspect-ratio: 1; overflow: hidden; border: 1px solid rgba(255,255,255,.2); border-radius: 30px; background: #111; box-shadow: 0 30px 90px rgba(0,0,0,.5), 0 0 0 1px color-mix(in srgb, var(--neon) 5%, transparent); isolation: isolate; }
+    .video-card::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(145deg, rgba(255,255,255,.16), transparent 25%, transparent 70%, color-mix(in srgb, var(--neon) 9%, transparent)); pointer-events: none; }
+    .video-art { position: absolute; inset: 0; background: radial-gradient(ellipse at 68% 30%, color-mix(in srgb, var(--neon) 34%, transparent), transparent 4%), radial-gradient(ellipse at 48% 57%, color-mix(in srgb, var(--violet) 42%, transparent), transparent 26%), linear-gradient(155deg, var(--bg-2) 5%, #0b0b0c 42%, color-mix(in srgb, var(--neon) 9%, #151515) 100%); }
     .video-art::before { content: "SH"; position: absolute; right: -12%; bottom: -13%; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.13); font: 700 290px/1 Manrope, sans-serif; letter-spacing: -.15em; transform: rotate(-12deg); }
-    .video-art::after { content: ""; position: absolute; width: 180%; height: 1px; top: 48%; left: -40%; background: linear-gradient(90deg, transparent, rgba(198,255,61,.8), transparent); box-shadow: 0 0 20px var(--neon); transform: rotate(-32deg); animation: scan 7s ease-in-out infinite; }
+    .video-art::after { content: ""; position: absolute; width: 180%; height: 1px; top: 48%; left: -40%; background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--neon) 80%, transparent), transparent); box-shadow: 0 0 20px var(--neon); transform: rotate(-32deg); animation: scan 7s ease-in-out infinite; }
     @keyframes scan { 0%, 100% { transform: translateY(-180px) rotate(-32deg); opacity: 0; } 40%, 65% { opacity: 1; } 80% { transform: translateY(180px) rotate(-32deg); opacity: 0; } }
     .video-ui { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; justify-content: space-between; padding: 22px; }
     .video-top, .video-bottom { display: flex; align-items: center; justify-content: space-between; color: rgba(255,255,255,.66); font: 10px "DM Mono", monospace; letter-spacing: .1em; text-transform: uppercase; }
@@ -135,21 +139,21 @@
     .corner { position: absolute; width: 18px; height: 18px; border-color: var(--neon); z-index: 3; }
     .corner.tl { top: 14px; left: 14px; border-top: 1px solid; border-left: 1px solid; }
     .corner.br { bottom: 14px; right: 14px; border-bottom: 1px solid; border-right: 1px solid; }
-    .ecosystem { position: absolute; inset: 0; z-index: 1; overflow: hidden; background: radial-gradient(circle at 50% 50%, rgba(255,90,22,.17), transparent 27%), linear-gradient(140deg, rgba(0,0,0,.17), rgba(0,0,0,.58)); }
+    .ecosystem { position: absolute; inset: 0; z-index: 1; overflow: hidden; background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--hot) 17%, transparent), transparent 27%), linear-gradient(140deg, rgba(0,0,0,.17), rgba(0,0,0,.58)); }
     .ecosystem::before, .ecosystem::after { content: ""; position: absolute; left: 50%; top: 50%; border: 1px solid rgba(255,255,255,.1); border-radius: 50%; transform: translate(-50%, -50%) rotate(-22deg); pointer-events: none; }
-    .ecosystem::before { width: 72%; height: 38%; box-shadow: 0 0 40px rgba(255,90,22,.1); }
-    .ecosystem::after { width: 50%; height: 72%; transform: translate(-50%, -50%) rotate(28deg); border-color: rgba(198,255,61,.12); }
+    .ecosystem::before { width: 72%; height: 38%; box-shadow: 0 0 40px color-mix(in srgb, var(--hot) 10%, transparent); }
+    .ecosystem::after { width: 50%; height: 72%; transform: translate(-50%, -50%) rotate(28deg); border-color: color-mix(in srgb, var(--neon) 12%, transparent); }
     .ecosystem-label { position: absolute; top: 19px; left: 22px; z-index: 2; color: rgba(255,255,255,.58); font: 10px "DM Mono", monospace; letter-spacing: .11em; text-transform: uppercase; }
     .ecosystem-label strong { display: block; margin-top: 5px; color: var(--hot); font-size: 12px; font-weight: 400; }
-    .orbit-core-large { position: absolute; left: 50%; top: 50%; z-index: 3; display: grid; place-items: center; width: 142px; height: 142px; border: 1px solid rgba(255,255,255,.5); border-radius: 50%; background: radial-gradient(circle at 38% 28%, rgba(255,255,255,.28), rgba(255,90,22,.2) 28%, rgba(0,0,0,.72) 68%); box-shadow: 0 0 0 8px rgba(255,255,255,.025), 0 0 55px rgba(255,90,22,.32), inset 0 0 35px rgba(255,255,255,.08); transform: translate(-50%, -50%); }
-    .orbit-core-large::after { content: ""; position: absolute; inset: -15px; border: 1px solid rgba(255,90,22,.45); border-radius: 50%; animation: core-pulse 4s ease-in-out infinite; }
+    .orbit-core-large { position: absolute; left: 50%; top: 50%; z-index: 3; display: grid; place-items: center; width: 142px; height: 142px; border: 1px solid rgba(255,255,255,.5); border-radius: 50%; background: radial-gradient(circle at 38% 28%, rgba(255,255,255,.28), color-mix(in srgb, var(--hot) 20%, transparent) 28%, rgba(0,0,0,.72) 68%); box-shadow: 0 0 0 8px rgba(255,255,255,.025), 0 0 55px color-mix(in srgb, var(--hot) 32%, transparent), inset 0 0 35px rgba(255,255,255,.08); transform: translate(-50%, -50%); }
+    .orbit-core-large::after { content: ""; position: absolute; inset: -15px; border: 1px solid color-mix(in srgb, var(--hot) 45%, transparent); border-radius: 50%; animation: core-pulse 4s ease-in-out infinite; }
     @keyframes core-pulse { 50% { transform: scale(1.1); opacity: .25; } }
     .orbit-core-large span { color: #fff; font: 600 39px "DM Mono", monospace; letter-spacing: -.14em; transform: translateX(-2px); text-shadow: 0 0 20px rgba(255,255,255,.38); }
     .orbit-core-large small { position: absolute; bottom: -31px; white-space: nowrap; color: rgba(255,255,255,.8); font: 500 9px "DM Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
     .orbit-node { position: absolute; z-index: 4; display: grid; place-items: center; min-width: 61px; height: 30px; padding: 0 9px; border: 1px solid rgba(255,255,255,.21); border-radius: 999px; color: rgba(255,255,255,.83); background: rgba(9,9,10,.56); box-shadow: 0 8px 22px rgba(0,0,0,.26), inset 0 1px rgba(255,255,255,.1); backdrop-filter: blur(9px); font: 9px "DM Mono", monospace; letter-spacing: .03em; translate: var(--mag-x, 0) var(--mag-y, 0); transition: translate .35s ease, transform .35s ease, border-color .25s, color .25s, background .25s; animation: node-float var(--float, 6s) ease-in-out infinite alternate; animation-delay: var(--delay, 0s); }
-    .orbit-node:hover { z-index: 6; color: #070707; border-color: var(--neon); background: var(--neon); transform: translate(var(--mag-x, 0), var(--mag-y, 0)) scale(1.16) !important; box-shadow: 0 0 24px rgba(198,255,61,.35); }
+    .orbit-node:hover { z-index: 6; color: var(--bg); border-color: var(--neon); background: var(--neon); transform: translate(var(--mag-x, 0), var(--mag-y, 0)) scale(1.16) !important; box-shadow: 0 0 24px color-mix(in srgb, var(--neon) 35%, transparent); }
     .orbit-node.far { opacity: .58; transform: scale(.78); }
-    .orbit-node.near { min-width: 72px; height: 34px; color: #fff; border-color: rgba(255,90,22,.48); transform: scale(1.12); }
+    .orbit-node.near { min-width: 72px; height: 34px; color: #fff; border-color: color-mix(in srgb, var(--hot) 48%, transparent); transform: scale(1.12); }
     @keyframes node-float { to { margin-top: 9px; transform: translate(4px, -5px) rotate(2deg); } }
     .n-chatgpt { top: 22%; left: 23%; } .n-gemini { top: 14%; left: 55%; } .n-veo { top: 31%; right: 10%; }
     .n-replit { top: 48%; left: 7%; } .n-aistudio { top: 56%; right: 6%; } .n-sora { bottom: 22%; left: 16%; }
@@ -158,19 +162,19 @@
     .n-adobe { top: 8%; right: 16%; } .n-printess { bottom: 9%; right: 4%; }
 
     /* Sections */
-    section { padding: 130px 0; position: relative; }
-    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 30px; margin-bottom: 52px; }
-    .section-head > div:first-child { max-width: 650px; }
-    .section-note { max-width: 340px; color: var(--muted); font-size: 13px; }
+    section { padding: 142px 0; position: relative; }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 42px; margin-bottom: 58px; }
+    .section-head > div:first-child { max-width: 760px; }
+    .section-note { max-width: 430px; color: var(--muted); font-size: 15px; }
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-    .about-copy { color: #c7c7ca; font-size: 18px; line-height: 1.65; }
-    .about-copy p:last-child { margin-top: 24px; color: var(--muted); font-size: 14px; }
-    .about-sign { margin-top: 40px; color: var(--neon); font: italic 600 24px "Playfair Display", Georgia, serif; }
+    .about-copy { color: #c7c7ca; font-size: 20px; line-height: 1.72; }
+    .about-copy p:last-child { margin-top: 26px; color: var(--muted); font-size: 17px; }
+    .about-sign { margin-top: 40px; color: var(--neon); font: italic 600 28px "Playfair Display", Georgia, serif; }
     .orbit { min-height: 360px; display: grid; place-items: center; position: relative; }
-    .orbit::before, .orbit::after { content: ""; position: absolute; border: 1px solid rgba(198,255,61,.26); border-radius: 50%; transform: rotate(-24deg); }
+    .orbit::before, .orbit::after { content: ""; position: absolute; border: 1px solid color-mix(in srgb, var(--neon) 26%, transparent); border-radius: 50%; transform: rotate(-24deg); }
     .orbit::before { width: 290px; height: 150px; }
-    .orbit::after { width: 380px; height: 220px; border-color: rgba(166,108,255,.22); transform: rotate(28deg); }
-    .orbit-core { position: relative; z-index: 1; display: grid; place-items: center; width: 150px; height: 150px; border: 1px solid rgba(255,255,255,.22); border-radius: 50%; background: radial-gradient(circle, rgba(198,255,61,.18), rgba(255,255,255,.02) 62%); box-shadow: 0 0 80px rgba(198,255,61,.12); color: var(--neon); font: 600 32px "DM Mono", monospace; }
+    .orbit::after { width: 380px; height: 220px; border-color: color-mix(in srgb, var(--violet) 22%, transparent); transform: rotate(28deg); }
+    .orbit-core { position: relative; z-index: 1; display: grid; place-items: center; width: 150px; height: 150px; border: 1px solid rgba(255,255,255,.22); border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--neon) 18%, transparent), rgba(255,255,255,.02) 62%); box-shadow: 0 0 80px color-mix(in srgb, var(--neon) 16%, transparent); color: var(--neon); font: 600 32px "DM Mono", monospace; }
     .orbit-label { position: absolute; color: var(--muted); font: 10px "DM Mono", monospace; letter-spacing: .1em; text-transform: uppercase; }
     .label-1 { top: 12%; right: 12%; } .label-2 { bottom: 12%; left: 8%; } .label-3 { top: 49%; left: 1%; }
 
@@ -183,15 +187,15 @@
     .skill-card { min-height: 220px; padding: 25px 20px; background: var(--bg); transition: background .25s, transform .25s; }
     .skill-card:hover { position: relative; z-index: 1; background: #111311; transform: translateY(-4px); }
     .skill-number { color: var(--neon); font: 11px "DM Mono", monospace; }
-    .skill-card h3 { margin: 32px 0 18px; font-size: 16px; letter-spacing: -.03em; }
-    .skill-card p { color: var(--muted); font-size: 12px; }
+    .skill-card h3 { margin: 32px 0 18px; font-size: 18px; letter-spacing: -.03em; }
+    .skill-card p { color: var(--muted); font-size: 15px; line-height: 1.65; }
 
     .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     .service-card { min-height: 230px; padding: 28px; border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(145deg, rgba(255,255,255,.065), rgba(255,255,255,.018)); transition: transform .25s, border-color .25s; }
-    .service-card:hover { transform: translateY(-7px); border-color: rgba(198,255,61,.55); }
+    .service-card:hover { transform: translateY(-7px); border-color: color-mix(in srgb, var(--neon) 55%, transparent); }
     .service-icon { color: var(--neon); font: 18px "DM Mono", monospace; }
     .service-card h3 { margin: 55px 0 10px; font-size: 20px; }
-    .service-card p { color: var(--muted); font-size: 13px; }
+    .service-card p { color: var(--muted); font-size: 15px; }
 
     .work-section { background: #0b0b0c; }
     .work-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; }
@@ -202,30 +206,34 @@
     .project:nth-child(4), .project:nth-child(5), .project:nth-child(6) { grid-column: span 4; }
     .project-bg { position: absolute; inset: 0; z-index: -1; transition: transform .6s; }
     .project:hover .project-bg { transform: scale(1.06); }
-    .p1 { background: radial-gradient(circle at 75% 25%, rgba(198,255,61,.55), transparent 5%), linear-gradient(140deg, #1d1e1d, #101110 46%, #3a2021); }
-    .p2 { background: radial-gradient(circle at 38% 45%, rgba(166,108,255,.7), transparent 15%), linear-gradient(140deg, #171420, #0e0e10); }
-    .p3 { background: repeating-linear-gradient(120deg, transparent 0 30px, rgba(255,130,77,.16) 31px 32px), #17110e; }
-    .p4 { background: radial-gradient(ellipse, rgba(198,255,61,.36), transparent 35%), #111511; }
+    .p1 { background: radial-gradient(circle at 75% 25%, color-mix(in srgb, var(--neon) 55%, transparent), transparent 5%), linear-gradient(140deg, var(--bg-2), #101110 46%, color-mix(in srgb, var(--hot) 22%, #181818)); }
+    .p2 { background: radial-gradient(circle at 38% 45%, color-mix(in srgb, var(--violet) 70%, transparent), transparent 15%), linear-gradient(140deg, var(--bg-2), #0e0e10); }
+    .p3 { background: repeating-linear-gradient(120deg, transparent 0 30px, color-mix(in srgb, var(--orange) 16%, transparent) 31px 32px), var(--bg-2); }
+    .p4 { background: radial-gradient(ellipse, color-mix(in srgb, var(--neon) 36%, transparent), transparent 35%), var(--bg-2); }
     .p5 { background: linear-gradient(135deg, #111, #241727); }
     .p6 { background: radial-gradient(circle at 70% 30%, rgba(255,255,255,.25), transparent 2%), #171717; }
     .project::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(transparent 35%, rgba(0,0,0,.88)); }
     .project-media { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: center; opacity: .74; filter: saturate(.8) contrast(1.06); background: #0b0b0c; transition: transform .6s, opacity .3s; }
     .project:hover .project-media { transform: scale(1.05); opacity: .9; }
+    .project-play { position: absolute; z-index: 2; top: 46%; left: 50%; transform: translate(-50%, -50%); min-width: 58px; min-height: 58px; padding: 0 15px; border: 1px solid rgba(255,255,255,.66); border-radius: 999px; color: #fff; background: rgba(0,0,0,.58); box-shadow: 0 8px 28px rgba(0,0,0,.35); cursor: pointer; font-size: 18px; }
+    .project-play:hover, .project-play:focus-visible { color: #090909; border-color: var(--neon); background: var(--neon); outline: none; }
+    .project-play[hidden], .media-preview[hidden] { display: none; }
+    .project[tabindex="0"]:focus-visible { outline: 2px solid var(--neon); outline-offset: 4px; }
     .project-top { position: absolute; top: 22px; left: 24px; right: 24px; display: flex; justify-content: space-between; color: rgba(255,255,255,.7); font: 10px "DM Mono", monospace; text-transform: uppercase; letter-spacing: .1em; }
     .project h3 { margin: 0 0 7px; font-size: 23px; }
-    .project p { max-width: 430px; margin: 0; color: #c2c2c4; font-size: 12px; }
+    .project p { max-width: 500px; margin: 0; color: #c2c2c4; font-size: 15px; }
 
     .showreel-grid { display: grid; grid-template-columns: .8fr 1.5fr; gap: 70px; align-items: center; }
     .showreel-copy h2 { max-width: 500px; }
     .showreel-copy p { max-width: 390px; color: var(--muted); }
     .reel-player { position: relative; aspect-ratio: 16/9; overflow: hidden; border: 1px solid var(--line); border-radius: 20px; background: linear-gradient(120deg, #101310, #1b1220); }
     .reel-player::before { content: "REEL / 2026"; position: absolute; inset: 0; display: grid; place-items: center; color: rgba(255,255,255,.12); font: 700 clamp(30px, 6vw, 80px) Manrope, sans-serif; letter-spacing: -.08em; }
-    .reel-player::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 15%, rgba(198,255,61,.22), transparent 48%); transform: translateX(-100%); animation: beam 7s ease-in-out infinite; }
+    .reel-player::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 15%, color-mix(in srgb, var(--neon) 22%, transparent), transparent 48%); transform: translateX(-100%); animation: beam 7s ease-in-out infinite; }
     @keyframes beam { 55%, 100% { transform: translateX(100%); } }
     .reel-player .play { position: absolute; inset: 50% auto auto 50%; transform: translate(-50%, -50%); z-index: 2; }
     .reel-caption { position: absolute; bottom: 18px; left: 22px; z-index: 2; color: rgba(255,255,255,.65); font: 10px "DM Mono", monospace; text-transform: uppercase; }
 
-    .venture { border: 1px solid rgba(198,255,61,.22); border-radius: 28px; padding: clamp(28px, 7vw, 82px); background: radial-gradient(circle at 80% 10%, rgba(198,255,61,.12), transparent 30%), linear-gradient(110deg, rgba(255,255,255,.05), rgba(255,255,255,.01)); }
+    .venture { border: 1px solid color-mix(in srgb, var(--neon) 22%, transparent); border-radius: 28px; padding: clamp(28px, 7vw, 82px); background: radial-gradient(circle at 80% 10%, color-mix(in srgb, var(--neon) 12%, transparent), transparent 30%), linear-gradient(110deg, rgba(255,255,255,.05), rgba(255,255,255,.01)); }
     .venture h2 { max-width: 650px; }
     .venture p { max-width: 650px; color: var(--muted); font-size: 16px; }
     .pill-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px; }
@@ -244,14 +252,14 @@
     .contact-copy > p { max-width: 380px; color: var(--muted); }
     .socials { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 35px; }
     .social { padding: 9px 13px; border: 1px solid var(--line); border-radius: 999px; color: #d8d8db; font: 11px "DM Mono", monospace; transition: color .2s, border .2s; }
-    .social:hover { color: var(--neon); border-color: rgba(198,255,61,.5); }
+    .social:hover { color: var(--neon); border-color: color-mix(in srgb, var(--neon) 50%, transparent); }
     .contact-form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .field { display: flex; flex-direction: column; gap: 8px; }
     .field.full { grid-column: 1/-1; }
     .field label { color: #c9c9cc; font-size: 12px; }
     .field input, .field select, .field textarea { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 13px 14px; color: var(--text); background: rgba(255,255,255,.04); outline: none; transition: border .2s, box-shadow .2s; }
     .field textarea { min-height: 145px; resize: vertical; }
-    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--neon); box-shadow: 0 0 0 3px rgba(198,255,61,.1); }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--neon); box-shadow: 0 0 0 3px color-mix(in srgb, var(--neon) 10%, transparent); }
     .field select { appearance: none; }
     .form-note { grid-column: 1/-1; min-height: 24px; color: var(--neon); font-size: 12px; }
 
@@ -281,15 +289,21 @@
       .wrap { width: min(calc(100% - 32px), var(--max)); }
       .nav { top: 10px; width: calc(100% - 20px); }
       .hero { padding: 125px 0 65px; }
-      .hero h1 { font-size: clamp(3.4rem, 15vw, 5.4rem); }
+      .hero h1 { font-size: clamp(3.2rem, 14vw, 5rem); }
+      h2 { font-size: clamp(2.45rem, 11vw, 3.8rem); }
+      .hero-lead { font-size: 17px; }
+      .hero-intro { font-size: 16px; }
+      .hero-grid { gap: 42px; }
       .hero-meta { gap: 18px; margin-top: 44px; flex-wrap: wrap; }
       section { padding: 82px 0; }
-      .section-head { display: block; margin-bottom: 32px; }
+      .section-head { display: block; margin-bottom: 38px; }
       .section-note { margin-top: 20px; }
       .about-grid { grid-template-columns: 1fr; }
+      .about-copy { font-size: 17px; }
       .orbit { min-height: 290px; transform: scale(.82); margin: -25px 0; }
       .skill-grid, .service-grid { grid-template-columns: 1fr; }
       .skill-card { min-height: 180px; }
+      .skill-card p, .service-card p, .project p, .section-note { font-size: 15px; }
       .project, .project:nth-child(n) { grid-column: span 12; min-height: 280px; }
       .project:nth-child(1) { min-height: 340px; }
       .process-grid { grid-template-columns: 1fr 1fr; }
@@ -306,18 +320,18 @@
     }
 
     /* Immersive ambient layer */
-    .ambient-scene { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; background: radial-gradient(circle at var(--mx, 50%) var(--my, 30%), rgba(198,255,61,.08), transparent 23rem); }
+    .ambient-scene { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; background: radial-gradient(circle at var(--mx, 50%) var(--my, 30%), color-mix(in srgb, var(--neon) 8%, transparent), transparent 23rem); }
     #fx-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .75; }
     .ambient-orb { position: absolute; border-radius: 50%; filter: blur(1px); mix-blend-mode: screen; opacity: .24; }
-    .ambient-orb.one { width: 33rem; height: 33rem; top: 4%; right: -12rem; background: radial-gradient(circle, rgba(166,108,255,.42), transparent 67%); animation: drift-one 18s ease-in-out infinite alternate; }
-    .ambient-orb.two { width: 28rem; height: 28rem; top: 44%; left: -13rem; background: radial-gradient(circle, rgba(198,255,61,.3), transparent 68%); animation: drift-two 22s ease-in-out infinite alternate; }
-    .ambient-orb.three { width: 24rem; height: 24rem; bottom: -8rem; right: 22%; background: radial-gradient(circle, rgba(255,130,77,.2), transparent 68%); animation: drift-three 16s ease-in-out infinite alternate; }
+    .ambient-orb.one { width: 33rem; height: 33rem; top: 4%; right: -12rem; background: radial-gradient(circle, color-mix(in srgb, var(--violet) 42%, transparent), transparent 67%); animation: drift-one 18s ease-in-out infinite alternate; }
+    .ambient-orb.two { width: 28rem; height: 28rem; top: 44%; left: -13rem; background: radial-gradient(circle, color-mix(in srgb, var(--neon) 30%, transparent), transparent 68%); animation: drift-two 22s ease-in-out infinite alternate; }
+    .ambient-orb.three { width: 24rem; height: 24rem; bottom: -8rem; right: 22%; background: radial-gradient(circle, color-mix(in srgb, var(--orange) 20%, transparent), transparent 68%); animation: drift-three 16s ease-in-out infinite alternate; }
     @keyframes drift-one { to { transform: translate(-7rem, 6rem) scale(1.12); } }
     @keyframes drift-two { to { transform: translate(8rem, -4rem) scale(1.14); } }
     @keyframes drift-three { to { transform: translate(-4rem, -5rem) scale(.85); } }
-    .cursor-glow { position: fixed; z-index: 19; width: 220px; height: 220px; border-radius: 50%; pointer-events: none; background: radial-gradient(circle, rgba(198,255,61,.12), transparent 68%); transform: translate(-50%, -50%); mix-blend-mode: screen; opacity: .65; transition: opacity .2s; }
+    .cursor-glow { position: fixed; z-index: 19; width: 220px; height: 220px; border-radius: 50%; pointer-events: none; background: radial-gradient(circle, color-mix(in srgb, var(--neon) 12%, transparent), transparent 68%); transform: translate(-50%, -50%); mix-blend-mode: screen; opacity: .65; transition: opacity .2s; }
     .sound-toggle, .admin-trigger { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 999px; padding: 9px 12px; color: var(--muted); background: rgba(255,255,255,.04); cursor: pointer; font: 10px "DM Mono", monospace; letter-spacing: .08em; text-transform: uppercase; transition: border .2s, color .2s, background .2s, transform .2s; }
-    .sound-toggle:hover, .sound-toggle:focus-visible, .sound-toggle.on, .admin-trigger:hover, .admin-trigger:focus-visible { border-color: rgba(198,255,61,.6); color: var(--neon); background: rgba(198,255,61,.08); outline: none; transform: translateY(-2px); }
+    .sound-toggle:hover, .sound-toggle:focus-visible, .sound-toggle.on, .admin-trigger:hover, .admin-trigger:focus-visible { border-color: color-mix(in srgb, var(--neon) 60%, transparent); color: var(--neon); background: color-mix(in srgb, var(--neon) 8%, transparent); outline: none; transform: translateY(-2px); }
     .sound-dot { width: 7px; height: 7px; border-radius: 50%; background: #666; box-shadow: 0 0 0 transparent; }
     .sound-toggle.on .sound-dot { background: var(--neon); box-shadow: 0 0 12px var(--neon); }
     .nav-tools { display: flex; align-items: center; gap: 7px; }
@@ -328,19 +342,19 @@
     .admin-overlay { position: fixed; inset: 0; z-index: 100; display: none; place-items: center; padding: 20px; background: rgba(0,0,0,.72); backdrop-filter: blur(18px); }
     .admin-overlay.open { display: grid; animation: fade-in .25s ease both; }
     @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-    .admin-panel { width: min(100%, 760px); max-height: min(840px, calc(100vh - 40px)); overflow: auto; border: 1px solid rgba(198,255,61,.32); border-radius: 26px; background: linear-gradient(145deg, rgba(25,25,26,.98), rgba(9,9,10,.98)); box-shadow: 0 30px 100px #000; }
-    .admin-head { display: flex; align-items: start; justify-content: space-between; gap: 20px; padding: 28px 30px; border-bottom: 1px solid var(--line); }
+    .admin-panel { width: min(100%, 980px); max-height: min(900px, calc(100vh - 32px)); overflow: auto; border: 1px solid color-mix(in srgb, var(--neon) 38%, transparent); border-radius: 26px; background: linear-gradient(145deg, color-mix(in srgb, var(--bg-2) 96%, #fff 4%), var(--bg)); box-shadow: 0 30px 100px #000, 0 0 45px color-mix(in srgb, var(--neon) 9%, transparent); }
+    .admin-head { display: flex; align-items: start; justify-content: space-between; gap: 20px; padding: 30px 34px; border-bottom: 1px solid var(--line); }
     .admin-head h2 { margin: 8px 0 0; font-size: clamp(1.8rem, 4vw, 3rem); }
     .admin-head p { max-width: 430px; margin: 10px 0 0; color: var(--muted); font-size: 12px; }
     .admin-close { width: 34px; height: 34px; border: 1px solid var(--line); border-radius: 50%; color: var(--text); background: transparent; cursor: pointer; }
-    .admin-view { padding: 28px 30px 32px; }
+    .admin-view { padding: 30px 34px 36px; }
     .admin-view[hidden] { display: none; }
     .admin-form { display: grid; gap: 15px; }
     .admin-form .field input, .admin-form .field textarea { background: rgba(0,0,0,.3); }
     .admin-form textarea { min-height: 86px; }
-    .admin-help { margin: 0; color: var(--muted); font-size: 12px; }
-    .admin-warning { margin: 0; padding: 11px 13px; border: 1px solid rgba(255,130,77,.3); border-radius: 10px; color: #ffb092; background: rgba(255,130,77,.07); font-size: 11px; }
-    .admin-status { min-height: 22px; margin: 0; color: var(--neon); font-size: 12px; }
+    .admin-help { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .admin-warning { margin: 0; padding: 11px 13px; border: 1px solid color-mix(in srgb, var(--hot) 30%, transparent); border-radius: 10px; color: var(--hot); background: color-mix(in srgb, var(--hot) 7%, transparent); font-size: 13px; line-height: 1.55; }
+    .admin-status { min-height: 22px; margin: 0; color: var(--neon); font-size: 14px; }
     .admin-toolbar { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding-top: 6px; }
     .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
     .admin-grid .full { grid-column: 1 / -1; }
@@ -350,9 +364,20 @@
     .contact-admin-field { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 10px; align-items: end; }
     .contact-admin-field .toggle-line { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 11px; }
     .toggle-line input { width: 15px; height: 15px; accent-color: var(--neon); }
-    .admin-section-title { margin: 24px 0 2px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--neon); font: 11px "DM Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
-    .admin-fab { position: fixed; right: 22px; bottom: 22px; z-index: 31; display: grid; place-items: center; width: 46px; height: 46px; border: 1px solid rgba(198,255,61,.45); border-radius: 50%; color: var(--neon); background: rgba(7,7,7,.72); box-shadow: 0 0 25px rgba(198,255,61,.12); cursor: pointer; transition: transform .2s, background .2s; }
-    .admin-fab:hover, .admin-fab:focus-visible { transform: rotate(18deg) scale(1.08); background: rgba(198,255,61,.12); outline: none; }
+    .admin-section-title { margin: 26px 0 2px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--neon); font: 12px "DM Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
+    .admin-form .field label { font-size: 14px; }
+    .admin-form .field input, .admin-form .field textarea, .admin-form .field select { min-height: 48px; font-size: 16px; }
+    .admin-form .field textarea { min-height: 110px; }
+    .upload-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; }
+    .upload-button { display: inline-flex; min-height: 46px; align-items: center; justify-content: center; padding: 0 15px; border: 1px solid color-mix(in srgb, var(--neon) 42%, transparent); border-radius: 12px; color: var(--text); background: color-mix(in srgb, var(--neon) 8%, transparent); cursor: pointer; font-size: 14px; font-weight: 700; }
+    .upload-button:hover, .upload-button:focus-within { border-color: var(--neon); box-shadow: 0 0 20px color-mix(in srgb, var(--neon) 16%, transparent); }
+    .upload-button input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+    .media-preview { display: block; width: min(100%, 440px); max-height: 260px; border: 1px solid var(--line); border-radius: 14px; background: #000; object-fit: contain; }
+    #work-admin-list { display: grid; gap: 12px; }
+    .work-admin-item { position: relative; }
+    .work-admin-item .remove-work { justify-self: end; min-height: 38px; padding: 0 12px; border: 1px solid rgba(255,110,110,.32); border-radius: 999px; color: #ff9b9b; background: rgba(255,80,80,.07); cursor: pointer; }
+    .admin-fab { position: fixed; right: 22px; bottom: 22px; z-index: 31; display: grid; place-items: center; width: 46px; height: 46px; border: 1px solid color-mix(in srgb, var(--neon) 55%, transparent); border-radius: 50%; color: var(--neon); background: rgba(7,7,7,.72); box-shadow: 0 0 25px color-mix(in srgb, var(--neon) 16%, transparent); cursor: pointer; transition: transform .2s, background .2s; }
+    .admin-fab:hover, .admin-fab:focus-visible { transform: rotate(18deg) scale(1.08); background: color-mix(in srgb, var(--neon) 12%, transparent); outline: none; }
     @media (max-width: 950px) { .nav-tools { margin-left: auto; margin-right: 5px; } .nav-tools .admin-trigger { display: none; } }
     @media (max-width: 650px) {
       .sound-toggle { padding: 8px 10px; }
@@ -360,6 +385,11 @@
       .admin-head, .admin-view { padding: 22px 20px; }
       .admin-grid { grid-template-columns: 1fr; }
       .admin-grid .full { grid-column: auto; }
+      .upload-row { grid-template-columns: 1fr; }
+      .upload-button { width: 100%; min-height: 50px; }
+      .admin-toolbar { align-items: stretch; flex-direction: column; }
+      .admin-toolbar .btn { width: 100%; }
+      .admin-panel { border-radius: 20px; max-height: calc(100dvh - 20px); }
     }
     @media (prefers-reduced-motion: reduce) {
       .ambient-orb, .cursor-glow, #fx-canvas { animation: none !important; display: none; }
@@ -549,9 +579,9 @@
         <form class="admin-form" id="admin-auth-form">
           <div class="field"><label for="admin-password">Admin password</label><input id="admin-password" type="password" required minlength="8" autocomplete="new-password" placeholder="Create or enter your password" /></div>
           <p class="admin-help" id="admin-auth-help">First visit: create a password with at least 8 characters. It stays in this browser only.</p>
-          <p class="admin-warning">This standalone preview uses browser-only storage. It is not a secure multi-device login until connected to a backend.</p>
+          <p class="admin-warning">This GitHub Pages editor currently saves text and uploaded videos on this browser only. Shared publishing is not connected yet.</p>
           <p class="admin-status" id="admin-auth-status" role="status"></p>
-          <div class="admin-toolbar"><span class="muted">Local admin mode</span><button class="btn btn-primary" type="submit" id="admin-auth-submit">Create password <span>↗</span></button></div>
+          <div class="admin-toolbar"><span class="muted">This browser only</span><button class="btn btn-primary" type="submit" id="admin-auth-submit">Create password <span>↗</span></button></div>
         </form>
       </div>
       <div class="admin-view" id="admin-editor-view" hidden>
@@ -565,19 +595,18 @@
             <div class="field full"><label for="edit-lead">Hero role line</label><input id="edit-lead" required /></div>
             <div class="field full"><label for="edit-intro">Hero introduction</label><textarea id="edit-intro" required></textarea></div>
             <div class="field"><label for="edit-primary">Primary button</label><input id="edit-primary" required /></div>
-            <div class="field"><label for="edit-accent">Accent color</label><input id="edit-accent" type="color" /></div>
+            <div class="field"><label for="edit-theme-preset">Professional colour theme</label><select id="edit-theme-preset"><option value="neon">Neon Lime / Black</option><option value="rose-gold">Black / Rose Gold</option><option value="violet">Midnight Violet</option><option value="ocean">Deep Ocean</option><option value="ivory">Ivory Editorial</option><option value="cherry">Cherry Noir</option></select></div>
+            <div class="field"><label for="edit-accent">Custom accent colour</label><input id="edit-accent" type="color" /></div>
           </div>
           <div class="admin-section-title">Media & portfolio</div>
           <div class="admin-grid">
-            <div class="field full"><label for="edit-video">Hero video path / URL</label><input id="edit-video" placeholder="assets/hero-showreel.mp4" /></div>
-            <div class="field full"><label for="edit-projects">Legacy project titles (one per line)</label><textarea id="edit-projects"></textarea></div>
-            <div class="field full"><p class="admin-help">Work slots below control the public portfolio. Add a new media path, change the title/category, or switch a slot off anytime.</p></div>
-            <div class="work-admin-item full"><div class="field"><label for="edit-work-0-title">Work 01 title</label><input id="edit-work-0-title" /></div><div class="field"><label for="edit-work-0-category">Category</label><input id="edit-work-0-category" /></div><div class="field full"><label for="edit-work-0-description">Description</label><input id="edit-work-0-description" /></div><div class="field full"><label for="edit-work-0-media">Video / image path</label><input id="edit-work-0-media" /></div><label class="toggle-line"><input id="edit-work-0-enabled" type="checkbox" /> Show work 01</label></div>
-            <div class="work-admin-item full"><div class="field"><label for="edit-work-1-title">Work 02 title</label><input id="edit-work-1-title" /></div><div class="field"><label for="edit-work-1-category">Category</label><input id="edit-work-1-category" /></div><div class="field full"><label for="edit-work-1-description">Description</label><input id="edit-work-1-description" /></div><div class="field full"><label for="edit-work-1-media">Video / image path</label><input id="edit-work-1-media" /></div><label class="toggle-line"><input id="edit-work-1-enabled" type="checkbox" /> Show work 02</label></div>
-            <div class="work-admin-item full"><div class="field"><label for="edit-work-2-title">Work 03 title</label><input id="edit-work-2-title" /></div><div class="field"><label for="edit-work-2-category">Category</label><input id="edit-work-2-category" /></div><div class="field full"><label for="edit-work-2-description">Description</label><input id="edit-work-2-description" /></div><div class="field full"><label for="edit-work-2-media">Video / image path</label><input id="edit-work-2-media" /></div><label class="toggle-line"><input id="edit-work-2-enabled" type="checkbox" /> Show work 03</label></div>
-            <div class="work-admin-item full"><div class="field"><label for="edit-work-3-title">Work 04 title</label><input id="edit-work-3-title" /></div><div class="field"><label for="edit-work-3-category">Category</label><input id="edit-work-3-category" /></div><div class="field full"><label for="edit-work-3-description">Description</label><input id="edit-work-3-description" /></div><div class="field full"><label for="edit-work-3-media">Video / image path</label><input id="edit-work-3-media" /></div><label class="toggle-line"><input id="edit-work-3-enabled" type="checkbox" /> Show work 04</label></div>
-            <div class="work-admin-item full"><div class="field"><label for="edit-work-4-title">Work 05 title</label><input id="edit-work-4-title" /></div><div class="field"><label for="edit-work-4-category">Category</label><input id="edit-work-4-category" /></div><div class="field full"><label for="edit-work-4-description">Description</label><input id="edit-work-4-description" /></div><div class="field full"><label for="edit-work-4-media">Video / image path</label><input id="edit-work-4-media" /></div><label class="toggle-line"><input id="edit-work-4-enabled" type="checkbox" /> Show work 05</label></div>
-            <div class="work-admin-item full"><div class="field"><label for="edit-work-5-title">Work 06 title</label><input id="edit-work-5-title" /></div><div class="field"><label for="edit-work-5-category">Category</label><input id="edit-work-5-category" /></div><div class="field full"><label for="edit-work-5-description">Description</label><input id="edit-work-5-description" /></div><div class="field full"><label for="edit-work-5-media">Video / image path</label><input id="edit-work-5-media" /></div><label class="toggle-line"><input id="edit-work-5-enabled" type="checkbox" /> Show work 06</label></div>
+            <div class="field full"><label for="edit-video">Hero video URL (optional)</label><input id="edit-video" placeholder="Paste a public .mp4 URL" /></div>
+            <div class="field full"><p class="admin-help">Choose a video from your phone gallery or computer. Preview it before saving. MP4 (H.264) plays on the widest range of phones. Uploads on this GitHub Pages version stay in this browser until shared publishing is connected.</p></div>
+            <div class="field full"><div class="upload-row"><label class="upload-button" for="edit-hero-upload">＋ Choose hero video from gallery<input id="edit-hero-upload" type="file" accept="video/*" /></label><span class="admin-help" id="hero-upload-name">No new video selected</span></div></div>
+            <video class="media-preview full" id="edit-hero-preview" controls playsinline preload="metadata" hidden></video>
+            <div class="field full"><p class="admin-help">Work cards below are editable. Use “Choose video” to pick each card’s video from the phone gallery; tap a card on the portfolio to play or pause it.</p></div>
+            <div class="field full" id="work-admin-list"></div>
+            <div class="admin-toolbar full"><span class="admin-help">Add or remove work cards anytime.</span><button class="btn btn-ghost" type="button" id="add-work">＋ Add work card</button></div>
           </div>
           <div class="admin-section-title">Contact & social links</div>
           <div class="admin-grid">
@@ -592,7 +621,7 @@
             <div class="contact-admin-field"><div class="field"><label for="edit-website">Website URL</label><input id="edit-website" type="url" placeholder="https://..." /></div><label class="toggle-line"><input id="edit-website-enabled" type="checkbox" /> Show on website</label></div>
             <div class="contact-admin-field"><div class="field"><label for="edit-other">Other link</label><input id="edit-other" type="url" placeholder="https://..." /></div><label class="toggle-line"><input id="edit-other-enabled" type="checkbox" /> Show on website</label></div>
           </div>
-          <div class="admin-toolbar"><button class="btn btn-ghost" type="button" id="admin-reset">Reset local edits</button><button class="btn btn-primary" type="submit">Save changes <span>✓</span></button></div>
+          <div class="admin-toolbar"><button class="btn btn-ghost" type="button" id="admin-reset">Reset this browser</button><button class="btn btn-primary" type="submit">Save on this device <span>✓</span></button></div>
         </form>
       </div>
     </div>
@@ -607,10 +636,21 @@
       menu.setAttribute('aria-expanded', open);
       playSound(open ? 'open' : 'close');
     });
+    const navigationLinks = [...document.querySelectorAll('.nav-links a[href^="#"]')];
     document.querySelectorAll('.nav-links a').forEach(link => link.addEventListener('click', () => {
       links.classList.remove('open');
+      if (link.hash) navigationLinks.forEach(item => item.classList.toggle('active', item === link));
       playSound('nav');
     }));
+    const sectionObserver = new IntersectionObserver(entries => {
+      const current = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!current) return;
+      navigationLinks.forEach(link => link.classList.toggle('active', link.hash === `#${current.target.id}`));
+    }, { rootMargin: '-28% 0px -60% 0px', threshold: [0, .15, .35, .6] });
+    navigationLinks.forEach(link => {
+      const target = document.querySelector(link.hash);
+      if (target) sectionObserver.observe(target);
+    });
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
     }, { threshold: .12 });
@@ -696,6 +736,7 @@
     const cursorGlow = document.querySelector('.cursor-glow');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let particles = [];
+    let canvasAccent = '#c6ff3d';
     let pointer = { x: innerWidth / 2, y: innerHeight / 3 };
     function resizeCanvas() {
       const ratio = Math.min(devicePixelRatio || 1, 2);
@@ -718,8 +759,10 @@
           const distance = Math.hypot(p.x - pointer.x, p.y - pointer.y);
           const alpha = p.alpha * (distance < 240 ? 1.5 : 1);
           ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fillStyle = i % 5 === 0 ? `rgba(198,255,61,${alpha})` : `rgba(255,255,255,${alpha * .55})`;
+          ctx.fillStyle = i % 5 === 0 ? canvasAccent : '#ffffff';
+          ctx.globalAlpha = i % 5 === 0 ? alpha : alpha * .55;
           ctx.fill();
+          ctx.globalAlpha = 1;
         });
       }
       requestAnimationFrame(paintFx);
@@ -740,9 +783,17 @@
       });
     });
 
-    /* Local admin control room. Password is hashed; it never appears in the page config. */
+    /* Browser-only editor until the shared publishing backend is enabled. */
     const configKey = 'shPortfolioConfigV3';
     const passwordKey = 'shPortfolioAdminHashV1';
+    const themePresets = {
+      neon: { bg:'#070707', bg2:'#0c0c0d', text:'#f5f4f0', muted:'#a3a3a8', neon:'#c6ff3d', hot:'#ff5a16', violet:'#a66cff', orange:'#ff824d', glowA:'rgba(166,108,255,.11)', glowB:'rgba(198,255,61,.06)' },
+      'rose-gold': { bg:'#090807', bg2:'#12100f', text:'#f8f0ed', muted:'#c4aaa0', neon:'#dca995', hot:'#f0c6ae', violet:'#aa7882', orange:'#c98c7c', glowA:'rgba(220,169,149,.12)', glowB:'rgba(128,76,69,.10)' },
+      violet: { bg:'#090711', bg2:'#110d1c', text:'#f5f1ff', muted:'#b1a9c5', neon:'#c5a2ff', hot:'#efa5d0', violet:'#a66cff', orange:'#ff9b85', glowA:'rgba(166,108,255,.16)', glowB:'rgba(239,165,208,.07)' },
+      ocean: { bg:'#061014', bg2:'#0a191f', text:'#edf9fb', muted:'#9bb4ba', neon:'#68e1d2', hot:'#93d8f2', violet:'#75aaff', orange:'#68e1d2', glowA:'rgba(71,176,208,.14)', glowB:'rgba(104,225,210,.07)' },
+      ivory: { bg:'#f1ece3', bg2:'#e8e0d4', text:'#1a1714', muted:'#655b54', neon:'#7c553a', hot:'#9a603f', violet:'#7c668f', orange:'#a96942', glowA:'rgba(172,136,104,.12)', glowB:'rgba(124,85,58,.08)' },
+      cherry: { bg:'#10080c', bg2:'#1a0d14', text:'#fff2f5', muted:'#c2a4ad', neon:'#ff9bb4', hot:'#ffc0c8', violet:'#c484e5', orange:'#ff9bb4', glowA:'rgba(255,110,146,.13)', glowB:'rgba(196,132,229,.08)' }
+    };
     const defaults = {
       name: 'Syeda Husna Tabassum',
       age: '',
@@ -751,6 +802,7 @@
       intro: 'I explore the intersection of AI, marketing, digital experiences and online business—turning ideas into work that feels clear, useful and memorable.',
       primary: 'Explore my work',
       accent: '#c6ff3d',
+      themePreset: 'neon',
       video: 'assets/hero-showreel.mp4',
       contacts: {
         email: { value: 'syedahusnashareef@gmail.com', enabled: true },
@@ -775,23 +827,98 @@
       ]
     };
     const storedConfig = JSON.parse(localStorage.getItem(configKey) || 'null') || {};
-    let config = { ...defaults, ...storedConfig, contacts: { ...defaults.contacts, ...(storedConfig.contacts || {}) } };
+    let config = { ...defaults, ...storedConfig, contacts: { ...defaults.contacts, ...(storedConfig.contacts || {}) }, work: Array.isArray(storedConfig.work) ? storedConfig.work : defaults.work };
+    let pendingHeroFile = null;
+    const pendingWorkFiles = new Map();
+    const mediaObjectUrls = new Map();
+    function openMediaDb() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open('syh-portfolio-media', 1);
+        request.onupgradeneeded = () => request.result.createObjectStore('media');
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error || new Error('This browser could not open media storage.'));
+      });
+    }
+    async function saveMediaFile(key, file) {
+      const db = await openMediaDb();
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction('media', 'readwrite');
+        const request = transaction.objectStore('media').put({ blob: file, name: file.name, type: file.type }, key);
+        transaction.oncomplete = () => { db.close(); resolve(); };
+        transaction.onerror = () => { db.close(); reject(transaction.error || new Error('Could not save the video on this device.')); };
+        transaction.onabort = () => { db.close(); reject(transaction.error || new Error('Video saving was cancelled.')); };
+        request.onsuccess = () => { if (typeof transaction.commit === 'function') transaction.commit(); };
+      });
+    }
+    async function getMediaFile(key) {
+      const db = await openMediaDb();
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction('media', 'readonly');
+        const request = transaction.objectStore('media').get(key);
+        request.onsuccess = () => { db.close(); resolve(request.result || null); };
+        request.onerror = () => { db.close(); reject(request.error || new Error('Could not load the saved video.')); };
+      });
+    }
+    async function clearSavedMedia() {
+      const db = await openMediaDb();
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction('media', 'readwrite');
+        const request = transaction.objectStore('media').clear();
+        transaction.oncomplete = () => { db.close(); resolve(); };
+        transaction.onerror = () => { db.close(); reject(transaction.error || new Error('Could not clear saved videos.')); };
+        request.onsuccess = () => { if (typeof transaction.commit === 'function') transaction.commit(); };
+      });
+    }
+    function uniqueMediaKey(kind, file) {
+      return `${kind}-${Date.now()}-${Math.random().toString(36).slice(2, 9)}-${file.name.replace(/[^a-z0-9.-]/gi, '-').slice(-36)}`;
+    }
+    async function resolveMediaUrl(path, fallback = '') {
+      if (!path || !path.startsWith('idb:')) return path || fallback;
+      const key = path.slice(4);
+      if (mediaObjectUrls.has(key)) return mediaObjectUrls.get(key);
+      try {
+        const saved = await getMediaFile(key);
+        if (!saved?.blob) return fallback;
+        const url = URL.createObjectURL(saved.blob);
+        mediaObjectUrls.set(key, url);
+        return url;
+      } catch (error) {
+        console.warn('Saved portfolio media could not be loaded:', error);
+        return fallback;
+      }
+    }
+    function applyTheme(preset = config.themePreset, accent = config.accent) {
+      const theme = themePresets[preset] || themePresets.neon;
+      const root = document.documentElement.style;
+      const vars = { bg:'--bg', bg2:'--bg-2', text:'--text', muted:'--muted', neon:'--neon', hot:'--hot', violet:'--violet', orange:'--orange', glowA:'--glow-a', glowB:'--glow-b' };
+      Object.entries(vars).forEach(([key, name]) => root.setProperty(name, theme[key]));
+      if (accent) root.setProperty('--neon', accent);
+      canvasAccent = accent || theme.neon;
+    }
     const esc = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
     const validLink = value => /^(https?:\/\/|mailto:|#)/i.test(value || '') ? value : '#';
-    function applyConfig() {
+    const isVideoPath = (path, item = {}) => item.mediaType === 'video' || /^idb:/i.test(path || '') || /\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i.test(path || '');
+    async function applyConfig() {
+      applyTheme(config.themePreset || 'neon', config.accent || defaults.accent);
       document.title = `${config.name} | AI Creative • Entrepreneur • Digital Creator`;
       document.querySelector('.brand span:last-child').textContent = config.name.split(' ').slice(0, 2).join(' ');
       document.getElementById('hero-headline').innerHTML = esc(config.headline).replace(/\n/g, '<br>');
       document.getElementById('hero-lead').textContent = config.lead;
       document.getElementById('hero-intro').textContent = config.intro;
       document.getElementById('hero-primary').firstChild.textContent = config.primary + ' ';
-      document.documentElement.style.setProperty('--neon', config.accent || defaults.accent);
       const ageMeta = document.getElementById('age-meta');
       ageMeta.hidden = !config.age;
       document.getElementById('age-value').textContent = config.age || '';
+
       const heroVideo = document.getElementById('hero-video');
-      const source = document.querySelector('#hero-video source');
-      if (source.src !== new URL(config.video || defaults.video, document.baseURI).href) { source.src = config.video || defaults.video; heroVideo.load(); heroVideo.play().catch(() => {}); }
+      const heroSource = document.querySelector('#hero-video source');
+      const heroMediaUrl = await resolveMediaUrl(config.video || defaults.video, defaults.video);
+      if (heroSource.src !== new URL(heroMediaUrl, document.baseURI).href) {
+        heroSource.src = heroMediaUrl;
+        heroVideo.load();
+        heroVideo.play().catch(() => {});
+      }
+
       const contactMeta = {
         email: { id: 'email-link', href: value => value ? `mailto:${value}` : '' },
         phone: { id: 'phone-link', href: value => value ? `tel:${value.replace(/[^\d+*#;]/g, '')}` : '' },
@@ -811,57 +938,110 @@
         link.href = href || '#';
         link.hidden = !(entry.enabled && href);
       });
-      (config.work || defaults.work).forEach((item, i) => {
-        const card = document.querySelector(`.project[data-work-index="${i}"]`);
-        if (!card) return;
-        card.hidden = !item.enabled;
-        const title = card.querySelector('h3');
-        const description = card.querySelector('p');
-        const category = card.querySelector('.project-category');
-        if (title) title.textContent = item.title || '';
-        if (description) description.textContent = item.description || '';
-        if (category) category.textContent = item.category || `${String(i + 1).padStart(2, '0')} / Work`;
-        let media = card.querySelector('.project-media');
-        if (item.media && /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(item.media)) {
-          if (!media) {
-            media = document.createElement('video');
-            media.className = 'project-media';
-            media.autoplay = true; media.muted = true; media.loop = true; media.playsInline = true;
-            card.insertBefore(media, card.querySelector('.project-top'));
-          }
-          const current = media.querySelector('source');
-          if (!current || current.src !== new URL(item.media, document.baseURI).href) {
-            media.innerHTML = '';
-            const source = document.createElement('source');
-            source.src = item.media; source.type = 'video/mp4'; media.appendChild(source); media.load();
-          }
-          media.hidden = false; media.play().catch(() => {});
-          card.style.backgroundImage = '';
-        } else if (item.media) {
-          if (media) media.hidden = true;
-          card.style.backgroundImage = `url("${item.media.replace(/"/g, '%22')}")`;
-        } else {
-          if (media) media.hidden = true;
-          card.style.backgroundImage = '';
+
+      const grid = document.querySelector('.work-grid');
+      grid.replaceChildren();
+      for (const [i, item] of (config.work || defaults.work).entries()) {
+        if (!item.enabled) continue;
+        const card = document.createElement('article');
+        card.className = `project reveal visible`;
+        card.dataset.workIndex = String(i);
+        card.tabIndex = 0;
+        card.setAttribute('aria-label', `${item.title || 'Portfolio work'} — tap to play or pause`);
+        const backdrop = document.createElement('div');
+        backdrop.className = `project-bg p${(i % 6) + 1}`;
+        card.append(backdrop);
+        let video = null;
+        let playButton = null;
+        const mediaUrl = await resolveMediaUrl(item.media || '', '');
+        if (mediaUrl && isVideoPath(item.media, item)) {
+          video = document.createElement('video');
+          video.className = 'project-media';
+          video.autoplay = true; video.muted = true; video.loop = true; video.playsInline = true; video.preload = 'metadata';
+          video.setAttribute('playsinline', '');
+          const source = document.createElement('source');
+          source.src = mediaUrl;
+          const extension = (item.fileName || item.media || '').split('?')[0].split('.').pop().toLowerCase();
+          source.type = ({ webm:'video/webm', ogg:'video/ogg', mov:'video/quicktime' })[extension] || 'video/mp4';
+          video.append(source);
+          card.append(video);
+          playButton = document.createElement('button');
+          playButton.type = 'button';
+          playButton.className = 'project-play';
+          playButton.setAttribute('aria-label', `Play ${item.title || 'video'}`);
+          playButton.textContent = '▶';
+          playButton.hidden = true;
+          video.addEventListener('play', () => { playButton.hidden = true; });
+          video.addEventListener('pause', () => { playButton.hidden = false; });
+          video.addEventListener('error', () => { playButton.hidden = false; playButton.textContent = 'Video unavailable'; });
+          const toggleVideo = () => {
+            if (video.paused) video.play().catch(() => { playButton.hidden = false; });
+            else video.pause();
+          };
+          playButton.addEventListener('click', event => { event.stopPropagation(); toggleVideo(); });
+          card.addEventListener('click', toggleVideo);
+          card.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); toggleVideo(); } });
+          card.append(playButton);
+          video.play().catch(() => { playButton.hidden = false; });
+        } else if (mediaUrl) {
+          backdrop.style.backgroundImage = `url("${mediaUrl.replace(/"/g, '%22')}")`;
+          backdrop.style.backgroundSize = 'cover';
+          backdrop.style.backgroundPosition = 'center';
         }
-      });
+        const top = document.createElement('div');
+        top.className = 'project-top';
+        const category = document.createElement('span');
+        category.className = 'project-category';
+        category.textContent = item.category || `${String(i + 1).padStart(2, '0')} / Work`;
+        const arrow = document.createElement('span');
+        arrow.textContent = item.link ? '↗' : '';
+        top.append(category, arrow);
+        const title = document.createElement('h3');
+        title.textContent = item.title || '';
+        const description = document.createElement('p');
+        description.textContent = item.description || '';
+        card.append(top, title, description);
+        grid.append(card);
+        observer.observe(card);
+      }
     }
-    function fillEditor() {
-      const fields = { name: 'edit-name', age: 'edit-age', headline: 'edit-headline', lead: 'edit-lead', intro: 'edit-intro', primary: 'edit-primary', accent: 'edit-accent', video: 'edit-video' };
+    function renderWorkEditor() {
+      const list = document.getElementById('work-admin-list');
+      list.innerHTML = (config.work || []).map((item, i) => `
+        <div class="work-admin-item" data-work-index="${i}">
+          <button class="remove-work full" type="button" data-remove-work="${i}" aria-label="Remove work card ${i + 1}">Remove card</button>
+          <div class="field"><label for="edit-work-${i}-title">Work ${String(i + 1).padStart(2, '0')} title</label><input id="edit-work-${i}-title" value="${esc(item.title || '')}" /></div>
+          <div class="field"><label for="edit-work-${i}-category">Category</label><input id="edit-work-${i}-category" value="${esc(item.category || '')}" /></div>
+          <div class="field full"><label for="edit-work-${i}-description">Description</label><textarea id="edit-work-${i}-description">${esc(item.description || '')}</textarea></div>
+          <div class="field full"><label for="edit-work-${i}-media">Video URL (optional)</label><input id="edit-work-${i}-media" value="${esc(item.media?.startsWith('idb:') ? '' : item.media || '')}" placeholder="Paste a public .mp4 URL" /></div>
+          <div class="field full"><label class="upload-button" for="edit-work-${i}-upload">＋ Choose video from gallery<input id="edit-work-${i}-upload" data-work-upload="${i}" type="file" accept="video/*" /></label></div>
+          <video class="media-preview full" data-work-preview="${i}" controls playsinline preload="metadata" hidden></video>
+          <label class="toggle-line"><input id="edit-work-${i}-enabled" type="checkbox" ${item.enabled ? 'checked' : ''} /> Show on portfolio</label>
+        </div>`).join('');
+    }
+    async function fillEditor() {
+      const fields = { name: 'edit-name', age: 'edit-age', headline: 'edit-headline', lead: 'edit-lead', intro: 'edit-intro', primary: 'edit-primary', accent: 'edit-accent' };
       Object.entries(fields).forEach(([key, id]) => { document.getElementById(id).value = config[key] || ''; });
+      document.getElementById('edit-theme-preset').value = themePresets[config.themePreset] ? config.themePreset : 'neon';
+      document.getElementById('edit-accent').value = config.accent || themePresets[config.themePreset]?.neon || defaults.accent;
+      document.getElementById('edit-video').value = config.video?.startsWith('idb:') ? '' : (config.video || '');
       ['email', 'phone', 'whatsapp', 'instagram', 'facebook', 'linkedin', 'youtube', 'github', 'website', 'other'].forEach(key => {
         const entry = config.contacts[key] || { value: '', enabled: false };
         document.getElementById(`edit-${key}`).value = entry.value || '';
         document.getElementById(`edit-${key}-enabled`).checked = Boolean(entry.enabled);
       });
-      document.getElementById('edit-projects').value = (config.projects || []).join('\n');
-      (config.work || defaults.work).forEach((item, i) => {
-        document.getElementById(`edit-work-${i}-title`).value = item.title || '';
-        document.getElementById(`edit-work-${i}-category`).value = item.category || '';
-        document.getElementById(`edit-work-${i}-description`).value = item.description || '';
-        document.getElementById(`edit-work-${i}-media`).value = item.media || '';
-        document.getElementById(`edit-work-${i}-enabled`).checked = Boolean(item.enabled);
-      });
+      renderWorkEditor();
+      const heroPreview = document.getElementById('edit-hero-preview');
+      const heroUrl = await resolveMediaUrl(config.video || defaults.video, '');
+      heroPreview.hidden = !heroUrl;
+      heroPreview.src = heroUrl;
+      document.getElementById('hero-upload-name').textContent = config.videoFileName || (config.video ? `Current video: ${config.video.split('/').pop()}` : 'No new video selected');
+      for (const [i, item] of (config.work || []).entries()) {
+        if (!isVideoPath(item.media, item)) continue;
+        const preview = document.querySelector(`[data-work-preview="${i}"]`);
+        const url = await resolveMediaUrl(item.media || '', '');
+        if (preview && url) { preview.src = url; preview.hidden = false; }
+      }
     }
     async function hashPassword(password) {
       const bytes = new TextEncoder().encode(password);
@@ -873,13 +1053,13 @@
     const editorView = document.getElementById('admin-editor-view');
     const authHelp = document.getElementById('admin-auth-help');
     const authSubmit = document.getElementById('admin-auth-submit');
-    function openAdmin() {
+    async function openAdmin() {
       const hasPassword = Boolean(localStorage.getItem(passwordKey));
       authView.hidden = hasPassword && sessionStorage.getItem('shAdminSession') === 'true';
       editorView.hidden = !authView.hidden;
       if (!hasPassword) { authHelp.textContent = 'First visit: create a password with at least 8 characters. It stays in this browser only.'; authSubmit.innerHTML = 'Create password <span>↗</span>'; }
       else if (!authView.hidden) { authHelp.textContent = 'Enter the admin password saved in this browser.'; authSubmit.innerHTML = 'Unlock control room <span>↗</span>'; }
-      if (editorView.hidden) fillEditor();
+      if (editorView.hidden) await fillEditor();
       adminOverlay.classList.add('open'); adminOverlay.setAttribute('aria-hidden', 'false'); playSound('admin');
       if (!editorView.hidden) document.getElementById('edit-name').focus(); else document.getElementById('admin-password').focus();
     }
@@ -897,27 +1077,171 @@
       const hashed = await hashPassword(input.value);
       if (!existing) {
         localStorage.setItem(passwordKey, hashed); sessionStorage.setItem('shAdminSession', 'true');
-        authView.hidden = true; editorView.hidden = false; fillEditor(); status.textContent = ''; document.getElementById('edit-name').focus(); playSound('success');
+        authView.hidden = true; editorView.hidden = false; await fillEditor(); status.textContent = ''; document.getElementById('edit-name').focus(); playSound('success');
       } else if (existing === hashed) {
-        sessionStorage.setItem('shAdminSession', 'true'); authView.hidden = true; editorView.hidden = false; fillEditor(); status.textContent = ''; document.getElementById('edit-name').focus(); playSound('success');
+        sessionStorage.setItem('shAdminSession', 'true'); authView.hidden = true; editorView.hidden = false; await fillEditor(); status.textContent = ''; document.getElementById('edit-name').focus(); playSound('success');
       } else { status.textContent = 'Password did not match.'; input.select(); playSound('error'); }
     });
-    document.getElementById('admin-editor-form').addEventListener('submit', event => {
+    const editorStatus = document.getElementById('admin-editor-status');
+    const workEditor = document.getElementById('work-admin-list');
+    function collectWorkDraft() {
+      const value = id => document.getElementById(id)?.value.trim() || '';
+      return [...workEditor.querySelectorAll('.work-admin-item')].map((row, i) => {
+        const previous = config.work[i] || {};
+        const media = value(`edit-work-${i}-media`) || previous.media || '';
+        return {
+          ...previous,
+          enabled: Boolean(document.getElementById(`edit-work-${i}-enabled`)?.checked),
+          title: value(`edit-work-${i}-title`),
+          category: value(`edit-work-${i}-category`),
+          description: value(`edit-work-${i}-description`),
+          media,
+          mediaType: previous.mediaType || (isVideoPath(media, previous) ? 'video' : ''),
+          fileName: previous.fileName || ''
+        };
+      });
+    }
+    document.getElementById('edit-theme-preset').addEventListener('change', event => {
+      config.themePreset = event.target.value;
+      config.accent = themePresets[config.themePreset].neon;
+      document.getElementById('edit-accent').value = config.accent;
+      applyTheme(config.themePreset, config.accent);
+    });
+    document.getElementById('edit-accent').addEventListener('input', event => {
+      config.accent = event.target.value;
+      applyTheme(config.themePreset, config.accent);
+    });
+    const heroUpload = document.getElementById('edit-hero-upload');
+    const heroPreview = document.getElementById('edit-hero-preview');
+    heroUpload.addEventListener('change', () => {
+      const file = heroUpload.files?.[0];
+      if (!file) return;
+      if (!file.type.startsWith('video/')) { editorStatus.textContent = 'Please choose a video file.'; heroUpload.value = ''; return; }
+      if (file.size > 120 * 1024 * 1024) { editorStatus.textContent = 'Choose a video under 120 MB for this browser upload.'; heroUpload.value = ''; return; }
+      pendingHeroFile = file;
+      if (heroPreview.dataset.tempUrl) URL.revokeObjectURL(heroPreview.dataset.tempUrl);
+      const previewUrl = URL.createObjectURL(file);
+      heroPreview.dataset.tempUrl = previewUrl;
+      heroPreview.src = previewUrl;
+      heroPreview.hidden = false;
+      heroPreview.load();
+      heroPreview.play().catch(() => {});
+      document.getElementById('hero-upload-name').textContent = `${file.name} · ${(file.size / (1024 * 1024)).toFixed(1)} MB`;
+      editorStatus.textContent = 'Video selected. Tap Save on this device to store it here.';
+    });
+    document.getElementById('edit-video').addEventListener('input', event => {
+      if (!event.target.value.trim()) return;
+      pendingHeroFile = null;
+      heroUpload.value = '';
+      heroPreview.hidden = false;
+      heroPreview.src = event.target.value.trim();
+      heroPreview.load();
+      document.getElementById('hero-upload-name').textContent = 'Previewing the video URL above';
+    });
+    document.getElementById('add-work').addEventListener('click', () => {
+      config.work = collectWorkDraft();
+      if (config.work.length >= 24) { editorStatus.textContent = 'You can add up to 24 work cards.'; return; }
+      config.work.push({ enabled: true, title: 'New project', category: '', description: '', media: '' });
+      renderWorkEditor();
+      document.getElementById(`edit-work-${config.work.length - 1}-title`).focus();
+      editorStatus.textContent = 'New work card added. Fill it in, then save on this device.';
+    });
+    workEditor.addEventListener('click', event => {
+      const remove = event.target.closest('[data-remove-work]');
+      if (!remove) return;
+      config.work = collectWorkDraft();
+      const index = Number(remove.dataset.removeWork);
+      config.work.splice(index, 1);
+      const remappedFiles = new Map();
+      pendingWorkFiles.forEach((file, oldIndex) => {
+        if (oldIndex < index) remappedFiles.set(oldIndex, file);
+        else if (oldIndex > index) remappedFiles.set(oldIndex - 1, file);
+      });
+      pendingWorkFiles.clear();
+      remappedFiles.forEach((file, newIndex) => pendingWorkFiles.set(newIndex, file));
+      renderWorkEditor();
+      editorStatus.textContent = 'Work card removed from the draft. Save to apply it on this device.';
+    });
+    workEditor.addEventListener('change', event => {
+      const input = event.target.closest('[data-work-upload]');
+      if (!input) return;
+      const file = input.files?.[0];
+      if (!file) return;
+      const index = Number(input.dataset.workUpload);
+      if (!file.type.startsWith('video/')) { editorStatus.textContent = 'Please choose a video file.'; input.value = ''; return; }
+      if (file.size > 120 * 1024 * 1024) { editorStatus.textContent = 'Choose a video under 120 MB.'; input.value = ''; return; }
+      pendingWorkFiles.set(index, file);
+      const preview = workEditor.querySelector(`[data-work-preview="${index}"]`);
+      if (preview.dataset.tempUrl) URL.revokeObjectURL(preview.dataset.tempUrl);
+      const previewUrl = URL.createObjectURL(file);
+      preview.dataset.tempUrl = previewUrl;
+      preview.src = previewUrl;
+      preview.hidden = false;
+      preview.load();
+      preview.play().catch(() => {});
+      editorStatus.textContent = `${file.name} selected for work card ${index + 1}. Save to keep it on this device.`;
+    });
+    document.getElementById('admin-editor-form').addEventListener('submit', async event => {
       event.preventDefault();
       const value = id => document.getElementById(id).value.trim();
       const contactKeys = ['email', 'phone', 'whatsapp', 'instagram', 'facebook', 'linkedin', 'youtube', 'github', 'website', 'other'];
       const contacts = {};
       contactKeys.forEach(key => { contacts[key] = { value: value(`edit-${key}`), enabled: document.getElementById(`edit-${key}-enabled`).checked }; });
-      const work = Array.from({ length: 6 }, (_, i) => ({ enabled: document.getElementById(`edit-work-${i}-enabled`).checked, title: value(`edit-work-${i}-title`), category: value(`edit-work-${i}-category`), description: value(`edit-work-${i}-description`), media: value(`edit-work-${i}-media`) }));
-      config = { ...config, name: value('edit-name'), age: value('edit-age'), headline: value('edit-headline'), lead: value('edit-lead'), intro: value('edit-intro'), primary: value('edit-primary'), accent: value('edit-accent') || defaults.accent, video: value('edit-video') || defaults.video, contacts, projects: value('edit-projects').split('\n').map(item => item.trim()).filter(Boolean).slice(0, 6), work };
-      localStorage.setItem(configKey, JSON.stringify(config)); applyConfig();
-      document.getElementById('admin-editor-status').textContent = 'Saved locally — your live page is updated.';
-      playSound('success');
+      const work = collectWorkDraft();
+      editorStatus.textContent = 'Saving this device’s changes…';
+      try {
+        for (const [index, file] of pendingWorkFiles.entries()) {
+          if (!work[index]) continue;
+          const key = uniqueMediaKey(`work-${index}`, file);
+          await saveMediaFile(key, file);
+          work[index].media = `idb:${key}`;
+          work[index].mediaType = 'video';
+          work[index].fileName = file.name;
+        }
+        let video = value('edit-video') || config.video || defaults.video;
+        let videoFileName = config.videoFileName || '';
+        if (pendingHeroFile) {
+          const key = uniqueMediaKey('hero', pendingHeroFile);
+          await saveMediaFile(key, pendingHeroFile);
+          video = `idb:${key}`;
+          videoFileName = pendingHeroFile.name;
+        }
+        config = {
+          ...config,
+          name: value('edit-name'),
+          age: value('edit-age'),
+          headline: value('edit-headline'),
+          lead: value('edit-lead'),
+          intro: value('edit-intro'),
+          primary: value('edit-primary'),
+          themePreset: document.getElementById('edit-theme-preset').value,
+          accent: value('edit-accent') || defaults.accent,
+          video, videoFileName, contacts, work
+        };
+        localStorage.setItem(configKey, JSON.stringify(config));
+        pendingHeroFile = null;
+        pendingWorkFiles.clear();
+        await applyConfig();
+        await fillEditor();
+        editorStatus.textContent = 'Saved on this browser. Video preview is ready here; publishing to everyone needs the shared backend.';
+        playSound('success');
+      } catch (error) {
+        console.error('Portfolio save failed:', error);
+        editorStatus.textContent = `Could not save this video on the device: ${error.message || 'browser storage is unavailable'}`;
+        playSound('error');
+      }
     });
-    document.getElementById('admin-reset').addEventListener('click', () => {
-      if (!confirm('Reset your local portfolio edits?')) return;
-      localStorage.removeItem(configKey); config = { ...defaults }; applyConfig(); fillEditor();
-      document.getElementById('admin-editor-status').textContent = 'Local edits reset.'; playSound('close');
+    document.getElementById('admin-reset').addEventListener('click', async () => {
+      if (!confirm('Reset portfolio edits and uploaded videos saved in this browser?')) return;
+      localStorage.removeItem(configKey);
+      pendingHeroFile = null; pendingWorkFiles.clear();
+      mediaObjectUrls.forEach(url => URL.revokeObjectURL(url));
+      mediaObjectUrls.clear();
+      try { await clearSavedMedia(); } catch (error) { console.warn('Could not clear local video storage:', error); }
+      config = JSON.parse(JSON.stringify(defaults));
+      await applyConfig(); await fillEditor();
+      editorStatus.textContent = 'This browser’s edits and uploaded videos were reset.';
+      playSound('close');
     });
     applyConfig();
     const heroVideo = document.getElementById('hero-video');
