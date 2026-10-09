@@ -151,7 +151,7 @@
     @keyframes core-pulse { 50% { transform: scale(1.1); opacity: .25; } }
     .orbit-core-large span { color: #fff; font: 600 39px "DM Mono", monospace; letter-spacing: -.14em; transform: translateX(-2px); text-shadow: 0 0 20px rgba(255,255,255,.38); }
     .orbit-core-large small { position: absolute; bottom: -31px; white-space: nowrap; color: rgba(255,255,255,.8); font: 500 9px "DM Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
-    .orbit-node { position: absolute; z-index: 4; display: grid; place-items: center; min-width: 61px; height: 30px; padding: 0 9px; border: 1px solid rgba(255,255,255,.21); border-radius: 999px; color: rgba(255,255,255,.83); background: rgba(9,9,10,.56); box-shadow: 0 8px 22px rgba(0,0,0,.26), inset 0 1px rgba(255,255,255,.1); backdrop-filter: blur(9px); font: 9px "DM Mono", monospace; letter-spacing: .03em; translate: var(--mag-x, 0) var(--mag-y, 0); transition: translate .35s ease, transform .35s ease, border-color .25s, color .25s, background .25s; animation: node-float var(--float, 6s) ease-in-out infinite alternate; animation-delay: var(--delay, 0s); }
+    .orbit-node { position: absolute; z-index: 4; display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-width: 76px; min-height: 38px; height: auto; padding: 5px 10px; border: 1px solid rgba(255,255,255,.24); border-radius: 999px; color: rgba(255,255,255,.94); background: rgba(9,9,10,.78); box-shadow: 0 8px 22px rgba(0,0,0,.3), inset 0 1px rgba(255,255,255,.12); backdrop-filter: blur(9px); font: 600 9px/1.1 Manrope, sans-serif; letter-spacing: .01em; white-space: nowrap; translate: var(--mag-x, 0) var(--mag-y, 0); transition: translate .35s ease, transform .35s ease, border-color .25s, color .25s, background .25s; animation: node-float var(--float, 6s) ease-in-out infinite alternate; animation-delay: var(--delay, 0s); }\n    .orbit-node img { display: block; flex: 0 0 20px; width: 20px; height: 20px; object-fit: contain; border-radius: 5px; background: #fff; padding: 2px; box-shadow: 0 0 10px rgba(255,255,255,.12); }\n    .orbit-node.near { min-width: 82px; min-height: 42px; height: auto; }\n    .orbit-node.far { opacity: .88; transform: scale(.88); }\n    .orbit-node:hover { opacity: 1; }
     .orbit-node:hover { z-index: 6; color: var(--bg); border-color: var(--neon); background: var(--neon); transform: translate(var(--mag-x, 0), var(--mag-y, 0)) scale(1.16) !important; box-shadow: 0 0 24px color-mix(in srgb, var(--neon) 35%, transparent); }
     .orbit-node.far { opacity: .58; transform: scale(.78); }
     .orbit-node.near { min-width: 72px; height: 34px; color: #fff; border-color: color-mix(in srgb, var(--hot) 48%, transparent); transform: scale(1.12); }
@@ -160,7 +160,7 @@
     .n-replit { top: 48%; left: 7%; } .n-aistudio { top: 56%; right: 6%; } .n-sora { bottom: 22%; left: 16%; }
     .n-runway { bottom: 11%; left: 49%; } .n-claude { bottom: 22%; right: 15%; } .n-canva { top: 39%; left: 26%; }
     .n-midjourney { top: 61%; left: 23%; } .n-kling { top: 73%; right: 24%; } .n-n8n { top: 72%; left: 4%; }
-    .n-adobe { top: 8%; right: 16%; } .n-printess { bottom: 9%; right: 4%; }
+    .n-adobe { top: 8%; right: 16%; } .n-printess { bottom: 9%; right: 4%; }\n    .n-perplexity { top: 42%; right: 3%; } .n-capcut { top: 84%; left: 34%; } .n-elevenlabs { top: 8%; left: 8%; } .n-firefly { bottom: 38%; right: 2%; }
 
     /* Sections */
     section { padding: 142px 0; position: relative; }
@@ -440,19 +440,24 @@
             <div class="ecosystem" aria-label="AI Creative Ecosystem">
               <div class="ecosystem-label">AI creative ecosystem<strong>tools I explore / 2026</strong></div>
               <div class="orbit-core-large"><span>SH</span><small>Syeda Husna Tabassum</small></div>
-              <span class="orbit-node near n-chatgpt" style="--float:7s;--delay:-1s">ChatGPT</span>
-              <span class="orbit-node far n-veo" style="--float:8.5s;--delay:-3s">Veo</span>
-              <span class="orbit-node n-replit" style="--float:7.8s;--delay:-4s">Replit</span>
-              <span class="orbit-node near n-aistudio" style="--float:6.8s;--delay:-2.5s">AI Studio</span>
-              <span class="orbit-node far n-sora" style="--float:9.2s;--delay:-5s">Sora</span>
-              <span class="orbit-node n-runway" style="--float:7.2s;--delay:-1.8s">Runway</span>
-              <span class="orbit-node n-claude" style="--float:8.8s;--delay:-3.8s">Claude</span>
-              <span class="orbit-node far n-canva" style="--float:6.1s;--delay:-4.5s">Canva</span>
-              <span class="orbit-node n-midjourney" style="--float:9s;--delay:-2.2s">Midjourney</span>
-              <span class="orbit-node far n-kling" style="--float:7.6s;--delay:-5.8s">Kling</span>
-              <span class="orbit-node n-n8n" style="--float:8.2s;--delay:-6s">n8n</span>
-              <span class="orbit-node n-adobe" style="--float:6.6s;--delay:-1.2s">Adobe</span>
-              <span class="orbit-node far n-printess" style="--float:8.6s;--delay:-4.9s">Printess</span>
+              <span class="orbit-node near n-chatgpt" style="--float:7s;--delay:-1s"><img src="https://www.google.com/s2/favicons?domain=chatgpt.com&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>ChatGPT</span></span>
+              <span class="orbit-node  n-gemini" style="--float:7.5s;--delay:-2s"><img src="https://www.google.com/s2/favicons?domain=gemini.google.com&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Gemini</span></span>
+              <span class="orbit-node far n-veo" style="--float:8.5s;--delay:-3s"><img src="https://www.google.com/s2/favicons?domain=deepmind.google&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Veo 3</span></span>
+              <span class="orbit-node  n-replit" style="--float:7.8s;--delay:-4s"><img src="https://www.google.com/s2/favicons?domain=replit.com&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Replit</span></span>
+              <span class="orbit-node near n-aistudio" style="--float:6.8s;--delay:-2.5s"><img src="https://www.google.com/s2/favicons?domain=aistudio.google.com&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Google AI Studio</span></span>
+              <span class="orbit-node far n-sora" style="--float:9.2s;--delay:-5s"><img src="https://www.google.com/s2/favicons?domain=sora.com&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Sora</span></span>
+              <span class="orbit-node  n-runway" style="--float:7.2s;--delay:-1.8s"><img src="https://www.google.com/s2/favicons?domain=runwayml.com&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Runway</span></span>
+              <span class="orbit-node  n-claude" style="--float:8.8s;--delay:-3.8s"><img src="https://www.google.com/s2/favicons?domain=claude.ai&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Claude</span></span>
+              <span class="orbit-node far n-canva" style="--float:6.1s;--delay:-4.5s"><img src="https://www.google.com/s2/favicons?domain=canva.com&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Canva</span></span>
+              <span class="orbit-node  n-midjourney" style="--float:9s;--delay:-2.2s"><img src="https://www.google.com/s2/favicons?domain=midjourney.com&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Midjourney</span></span>
+              <span class="orbit-node far n-kling" style="--float:7.6s;--delay:-5.8s"><img src="https://www.google.com/s2/favicons?domain=klingai.com&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Kling AI</span></span>
+              <span class="orbit-node  n-n8n" style="--float:8.2s;--delay:-6s"><img src="https://www.google.com/s2/favicons?domain=n8n.io&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>n8n</span></span>
+              <span class="orbit-node  n-adobe" style="--float:6.6s;--delay:-1.2s"><img src="https://www.google.com/s2/favicons?domain=firefly.adobe.com&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Adobe Firefly</span></span>
+              <span class="orbit-node far n-printess" style="--float:8.6s;--delay:-4.9s"><img src="https://www.google.com/s2/favicons?domain=printess.com&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Printess</span></span>
+              <span class="orbit-node far n-perplexity" style="--float:7.1s;--delay:-3.4s"><img src="https://www.google.com/s2/favicons?domain=perplexity.ai&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Perplexity</span></span>
+              <span class="orbit-node far n-capcut" style="--float:7.9s;--delay:-2.9s"><img src="https://www.google.com/s2/favicons?domain=capcut.com&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>CapCut</span></span>
+              <span class="orbit-node far n-elevenlabs" style="--float:8.3s;--delay:-1.5s"><img src="https://www.google.com/s2/favicons?domain=elevenlabs.io&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>ElevenLabs</span></span>
+              <span class="orbit-node far n-firefly" style="--float:6.9s;--delay:-4.1s"><img src="https://www.google.com/s2/favicons?domain=leonardo.ai&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Leonardo AI</span></span>
             </div>
             <div class="corner tl"></div><div class="corner br"></div>
             <div class="video-ui">
@@ -1002,16 +1007,21 @@
           video.className = 'project-media';
           video.controls = true;
           video.autoplay = false;
+          video.defaultMuted = false;
           video.muted = false;
-          video.loop = true;
+          video.volume = 1;
+          video.removeAttribute('muted');
+          video.loop = false;
           video.playsInline = true;
           video.preload = 'metadata';
           video.setAttribute('playsinline', '');
           video.setAttribute('controls', '');
           video.setAttribute('aria-label', `${item.title || 'Portfolio video'} with sound`);
           video.addEventListener('play', () => {
-            document.querySelectorAll('.work-grid .project-media').forEach(otherVideo => {
-              if (otherVideo !== video && !otherVideo.paused) otherVideo.pause();
+            video.muted = false;
+            video.volume = 1;
+            document.querySelectorAll('.work-grid video').forEach(otherVideo => {
+              if (otherVideo !== video) otherVideo.pause();
             });
           });
           const source = document.createElement('source');
@@ -1372,17 +1382,28 @@
       playSound('close');
     });
     // Keep the built-in work videos audible and use one-at-a-time playback.
-    document.querySelectorAll('.work-grid .project-media').forEach(video => {
+    // Make every portfolio player explicitly audible after the visitor presses Play.
+    // Browsers still require a user gesture before media with sound can start.
+    function prepareAudiblePortfolioVideo(video) {
       video.controls = true;
       video.autoplay = false;
+      video.defaultMuted = false;
       video.muted = false;
+      video.volume = 1;
       video.loop = false;
+      video.removeAttribute('muted');
+      video.addEventListener('volumechange', () => {
+        if (!video.paused && video.muted) { video.muted = false; video.volume = 1; }
+      });
       video.addEventListener('play', () => {
-        document.querySelectorAll('.work-grid .project-media').forEach(otherVideo => {
+        video.muted = false;
+        video.volume = 1;
+        document.querySelectorAll('.work-grid video').forEach(otherVideo => {
           if (otherVideo !== video) otherVideo.pause();
         });
       });
-    });
+    }
+    document.querySelectorAll('.work-grid video').forEach(prepareAudiblePortfolioVideo);
     applyConfig();
     loadSharedConfig();
     const heroVideo = document.getElementById('hero-video');
