@@ -578,11 +578,12 @@
       </div>
       <div class="admin-view" id="admin-auth-view">
         <form class="admin-form" id="admin-auth-form">
-          <div class="field"><label for="admin-password">Admin password</label><input id="admin-password" type="password" required minlength="8" autocomplete="new-password" placeholder="Create or enter your password" /></div>
-          <p class="admin-help" id="admin-auth-help">First visit: create a password with at least 8 characters. It stays in this browser only.</p>
-          <p class="admin-warning">This GitHub Pages editor currently saves text and uploaded videos on this browser only. Shared publishing is not connected yet.</p>
+          <div class="field"><label for="admin-email">Admin email</label><input id="admin-email" type="email" required autocomplete="email" value="syedahusnashareef@gmail.com" /></div>
+          <div class="field"><label for="admin-password">Admin password</label><input id="admin-password" type="password" required minlength="8" autocomplete="current-password" placeholder="Enter your secure password" /></div>
+          <p class="admin-help" id="admin-auth-help">Sign in with your owner email. First-time users can create an account; email verification may be required.</p>
+          <p class="admin-warning">Shared text and settings sync through Supabase. Video files selected from your device remain local until shared media storage is ready.</p>
           <p class="admin-status" id="admin-auth-status" role="status"></p>
-          <div class="admin-toolbar"><span class="muted">This browser only</span><button class="btn btn-primary" type="submit" id="admin-auth-submit">Create password <span>↗</span></button></div>
+          <div class="admin-toolbar"><span class="muted">Owner access · Supabase</span><button class="btn btn-primary" type="submit" id="admin-auth-submit">Sign in / Create account <span>↗</span></button></div>
         </form>
       </div>
       <div class="admin-view" id="admin-editor-view" hidden>
@@ -631,12 +632,13 @@
             <div class="contact-admin-field"><div class="field"><label for="edit-website">Website URL</label><input id="edit-website" type="url" placeholder="https://..." /></div><label class="toggle-line"><input id="edit-website-enabled" type="checkbox" /> Show on website</label></div>
             <div class="contact-admin-field"><div class="field"><label for="edit-other">Other link</label><input id="edit-other" type="url" placeholder="https://..." /></div><label class="toggle-line"><input id="edit-other-enabled" type="checkbox" /> Show on website</label></div>
           </div>
-          <div class="admin-toolbar"><button class="btn btn-ghost" type="button" id="admin-reset">Reset this browser</button><button class="btn btn-primary" type="submit">Save on this device <span>✓</span></button></div>
+          <div class="admin-toolbar"><button class="btn btn-ghost" type="button" id="admin-reset">Reset this browser</button><button class="btn btn-primary" type="submit">Save & publish changes <span>✓</span></button></div>
         </form>
       </div>
     </div>
   </section>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     /* Navigation and scroll reveal */
     const menu = document.querySelector('.menu');
@@ -836,6 +838,23 @@
         { enabled: false, title: 'In progress', category: '06 / Experiments', description: 'Small tests with a bigger direction.', media: '' }
       ]
     };
+    const SUPABASE_URL = 'https://iecfsmtxztrwawucuvmn.supabase.co';
+    const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_cOoJK2Y998qmbVeHzxYQFA_Ketf6qDP';
+    const supabaseClient = window.supabase?.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+    let sharedConfigCache = null;
+    async function loadSharedConfig() {
+      if (!supabaseClient) return;
+      try {
+        const { data, error } = await supabaseClient.from('portfolio_content').select('payload').eq('id', 'main').maybeSingle();
+        if (error) throw error;
+        if (data?.payload && typeof data.payload === 'object') {
+          sharedConfigCache = data.payload;
+          config = { ...defaults, ...data.payload, contacts: { ...defaults.contacts, ...(data.payload.contacts || {}) }, work: Array.isArray(data.payload.work) ? data.payload.work : defaults.work };
+          localStorage.setItem(configKey, JSON.stringify(config));
+          await applyConfig();
+        }
+      } catch (error) { console.warn('Shared portfolio content is not available yet:', error); }
+    }
     const storedConfig = JSON.parse(localStorage.getItem(configKey) || 'null') || {};
     let config = { ...defaults, ...storedConfig, contacts: { ...defaults.contacts, ...(storedConfig.contacts || {}) }, work: Array.isArray(storedConfig.work) ? storedConfig.work : defaults.work };
     let pendingHeroFile = null;
@@ -1078,14 +1097,15 @@
     const authHelp = document.getElementById('admin-auth-help');
     const authSubmit = document.getElementById('admin-auth-submit');
     async function openAdmin() {
-      const hasPassword = Boolean(localStorage.getItem(passwordKey));
-      authView.hidden = hasPassword && sessionStorage.getItem('shAdminSession') === 'true';
-      editorView.hidden = !authView.hidden;
-      if (!hasPassword) { authHelp.textContent = 'First visit: create a password with at least 8 characters. It stays in this browser only.'; authSubmit.innerHTML = 'Create password <span>↗</span>'; }
-      else if (!authView.hidden) { authHelp.textContent = 'Enter the admin password saved in this browser.'; authSubmit.innerHTML = 'Unlock control room <span>↗</span>'; }
-      if (editorView.hidden) await fillEditor();
+      const { data } = supabaseClient ? await supabaseClient.auth.getSession() : { data: { session: null } };
+      const signedIn = Boolean(data?.session?.user?.email === 'syedahusnashareef@gmail.com');
+      authView.hidden = signedIn;
+      editorView.hidden = !signedIn;
+      authHelp.textContent = 'Use the owner email syedahusnashareef@gmail.com. First-time account creation may require email verification.';
+      authSubmit.innerHTML = 'Sign in / Create account <span>↗</span>';
+      if (signedIn) { await loadSharedConfig(); await fillEditor(); }
       adminOverlay.classList.add('open'); adminOverlay.setAttribute('aria-hidden', 'false'); playSound('admin');
-      if (!editorView.hidden) document.getElementById('edit-name').focus(); else document.getElementById('admin-password').focus();
+      if (signedIn) document.getElementById('edit-name').focus(); else document.getElementById('admin-email').focus();
     }
     function closeAdmin() { adminOverlay.classList.remove('open'); adminOverlay.setAttribute('aria-hidden', 'true'); }
     document.querySelectorAll('.admin-trigger, .admin-fab').forEach(button => button.addEventListener('click', openAdmin));
@@ -1094,17 +1114,31 @@
     document.addEventListener('keydown', event => { if (event.key === 'Escape' && adminOverlay.classList.contains('open')) closeAdmin(); });
     document.getElementById('admin-auth-form').addEventListener('submit', async event => {
       event.preventDefault();
-      const input = document.getElementById('admin-password');
+      const email = document.getElementById('admin-email').value.trim().toLowerCase();
+      const password = document.getElementById('admin-password').value;
       const status = document.getElementById('admin-auth-status');
-      if (input.value.length < 8) { status.textContent = 'Use at least 8 characters.'; playSound('error'); return; }
-      const existing = localStorage.getItem(passwordKey);
-      const hashed = await hashPassword(input.value);
-      if (!existing) {
-        localStorage.setItem(passwordKey, hashed); sessionStorage.setItem('shAdminSession', 'true');
-        authView.hidden = true; editorView.hidden = false; await fillEditor(); status.textContent = ''; document.getElementById('edit-name').focus(); playSound('success');
-      } else if (existing === hashed) {
-        sessionStorage.setItem('shAdminSession', 'true'); authView.hidden = true; editorView.hidden = false; await fillEditor(); status.textContent = ''; document.getElementById('edit-name').focus(); playSound('success');
-      } else { status.textContent = 'Password did not match.'; input.select(); playSound('error'); }
+      if (email !== 'syedahusnashareef@gmail.com') { status.textContent = 'Only the portfolio owner email is allowed.'; playSound('error'); return; }
+      if (!supabaseClient) { status.textContent = 'Supabase client did not load. Refresh and try again.'; playSound('error'); return; }
+      if (password.length < 8) { status.textContent = 'Use at least 8 characters.'; playSound('error'); return; }
+      authSubmit.disabled = true; status.textContent = 'Connecting securely…';
+      try {
+        let result = await supabaseClient.auth.signInWithPassword({ email, password });
+        if (result.error && /invalid login credentials/i.test(result.error.message)) {
+          const signup = await supabaseClient.auth.signUp({ email, password });
+          if (signup.error) throw signup.error;
+          if (!signup.data.session) {
+            status.textContent = 'Account request sent. Check your email to verify, then sign in here.';
+            playSound('success'); return;
+          }
+          result = { data: signup.data, error: null };
+        }
+        if (result.error) throw result.error;
+        if (result.data?.user?.email !== 'syedahusnashareef@gmail.com') throw new Error('This account is not authorized as the owner.');
+        authView.hidden = true; editorView.hidden = false;
+        await loadSharedConfig(); await fillEditor();
+        status.textContent = ''; document.getElementById('edit-name').focus(); playSound('success');
+      } catch (error) { status.textContent = error.message || 'Sign-in failed. Check email and password.'; playSound('error'); }
+      finally { authSubmit.disabled = false; }
     });
     const editorStatus = document.getElementById('admin-editor-status');
     const workEditor = document.getElementById('work-admin-list');
@@ -1251,11 +1285,23 @@
           video, videoFileName, contacts, work
         };
         localStorage.setItem(configKey, JSON.stringify(config));
+        let sharedMessage = 'Saved locally.';
+        if (supabaseClient) {
+          const sharedPayload = JSON.parse(JSON.stringify(config));
+          if (String(sharedPayload.video || '').startsWith('idb:')) sharedPayload.video = sharedConfigCache?.video || defaults.video;
+          sharedPayload.work = (sharedPayload.work || []).map((item, i) => String(item.media || '').startsWith('idb:')
+            ? { ...item, media: sharedConfigCache?.work?.[i]?.media || defaults.work[i]?.media || '', mediaType: 'video' }
+            : item);
+          const { error } = await supabaseClient.from('portfolio_content').upsert({ id: 'main', payload: sharedPayload, updated_at: new Date().toISOString() }, { onConflict: 'id' });
+          if (error) throw error;
+          sharedConfigCache = sharedPayload;
+          sharedMessage = 'Published! Text, links and settings are now shared across devices. Gallery uploads selected from this device remain local until media storage is ready.';
+        }
         pendingHeroFile = null;
         pendingWorkFiles.clear();
         await applyConfig();
         await fillEditor();
-        editorStatus.textContent = 'Saved on this browser. Video preview is ready here; publishing to everyone needs the shared backend.';
+        editorStatus.textContent = sharedMessage;
         playSound('success');
       } catch (error) {
         console.error('Portfolio save failed:', error);
@@ -1276,6 +1322,7 @@
       playSound('close');
     });
     applyConfig();
+    loadSharedConfig();
     const heroVideo = document.getElementById('hero-video');
     const startHeroVideo = () => {
       heroVideo.currentTime = 0;
