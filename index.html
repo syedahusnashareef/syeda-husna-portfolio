@@ -380,7 +380,7 @@
     .work-admin-item { position: relative; }
     .work-admin-item .remove-work { justify-self: end; min-height: 38px; padding: 0 12px; border: 1px solid rgba(255,110,110,.32); border-radius: 999px; color: #ff9b9b; background: rgba(255,80,80,.07); cursor: pointer; }
     .admin-fab { position: fixed; right: 22px; bottom: 22px; z-index: 31; display: grid; place-items: center; width: 46px; height: 46px; border: 1px solid color-mix(in srgb, var(--neon) 55%, transparent); border-radius: 50%; color: var(--neon); background: rgba(7,7,7,.72); box-shadow: 0 0 25px color-mix(in srgb, var(--neon) 16%, transparent); cursor: pointer; transition: transform .2s, background .2s; }
-    .admin-fab:hover, .admin-fab:focus-visible { transform: rotate(18deg) scale(1.08); background: color-mix(in srgb, var(--neon) 12%, transparent); outline: none; }
+    .admin-fab span { font: 800 13px Manrope, sans-serif; letter-spacing: -.06em; color: var(--neon); }\n    .admin-fab:hover, .admin-fab:focus-visible { transform: rotate(18deg) scale(1.08); background: color-mix(in srgb, var(--neon) 12%, transparent); outline: none; }
     @media (max-width: 950px) { .nav-tools { margin-left: auto; margin-right: 5px; } .nav-tools .admin-trigger { display: none; } }
     @media (max-width: 650px) {
       .sound-toggle { padding: 8px 10px; }
@@ -571,7 +571,7 @@
     </div>
   </footer>
 
-  <button class="admin-fab" type="button" aria-label="Open admin control room" title="Admin control room">✦</button>
+  <button class="admin-fab" type="button" aria-label="Open admin control room" title="Admin control room"><span>SH</span></button>
   <section class="admin-overlay" aria-label="Admin control room" aria-hidden="true">
     <div class="admin-panel" role="dialog" aria-modal="true" aria-labelledby="admin-title">
       <div class="admin-head">
