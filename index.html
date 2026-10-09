@@ -1323,6 +1323,7 @@
           intro: value('edit-intro'),
           primary: value('edit-primary'),
           themePreset: document.getElementById('edit-theme-preset').value,
+          textAccent: document.getElementById('edit-text-accent').value || '#ff824d',
           typography: { family: document.getElementById('edit-font-family').value, size: Number(document.getElementById('edit-font-size').value), weight: Number(document.getElementById('edit-font-weight').value) },
           soundVolume: Number(document.getElementById('edit-sound-volume').value) / 100,
           soundEnabled: document.getElementById('edit-sound-enabled').checked,
