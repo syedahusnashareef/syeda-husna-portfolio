@@ -1422,6 +1422,15 @@
       auraCard.innerHTML = '<div class="project-bg p4 aura-project-bg"></div><div class="aura-project-glow" aria-hidden="true"></div><div class="project-top"><span class="project-category">FEATURED / ZERO-CODE APP</span><span>↗</span></div><div class="aura-project-mark">AJ<span>✦</span></div><h3>Aura Journal</h3><p>A thoughtfully designed zero-code productivity app for capturing notes, organizing tasks, planning your week, and building better daily routines.</p><div class="aura-project-actions"><button class="aura-demo-open" type="button">Try interactive demo <span>↗</span></button><a class="aura-live-open" href="https://aurajournal-husna.surge.sh/" target="_blank" rel="noopener noreferrer">Visit app <span>↗</span></a></div>';
       grid.prepend(auraCard);
       observer.observe(auraCard);
+
+      /* Featured grocery-shopping app project, displayed directly after Aura Journal. */
+      const martCard = document.createElement('article');
+      martCard.className = 'project aura-featured reveal visible husnasakib-featured';
+      martCard.tabIndex = 0;
+      martCard.setAttribute('aria-label', 'HusnaSakib Cart grocery shopping app project');
+      martCard.innerHTML = '<div class="project-bg p2 aura-project-bg"></div><div class="aura-project-glow" aria-hidden="true"></div><div class="project-top"><span class="project-category">FEATURED / ZERO-CODE APP</span><span>↗</span></div><div class="aura-project-mark">HS<span>🛒</span></div><h3>HusnaSakibMart</h3><p>A modern grocery-shopping experience for browsing fresh produce, dairy, bakery essentials, and everyday staples. Explore product categories, search and sort items, manage a shopping cart, and review orders in one convenient storefront.</p><div class="aura-project-actions"><a class="aura-live-open" href="https://github.com/syedahusnashareef/husnasakibcart" target="_blank" rel="noopener noreferrer">Explore project <span>↗</span></a></div>';
+      auraCard.after(martCard);
+      observer.observe(martCard);
     }
     function renderWorkEditor() {
       const list = document.getElementById('work-admin-list');
