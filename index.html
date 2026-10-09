@@ -482,6 +482,31 @@
     .video-card.is-playing .play::after { width:10px; height:15px; border:0; border-left:3px solid currentColor; border-right:3px solid currentColor; margin-left:0; }
     .video-card.is-playing .video-top span:first-child { color:var(--neon); }
 
+    /* Focused SH hero: the original full-bleed video stays behind the orbit; no card or extra copy. */
+    .hero { min-height: min(100svh, 1000px); overflow: hidden; background:#02050b; }
+    .hero-background-video { opacity:.94 !important; filter:none !important; object-fit:cover; object-position:center center; }
+    .hero-background-overlay { background:linear-gradient(180deg,rgba(2,5,11,.12),rgba(2,5,11,.08) 48%,rgba(2,5,11,.3)) !important; }
+    .hero-grid { display:block !important; width:100%; min-height:inherit; height:100%; }
+    .hero-copy { display:none !important; }
+    .hero-visual { position:absolute !important; inset:0 !important; z-index:3; display:block; pointer-events:none; }
+    .video-card { position:absolute !important; inset:0 !important; width:100%; height:100%; aspect-ratio:auto !important; border:0 !important; border-radius:0 !important; background:transparent !important; box-shadow:none !important; overflow:visible !important; pointer-events:none; }
+    .hero-card-video, .video-card::before, .video-card .video-ui { display:none !important; }
+    .ecosystem { position:absolute !important; inset:0 !important; width:100% !important; height:100% !important; overflow:hidden; background:transparent !important; pointer-events:none; }
+    .ecosystem-label, .orbit-core-large small { display:none !important; }
+    .orbit-core-large { position:absolute !important; left:50% !important; top:50% !important; right:auto !important; bottom:auto !important; transform:translate(-50%,-50%) !important; width:clamp(112px,19vw,220px) !important; height:clamp(112px,19vw,220px) !important; border-radius:50%; display:grid; place-items:center; background:radial-gradient(circle,rgba(4,22,25,.5),rgba(3,8,15,.14) 62%,transparent 72%); border:1px solid rgba(135,255,214,.6); box-shadow:0 0 24px rgba(69,255,190,.22),inset 0 0 28px rgba(69,255,190,.1); }
+    .orbit-core-large span { color:#8bffd3 !important; font-size:clamp(48px,8vw,92px) !important; line-height:1 !important; text-shadow:0 0 12px #39ffb4,0 0 38px rgba(57,255,180,.8) !important; }
+    .orbit-core-large::before,.orbit-core-large::after { content:""; position:absolute; inset:-15%; border:1px solid rgba(91,255,210,.35); border-radius:50%; animation:shPortalSpin 13s linear infinite; }
+    .orbit-core-large::after { inset:-29%; border-color:rgba(155,112,255,.26); animation-duration:19s; animation-direction:reverse; }
+    @keyframes shPortalSpin { to { transform:rotate(360deg); } }
+    .orbit-node { pointer-events:auto; background:rgba(3,9,17,.68) !important; border:1px solid rgba(190,255,240,.34) !important; box-shadow:0 0 18px rgba(63,255,205,.16),inset 0 0 10px rgba(255,255,255,.05) !important; backdrop-filter:blur(8px); }
+    .orbit-node span { display:none !important; }
+    .sound-toggle { display:none !important; }
+    @media(max-width:700px) {
+      .hero { min-height:100svh !important; }
+      .hero-background-video { object-position:center center; }
+      .orbit-core-large { width:112px !important; height:112px !important; }
+      .orbit-node { transform:scale(.82); }
+    }
   </style>
 </head>
 <body>
@@ -867,13 +892,12 @@
       if (soundOn) { initAudio(); startAmbientBed(); playSound('chime'); }
       else stopAmbientBed();
     });
-    if (soundOn) { initAudio(); startAmbientBed(); }
+    // No synthetic voices, musical tones, or generated sound bed.
+    soundOn = false;
+    localStorage.setItem('shSoundOn', 'false');
+    stopAmbientBed();
     syncSoundButton();
-    document.querySelectorAll('button, a').forEach(element => {
-      element.addEventListener('mouseenter', () => playSound('hover'));
-      element.addEventListener('focus', () => playSound('focus'));
-      element.addEventListener('click', () => playSound('click'));
-    });
+    // Keep the interface silent; never synthesize a voice or sound effect.
 
     /* Animated particle field and cursor-reactive light. */
     const canvas = document.getElementById('fx-canvas');
@@ -1571,13 +1595,27 @@
     loadSharedConfig();
     const heroVideo = document.getElementById('hero-video');
     const startHeroVideo = () => {
-      heroVideo.currentTime = 0;
+      if (!heroVideo) return;
+      heroVideo.muted = true;
+      heroVideo.defaultMuted = true;
+      heroVideo.setAttribute('muted', '');
       const playback = heroVideo.play();
       if (playback && playback.catch) playback.catch(() => {});
     };
-    if (heroVideo.readyState >= 2) startHeroVideo();
-    else heroVideo.addEventListener('canplay', startHeroVideo, { once: true });
+    if (heroVideo && heroVideo.readyState >= 2) startHeroVideo();
+    else if (heroVideo) heroVideo.addEventListener('canplay', startHeroVideo, { once: true });
     window.addEventListener('pageshow', startHeroVideo);
+    // Mobile browsers block audible autoplay. A deliberate tap on the full-bleed hero unmutes
+    // the actual background clip so its original audio/voice can be heard.
+    document.querySelector('.hero').addEventListener('click', event => {
+      if (event.target.closest('a,button,.orbit-node')) return;
+      if (!heroVideo) return;
+      heroVideo.muted = false;
+      heroVideo.defaultMuted = false;
+      heroVideo.removeAttribute('muted');
+      heroVideo.volume = 1;
+      heroVideo.play().catch(() => {});
+    });
 
     document.querySelector('.contact-form').addEventListener('submit', event => {
       event.preventDefault();
