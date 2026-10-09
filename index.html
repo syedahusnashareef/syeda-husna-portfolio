@@ -578,6 +578,73 @@
     }
 
   </style>
+
+<style id="aura-journal-portfolio-styles">
+  .aura-featured { grid-column: span 6; min-height: 360px; border-color: color-mix(in srgb, var(--neon) 35%, var(--line)); background: radial-gradient(ellipse at 72% 20%, rgba(185,153,255,.2), transparent 38%), radial-gradient(ellipse at 20% 70%, rgba(93,255,205,.12), transparent 40%), #0b1012; }
+  .aura-featured .aura-project-bg { background: radial-gradient(circle at 75% 28%, rgba(184,145,255,.35), transparent 23%), radial-gradient(circle at 25% 45%, rgba(95,255,209,.16), transparent 35%), linear-gradient(135deg,#10191b,#12101c 68%,#090d11); opacity: .95; }
+  .aura-featured .aura-project-glow { position:absolute; z-index:0; width:190px; height:190px; right:11%; top:16%; border-radius:50%; border:1px solid rgba(180,255,224,.25); box-shadow:0 0 50px rgba(86,255,204,.09),inset 0 0 45px rgba(161,116,255,.1); }
+  .aura-featured .aura-project-glow::before,.aura-featured .aura-project-glow::after { content:""; position:absolute; inset:20px; border:1px solid rgba(190,173,255,.2); border-radius:50%; transform:rotate(40deg) scaleX(1.3); }
+  .aura-featured .aura-project-glow::after { transform:rotate(-40deg) scaleX(1.3); }
+  .aura-project-mark { position:relative; z-index:2; margin-bottom:auto; margin-top:44px; color:#e8fff6; font:700 30px Manrope,sans-serif; letter-spacing:-.08em; text-shadow:0 0 28px rgba(104,255,206,.5); }
+  .aura-project-mark span { margin-left:7px; color:var(--neon); font-size:16px; vertical-align:top; }
+  .aura-featured h3,.aura-featured p,.aura-featured .project-top { z-index:2; }
+  .aura-demo-open { position:relative; z-index:4; align-self:flex-start; display:inline-flex; align-items:center; gap:16px; margin-top:20px; padding:11px 15px; border:1px solid color-mix(in srgb,var(--neon) 45%,transparent); border-radius:999px; color:#f4fff9; background:rgba(8,20,18,.8); font:600 12px Manrope,sans-serif; cursor:pointer; transition:transform .2s,border-color .2s,background .2s; }
+  .aura-demo-open span { color:var(--neon); font-size:17px; }
+  .aura-demo-open:hover,.aura-demo-open:focus-visible { transform:translateY(-2px); border-color:var(--neon); background:rgba(24,50,42,.9); outline:none; }
+  .aura-demo-modal { position:fixed; inset:0; z-index:80; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(1,4,8,.82); backdrop-filter:blur(18px); }
+  .aura-demo-modal.is-open { display:flex; animation:auraDemoFade .22s ease-out; }
+  .aura-demo-panel { width:min(1080px,100%); max-height:min(790px,calc(100dvh - 40px)); overflow:hidden; display:grid; grid-template-rows:auto 1fr; border:1px solid rgba(155,255,217,.22); border-radius:24px; background:#0d1117; color:#eef5f2; box-shadow:0 28px 100px rgba(0,0,0,.6),0 0 60px rgba(73,255,193,.08); }
+  .aura-demo-head { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 22px; border-bottom:1px solid rgba(255,255,255,.09); background:linear-gradient(100deg,rgba(70,255,197,.06),rgba(160,120,255,.07)); }
+  .aura-demo-brand { display:flex; align-items:center; gap:12px; }
+  .aura-demo-logo { display:grid; place-items:center; width:42px; height:42px; border:1px solid rgba(123,255,206,.4); border-radius:14px; color:#b8ffe4; background:rgba(83,255,200,.08); font-weight:800; letter-spacing:-.08em; }
+  .aura-demo-brand strong { display:block; font-size:16px; letter-spacing:-.03em; }
+  .aura-demo-brand small { display:block; margin-top:3px; color:#8f9da9; font:10px "DM Mono",monospace; letter-spacing:.12em; text-transform:uppercase; }
+  .aura-demo-close { display:grid; place-items:center; width:38px; height:38px; border:1px solid rgba(255,255,255,.12); border-radius:50%; color:#eaf6f0; background:rgba(255,255,255,.04); font-size:23px; cursor:pointer; }
+  .aura-demo-body { display:grid; grid-template-columns:205px minmax(0,1fr); min-height:0; overflow:auto; }
+  .aura-demo-sidebar { padding:18px 12px; border-right:1px solid rgba(255,255,255,.08); background:#0a0e13; }
+  .aura-demo-sidebar-label { padding:0 10px 12px; color:#64727e; font:10px "DM Mono",monospace; letter-spacing:.14em; text-transform:uppercase; }
+  .aura-demo-tab { width:100%; display:flex; align-items:center; gap:10px; margin:3px 0; padding:12px 10px; border:1px solid transparent; border-radius:12px; text-align:left; color:#9aa8b4; background:transparent; font:500 13px Manrope,sans-serif; cursor:pointer; }
+  .aura-demo-tab span { width:20px; color:#a8ffd9; text-align:center; }
+  .aura-demo-tab.active { color:#e9fff5; border-color:rgba(120,255,205,.18); background:linear-gradient(90deg,rgba(93,255,204,.1),rgba(158,120,255,.06)); }
+  .aura-demo-tip { margin:24px 6px 0; padding:12px; border:1px solid rgba(255,255,255,.08); border-radius:12px; color:#7f8c98; font-size:11px; line-height:1.6; }
+  .aura-demo-tip b { color:#b8ffe0; font-weight:600; }
+  .aura-demo-main { min-width:0; padding:clamp(18px,3vw,34px); }
+  .aura-demo-kicker { color:#9bf9d4; font:10px "DM Mono",monospace; letter-spacing:.15em; text-transform:uppercase; }
+  .aura-demo-main h2 { margin:9px 0 5px; color:#f3f7f5; font-size:clamp(23px,3vw,34px); letter-spacing:-.06em; }
+  .aura-demo-sub { margin:0 0 24px; color:#8795a1; font-size:13px; }
+  .aura-demo-stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-bottom:24px; }
+  .aura-demo-stat { padding:15px; border:1px solid rgba(255,255,255,.08); border-radius:15px; background:linear-gradient(140deg,rgba(255,255,255,.045),rgba(255,255,255,.012)); }
+  .aura-demo-stat small { display:block; color:#8b99a5; font-size:11px; }
+  .aura-demo-stat strong { display:block; margin-top:8px; color:#dfffee; font-size:25px; letter-spacing:-.05em; }
+  .aura-demo-card { padding:17px; border:1px solid rgba(255,255,255,.09); border-radius:16px; background:rgba(255,255,255,.025); }
+  .aura-demo-card h3 { margin:0 0 14px; font-size:14px; color:#e8f4ef; }
+  .aura-demo-task { display:flex; align-items:center; gap:10px; padding:11px 0; border-top:1px solid rgba(255,255,255,.055); color:#c3cec9; font-size:13px; }
+  .aura-demo-task input { accent-color:#74f3be; width:16px; height:16px; }
+  .aura-demo-task.done span { color:#66766f; text-decoration:line-through; }
+  .aura-demo-notes { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+  .aura-demo-note { min-height:125px; padding:16px; border:1px solid rgba(255,255,255,.09); border-radius:15px; background:linear-gradient(145deg,rgba(109,255,203,.07),rgba(156,121,255,.05)); }
+  .aura-demo-note small { color:#8fa69c; font:10px "DM Mono",monospace; text-transform:uppercase; letter-spacing:.08em; }
+  .aura-demo-note strong { display:block; margin:10px 0 6px; color:#edf9f3; font-size:14px; }
+  .aura-demo-note p { margin:0; color:#93a29a; font-size:12px; line-height:1.5; }
+  .aura-demo-form { display:flex; gap:9px; margin:0 0 16px; }
+  .aura-demo-form input { min-width:0; flex:1; padding:12px 14px; border:1px solid rgba(255,255,255,.13); border-radius:11px; color:#f0fff8; background:#090d12; outline:none; }
+  .aura-demo-form input:focus { border-color:#75f2bd; }
+  .aura-demo-form button,.aura-demo-action { padding:11px 15px; border:1px solid rgba(117,242,189,.35); border-radius:11px; color:#dfffee; background:rgba(92,255,195,.09); font:600 12px Manrope,sans-serif; cursor:pointer; }
+  .aura-demo-week { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:7px; }
+  .aura-demo-day { min-height:90px; padding:9px 5px; border:1px solid rgba(255,255,255,.08); border-radius:10px; text-align:center; color:#8d9c97; font-size:10px; }
+  .aura-demo-day b { display:block; margin:7px 0; color:#e7fff4; font-size:16px; }
+  .aura-demo-day.active { border-color:rgba(117,242,189,.4); background:rgba(92,255,195,.08); }
+  .aura-demo-challenge { display:flex; align-items:center; gap:14px; padding:16px 0; border-top:1px solid rgba(255,255,255,.07); }
+  .aura-demo-challenge:first-of-type { border-top:0; }
+  .aura-demo-challenge .challenge-icon { display:grid; place-items:center; width:42px; height:42px; border-radius:13px; background:rgba(160,120,255,.12); font-size:19px; }
+  .aura-demo-challenge strong { display:block; font-size:13px; }
+  .aura-demo-challenge small { display:block; margin-top:4px; color:#819087; font-size:11px; }
+  .aura-demo-footnote { margin-top:20px; color:#6f7c87; font-size:10px; line-height:1.6; }
+  @keyframes auraDemoFade { from { opacity:0; } to { opacity:1; } }
+  @media (max-width:800px) { .aura-featured { grid-column:span 12; } .aura-demo-body { grid-template-columns:1fr; } .aura-demo-sidebar { display:flex; gap:5px; overflow-x:auto; padding:10px; border-right:0; border-bottom:1px solid rgba(255,255,255,.08); } .aura-demo-sidebar-label,.aura-demo-tip { display:none; } .aura-demo-tab { flex:0 0 auto; width:auto; margin:0; padding:10px 12px; } .aura-demo-tab span { display:none; } }
+  @media (max-width:520px) { .aura-demo-modal { padding:7px; } .aura-demo-panel { max-height:calc(100dvh - 14px); border-radius:18px; } .aura-demo-head { padding:13px; } .aura-demo-main { padding:16px 12px; } .aura-demo-stats { gap:6px; } .aura-demo-stat { padding:10px; } .aura-demo-stat strong { font-size:21px; } .aura-demo-notes { grid-template-columns:1fr; } .aura-demo-week { gap:3px; } .aura-demo-day { min-height:75px; padding:7px 2px; font-size:9px; } .aura-demo-form { flex-direction:column; } .aura-demo-form button { min-height:42px; } }
+</style>
+
 </head>
 <body>
   <div class="ambient-scene" aria-hidden="true">
@@ -762,6 +829,27 @@
       <div class="footer-bottom"><span>© 2026 Syeda Husna Tabassum. All rights reserved.</span><span>Made with intention / SH</span></div>
     </div>
   </footer>
+
+
+  <section class="aura-demo-modal" id="aura-demo-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="aura-demo-title">
+    <div class="aura-demo-panel">
+      <header class="aura-demo-head">
+        <div class="aura-demo-brand"><div class="aura-demo-logo">AJ</div><div><strong id="aura-demo-title">Aura Journal</strong><small>Interactive product preview · sample workspace</small></div></div>
+        <button class="aura-demo-close" type="button" aria-label="Close Aura Journal preview">×</button>
+      </header>
+      <div class="aura-demo-body">
+        <aside class="aura-demo-sidebar" aria-label="Aura Journal preview navigation">
+          <div class="aura-demo-sidebar-label">Workspace</div>
+          <button class="aura-demo-tab active" type="button" data-aura-view="dashboard"><span>⌂</span> Overview</button>
+          <button class="aura-demo-tab" type="button" data-aura-view="notes"><span>▤</span> Notes Studio</button>
+          <button class="aura-demo-tab" type="button" data-aura-view="planner"><span>▦</span> Planner</button>
+          <button class="aura-demo-tab" type="button" data-aura-view="challenges"><span>✧</span> Challenges</button>
+          <div class="aura-demo-tip"><b>Try it yourself.</b><br>Mark tasks complete, add a note, and switch between the workspace views.</div>
+        </aside>
+        <main class="aura-demo-main" id="aura-demo-content" tabindex="-1"></main>
+      </div>
+    </div>
+  </section>
 
   <button class="admin-fab" type="button" aria-label="Open admin control room" title="Admin control room"><span>SH</span></button>
   <section class="admin-overlay" aria-label="Admin control room" aria-hidden="true">
@@ -1321,6 +1409,14 @@
         grid.append(card);
         observer.observe(card);
       }
+      /* A dedicated interactive project preview stays available even when the owner edits the video cards. */
+      const auraCard = document.createElement('article');
+      auraCard.className = 'project aura-featured reveal visible';
+      auraCard.tabIndex = 0;
+      auraCard.setAttribute('aria-label', 'Aura Journal interactive product preview');
+      auraCard.innerHTML = '<div class="project-bg p4 aura-project-bg"></div><div class="aura-project-glow" aria-hidden="true"></div><div class="project-top"><span class="project-category">04 / PRODUCT DESIGN</span><span>↗</span></div><div class="aura-project-mark">AJ<span>✦</span></div><h3>Aura Journal</h3><p>A calm productivity space for notes, daily goals, weekly planning and creative routines.</p><button class="aura-demo-open" type="button">Explore interactive preview <span>↗</span></button>';
+      grid.append(auraCard);
+      observer.observe(auraCard);
     }
     function renderWorkEditor() {
       const list = document.getElementById('work-admin-list');
@@ -1744,5 +1840,94 @@
       if (hero && !hero.paused) hero.pause();
     }));
   </script>
+
+<script id="aura-journal-demo-script">
+(() => {
+  const modal = document.getElementById('aura-demo-modal');
+  const content = document.getElementById('aura-demo-content');
+  if (!modal || !content) return;
+  const demo = {
+    view: 'dashboard',
+    tasks: [
+      { id: 1, text: 'Plan this week’s creative projects', done: true },
+      { id: 2, text: 'Draft a product launch concept', done: false },
+      { id: 3, text: 'Create a 30-minute learning block', done: false },
+      { id: 4, text: 'Review notes and ideas', done: false }
+    ],
+    notes: [
+      { title: 'Creative direction', body: 'Keep the idea clear, the visuals intentional, and the message memorable.', tag: 'IDEA · TODAY' },
+      { title: 'Launch checklist', body: 'Audience → offer → visual story → content plan → launch review.', tag: 'PROJECT · NOTES' }
+    ]
+  };
+  const safe = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  const doneCount = () => demo.tasks.filter(task => task.done).length;
+  function open() {
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+    render();
+    const close = modal.querySelector('.aura-demo-close');
+    if (close) close.focus();
+  }
+  function close() {
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+  }
+  function header(kicker, title, sub) {
+    return '<div class="aura-demo-kicker">' + kicker + '</div><h2>' + title + '</h2><p class="aura-demo-sub">' + sub + '</p>';
+  }
+  function taskList() {
+    return demo.tasks.map(task => '<label class="aura-demo-task ' + (task.done ? 'done' : '') + '"><input type="checkbox" data-aura-task="' + task.id + '" ' + (task.done ? 'checked' : '') + '><span>' + safe(task.text) + '</span></label>').join('');
+  }
+  function noteCards() {
+    return '<div class="aura-demo-notes">' + demo.notes.map(note => '<article class="aura-demo-note"><small>' + safe(note.tag) + '</small><strong>' + safe(note.title) + '</strong><p>' + safe(note.body) + '</p></article>').join('') + '</div>';
+  }
+  function render() {
+    modal.querySelectorAll('[data-aura-view]').forEach(button => button.classList.toggle('active', button.dataset.auraView === demo.view));
+    if (demo.view === 'dashboard') {
+      content.innerHTML = header('YOUR SPACE / OVERVIEW', 'A little more clarity, every day.', 'A sample workspace for your ideas, goals and momentum.') +
+        '<div class="aura-demo-stats"><div class="aura-demo-stat"><small>Saved notes</small><strong>' + demo.notes.length + '</strong></div><div class="aura-demo-stat"><small>Tasks completed</small><strong>' + doneCount() + '/' + demo.tasks.length + '</strong></div><div class="aura-demo-stat"><small>Focus streak</small><strong>03 days</strong></div></div>' +
+        '<section class="aura-demo-card"><h3>Today’s focus <span style="color:#8b9b94;font-weight:400">· tap to complete</span></h3>' + taskList() + '</section><p class="aura-demo-footnote">This is a hands-on portfolio preview inspired by the Aura Journal project. Changes here are demo-only.</p>';
+    } else if (demo.view === 'notes') {
+      content.innerHTML = header('CAPTURE / NOTES STUDIO', 'Give your ideas a place to grow.', 'Create a sample note and see it appear in your workspace.') +
+        '<form class="aura-demo-form" id="aura-demo-note-form"><input id="aura-demo-note-title" maxlength="70" placeholder="Give your note a title…" required aria-label="Note title"><button type="submit">＋ Add note</button></form>' +
+        noteCards() + '<p class="aura-demo-footnote">Sample notes are kept only in this preview session and are not uploaded anywhere.</p>';
+    } else if (demo.view === 'planner') {
+      const days = [['MON','12'],['TUE','13'],['WED','14'],['THU','15'],['FRI','16'],['SAT','17'],['SUN','18']];
+      content.innerHTML = header('PLAN / WEEKLY VIEW', 'Make room for what matters.', 'A simple look at how daily tasks and weekly intentions come together.') +
+        '<div class="aura-demo-week">' + days.map((day,i) => '<div class="aura-demo-day ' + (i===2?'active':'') + '">' + day[0] + '<b>' + day[1] + '</b>' + (i===2?'Today':i===4?'Review':'Focus') + '</div>').join('') + '</div><section class="aura-demo-card" style="margin-top:16px"><h3>Weekly priorities</h3>' + taskList() + '</section><p class="aura-demo-footnote">Use the checkboxes to update your demo progress. No account or code required.</p>';
+    } else {
+      content.innerHTML = header('BUILD CONSISTENCY / CHALLENGES', 'Small steps become a practice.', 'A sample habit board for turning intentions into repeatable action.') +
+        '<section class="aura-demo-card"><div class="aura-demo-challenge"><div class="challenge-icon">✍️</div><div><strong>Write one useful idea</strong><small>5-day creativity challenge · 2 of 5 days</small></div></div><div class="aura-demo-challenge"><div class="challenge-icon">🎯</div><div><strong>Choose your top three</strong><small>Daily focus ritual · ' + doneCount() + ' tasks checked today</small></div></div><div class="aura-demo-challenge"><div class="challenge-icon">🌱</div><div><strong>Learn something small</strong><small>Skill-building habit · one step at a time</small></div></div></section><p class="aura-demo-footnote">The full project also includes theme customization and an AI-assistant interface; its AI responses are currently simulated in the source project.</p>';
+    }
+  }
+  document.querySelector('.work-grid')?.addEventListener('click', event => {
+    if (event.target.closest('.aura-demo-open')) { event.preventDefault(); open(); }
+  });
+  modal.querySelector('.aura-demo-close')?.addEventListener('click', close);
+  modal.addEventListener('click', event => { if (event.target === modal) close(); });
+  document.addEventListener('keydown', event => { if (event.key === 'Escape' && modal.classList.contains('is-open')) close(); });
+  modal.querySelectorAll('[data-aura-view]').forEach(button => button.addEventListener('click', () => { demo.view = button.dataset.auraView; render(); }));
+  modal.addEventListener('change', event => {
+    const input = event.target.closest('[data-aura-task]');
+    if (!input) return;
+    const task = demo.tasks.find(item => item.id === Number(input.dataset.auraTask));
+    if (task) task.done = input.checked;
+    render();
+  });
+  modal.addEventListener('submit', event => {
+    if (event.target.id !== 'aura-demo-note-form') return;
+    event.preventDefault();
+    const field = document.getElementById('aura-demo-note-title');
+    const title = field.value.trim();
+    if (!title) return;
+    demo.notes.unshift({ title, body: 'A new idea captured in your sample Aura Journal workspace.', tag: 'NEW NOTE · JUST NOW' });
+    demo.view = 'notes';
+    render();
+  });
+})();
+</script>
+
 </body>
 </html>
