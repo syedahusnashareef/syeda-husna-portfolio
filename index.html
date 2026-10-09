@@ -437,6 +437,7 @@
       50% { translate:4px -8px; rotate:1deg; }
       100% { translate:-3px 4px; rotate:3deg; }
     }
+    .n-higgsfield { top:37%; left:47%; }
     .n-metaai { top:24%; right:27%; }
     .n-chatgpt { top:22%; left:23%; } .n-gemini { top:14%; left:55%; }
     .n-veo { top:31%; right:10%; } .n-replit { top:48%; left:7%; }
@@ -468,6 +469,18 @@
     @media (prefers-reduced-motion: reduce) {
       .orbit-node, .ecosystem::before, .ecosystem::after, .orbit-core-large::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
     }
+
+  
+    /* Real showreel video inside the hero frame */
+    .hero-card-video { position:absolute; inset:0; z-index:0; width:100%; height:100%; object-fit:cover; background:#08080c; }
+    .video-card::before { z-index:1; background:linear-gradient(180deg,rgba(0,0,0,.34),transparent 24%,transparent 68%,rgba(0,0,0,.58)); }
+    .video-card .video-ui { z-index:2; pointer-events:none; }
+    .video-card .video-ui .play { pointer-events:auto; }
+    .video-card .video-top, .video-card .video-bottom { text-shadow:0 2px 12px rgba(0,0,0,.8); }
+    .video-card .play { background:rgba(6,6,10,.48); backdrop-filter:blur(8px); box-shadow:0 0 0 8px rgba(255,255,255,.04),0 0 42px rgba(135,100,255,.28); }
+    .video-card .play::after { transition:transform .2s ease; }
+    .video-card.is-playing .play::after { width:10px; height:15px; border:0; border-left:3px solid currentColor; border-right:3px solid currentColor; margin-left:0; }
+    .video-card.is-playing .video-top span:first-child { color:var(--neon); }
 
   </style>
 </head>
@@ -508,10 +521,11 @@
         </div>
         <div class="hero-visual reveal">
           <div class="video-card" role="img" aria-label="AI Creative Ecosystem orbit visual">
-            <div class="video-art"></div>
+            <video class="hero-card-video" id="hero-card-video" playsinline preload="metadata" poster="assets/hero-poster.jpg"><source src="assets/hero-showreel.mp4" type="video/mp4" /></video>
             <div class="ecosystem" aria-label="AI Creative Ecosystem">
               <div class="ecosystem-label">AI creative ecosystem<strong>tools I explore / 2026</strong></div>
               <div class="orbit-core-large"><span>SH</span><small>Syeda Husna Tabassum</small></div>
+              <span class="orbit-node n-higgsfield" style="--float:6.4s;--delay:-2.7s"><img src="https://www.google.com/s2/favicons?domain=higgsfield.ai&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Higgsfield</span></span>
               <span class="orbit-node n-metaai" style="--float:7.7s;--delay:-3.2s"><img src="https://www.google.com/s2/favicons?domain=meta.ai&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Meta AI</span></span>
               <span class="orbit-node near n-chatgpt" style="--float:7s;--delay:-1s"><img src="https://www.google.com/s2/favicons?domain=chatgpt.com&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>ChatGPT</span></span>
               <span class="orbit-node  n-gemini" style="--float:7.5s;--delay:-2s"><img src="https://www.google.com/s2/favicons?domain=gemini.google.com&amp;sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" /><span>Gemini</span></span>
@@ -536,7 +550,7 @@
             <div class="video-ui">
               <div class="video-top"><span>Showreel / 00:45</span><span>Available for ideas</span></div>
               <button class="play" aria-label="Showreel placeholder"></button>
-              <div class="video-bottom"><span><strong>Visual stories<br>for digital futures.</strong></span><span>SH — 01</span></div>
+              <div class="video-bottom"><span><strong>Visual stories<br>for digital futures.</strong></span><span>CREATIVE SHOWREEL</span></div>
             </div>
           </div>
         </div>
@@ -1032,7 +1046,46 @@
       ageMeta.hidden = !config.age;
       document.getElementById('age-value').textContent = config.age || '';
 
-      const heroVideo = document.getElementById('hero-video');
+  
+    /* Magical orbital motion: every app circles the SH core, accelerating and easing back. */
+    (() => {
+      const stage = document.querySelector('.ecosystem');
+      if (!stage) return;
+      const nodes = Array.from(stage.querySelectorAll('.orbit-node'));
+      const core = stage.querySelector('.orbit-core-large');
+      if (!nodes.length || !core) return;
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let previous = 0, elapsed = 0;
+      const states = nodes.map((node, i) => ({
+        node, angle: (Math.PI * 2 * i / nodes.length) + (i % 3) * .16,
+        ring: i % 4 === 0 ? .40 : (i % 3 === 0 ? .33 : .37),
+        speed: (i % 2 ? 1 : -1) * (.48 + (i % 5) * .075)
+      }));
+      function orbitFrame(now) {
+        if (!previous) previous = now;
+        const dt = Math.min((now - previous) / 1000, .04);
+        previous = now; elapsed += dt;
+        const box = stage.getBoundingClientRect();
+        const cx = box.width / 2, cy = box.height / 2;
+        const compact = window.matchMedia('(max-width:700px)').matches;
+        states.forEach((item, i) => {
+          const pulse = reduced ? .42 : .36 + (Math.sin(elapsed * .52 + i * .24) + 1) * .64;
+          item.angle += item.speed * pulse * dt;
+          const rx = box.width * item.ring * (compact ? .94 : 1);
+          const ry = box.height * (compact ? .33 : .35) * (i % 2 ? .96 : 1);
+          item.node.style.left = (cx + Math.cos(item.angle) * rx) + 'px';
+          item.node.style.top = (cy + Math.sin(item.angle) * ry) + 'px';
+          item.node.style.right = 'auto'; item.node.style.bottom = 'auto';
+          item.node.style.transform = 'translate(-50%,-50%)';
+          item.node.style.animation = 'none';
+        });
+        if (!reduced) requestAnimationFrame(orbitFrame);
+      }
+      requestAnimationFrame(orbitFrame);
+      window.addEventListener('resize', () => { previous = 0; });
+    })();
+
+    const heroVideo = document.getElementById('hero-video');
       const heroSource = document.querySelector('#hero-video source');
       const heroMediaUrl = await resolveMediaUrl(config.video || defaults.video, defaults.video);
       if (heroSource.src !== new URL(heroMediaUrl, document.baseURI).href) {
@@ -1496,22 +1549,24 @@
       event.currentTarget.reset(); playSound('submit');
     });
     document.querySelectorAll('.play').forEach(button => button.addEventListener('click', () => {
-      const video = document.getElementById('hero-video');
-      // The hero is a silent ambient background until the visitor explicitly asks to hear it.
+      const isHeroCard = Boolean(button.closest('.video-card'));
+      const video = document.getElementById(isHeroCard ? 'hero-card-video' : 'hero-video');
       document.querySelectorAll('.work-grid video').forEach(otherVideo => otherVideo.pause());
-      if (video.paused || video.muted) {
-        video.defaultMuted = false;
-        video.muted = false;
-        video.removeAttribute('muted');
-        video.volume = 1;
-        video.loop = false;
-        video.play().then(() => { button.setAttribute('aria-label', 'Pause showreel with sound'); }).catch(() => {
-          button.setAttribute('aria-label', 'Play showreel with sound');
+      if (!video) return;
+      if (video.paused) {
+        video.defaultMuted = false; video.muted = false; video.removeAttribute('muted');
+        video.volume = 1; video.loop = false; video.controls = true;
+        video.play().then(() => {
+          button.setAttribute('aria-label', 'Pause showreel');
+          if (isHeroCard) button.closest('.video-card').classList.add('is-playing');
+        }).catch(() => {
+          button.setAttribute('aria-label', 'Play showreel');
+          video.controls = true;
         });
         playSound('whoosh');
       } else {
-        video.pause();
-        button.setAttribute('aria-label', 'Play showreel with sound');
+        video.pause(); button.setAttribute('aria-label', 'Play showreel');
+        if (isHeroCard) button.closest('.video-card').classList.remove('is-playing');
         playSound('pulse');
       }
     }));
