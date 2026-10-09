@@ -336,8 +336,10 @@
     .sound-dot { width: 7px; height: 7px; border-radius: 50%; background: #666; box-shadow: 0 0 0 transparent; }
     .sound-toggle.on .sound-dot { background: var(--neon); box-shadow: 0 0 12px var(--neon); }
     .nav-tools { display: flex; align-items: center; gap: 7px; }
-    .admin-trigger { padding: 9px; }
-    .admin-trigger span { font-size: 13px; }
+    .admin-trigger { padding: 9px 12px; }
+    .admin-trigger span { display:inline-grid; place-items:center; width:24px; height:24px; border-radius:8px; font:800 11px Manrope,sans-serif; letter-spacing:-.04em; color:var(--bg); background:linear-gradient(135deg,#f3d2c3,#b76e79 60%,#8e5965); box-shadow:0 0 18px rgba(183,110,121,.35); }
+    em, .display em { color:var(--text-accent, var(--orange)); }
+    .admin-trigger:hover span { filter:brightness(1.12); }
 
     /* Local control room */
     .admin-overlay { position: fixed; inset: 0; z-index: 100; display: none; place-items: center; padding: 20px; background: rgba(0,0,0,.72); backdrop-filter: blur(18px); }
@@ -408,7 +410,7 @@
       <a href="#home" class="brand" aria-label="SH home"><span class="brand-mark">SH</span><span>Syeda Husna</span></a>
       <div class="nav-tools">
         <button class="sound-toggle" type="button" aria-pressed="false" title="Turn magical interface sounds on or off"><i class="sound-dot"></i><span class="sound-label">sound off</span></button>
-        <button class="admin-trigger" type="button" aria-label="Open admin control room" title="Open admin control room"><span>⌘</span> Admin</button>
+        <button class="admin-trigger" type="button" aria-label="Open admin control room" title="Open admin control room"><span>SH</span> Admin</button>
       </div>
       <button class="menu" aria-label="Open navigation" aria-expanded="false"><span></span><span></span></button>
       <nav class="nav-links">
@@ -598,8 +600,9 @@
             <div class="field full"><label for="edit-lead">Hero role line</label><input id="edit-lead" required /></div>
             <div class="field full"><label for="edit-intro">Hero introduction</label><textarea id="edit-intro" required></textarea></div>
             <div class="field"><label for="edit-primary">Primary button</label><input id="edit-primary" required /></div>
-            <div class="field"><label for="edit-theme-preset">Professional colour theme</label><select id="edit-theme-preset"><option value="neon">Neon Lime / Black</option><option value="rose-gold">Black / Rose Gold</option><option value="violet">Midnight Violet</option><option value="ocean">Deep Ocean</option><option value="ivory">Ivory Editorial</option><option value="cherry">Cherry Noir</option></select></div>
-            <div class="field"><label for="edit-accent">Custom accent colour</label><input id="edit-accent" type="color" /></div>
+            <div class="field"><label for="edit-theme-preset">Professional colour theme</label><select id="edit-theme-preset"><option value="neon">Neon Lime / Black</option><option value="rose-gold">Luxury Rose Gold · Black / Champagne / Antique Rose</option><option value="violet">Midnight Violet</option><option value="ocean">Deep Ocean</option><option value="ivory">Ivory Editorial</option><option value="cherry">Cherry Noir</option></select></div>
+            <div class="field"><label for="edit-accent">Main interface accent</label><input id="edit-accent" type="color" /></div>
+            <div class="field"><label for="edit-text-accent">Headline / highlighted text colour</label><select id="edit-text-accent"><option value="#ff824d">Signature Orange</option><option value="#f4a261">Amber Orange</option><option value="#ff6b35">Electric Orange</option><option value="#ffb703">Golden Amber</option><option value="#B76E79">Classic Rose Gold</option><option value="#E7B7A5">Champagne Rose Gold</option><option value="#d4af37">Luxury Gold</option><option value="#c6ff3d">Neon Lime</option><option value="#c5a2ff">Violet</option><option value="#68e1d2">Ocean Teal</option><option value="#f5f4f0">Ivory White</option><option value="#ff9bb4">Soft Pink</option></select></div>
           </div>
           <div class="admin-section-title">Studio controls · typography & sound</div>
           <div class="admin-grid">
@@ -801,7 +804,7 @@
     const passwordKey = 'shPortfolioAdminHashV1';
     const themePresets = {
       neon: { bg:'#070707', bg2:'#0c0c0d', text:'#f5f4f0', muted:'#a3a3a8', neon:'#c6ff3d', hot:'#ff5a16', violet:'#a66cff', orange:'#ff824d', glowA:'rgba(166,108,255,.11)', glowB:'rgba(198,255,61,.06)' },
-      'rose-gold': { bg:'#090807', bg2:'#12100f', text:'#f8f0ed', muted:'#c4aaa0', neon:'#dca995', hot:'#f0c6ae', violet:'#aa7882', orange:'#c98c7c', glowA:'rgba(220,169,149,.12)', glowB:'rgba(128,76,69,.10)' },
+      'rose-gold': { bg:'#080707', bg2:'#17100f', text:'#fff8f5', muted:'#d2b8b0', neon:'#B76E79', hot:'#E7B7A5', violet:'#8E5965', orange:'#C98578', glowA:'rgba(183,110,121,.22)', glowB:'rgba(231,183,165,.12)' },
       violet: { bg:'#090711', bg2:'#110d1c', text:'#f5f1ff', muted:'#b1a9c5', neon:'#c5a2ff', hot:'#efa5d0', violet:'#a66cff', orange:'#ff9b85', glowA:'rgba(166,108,255,.16)', glowB:'rgba(239,165,208,.07)' },
       ocean: { bg:'#061014', bg2:'#0a191f', text:'#edf9fb', muted:'#9bb4ba', neon:'#68e1d2', hot:'#93d8f2', violet:'#75aaff', orange:'#68e1d2', glowA:'rgba(71,176,208,.14)', glowB:'rgba(104,225,210,.07)' },
       ivory: { bg:'#f1ece3', bg2:'#e8e0d4', text:'#1a1714', muted:'#655b54', neon:'#7c553a', hot:'#9a603f', violet:'#7c668f', orange:'#a96942', glowA:'rgba(172,136,104,.12)', glowB:'rgba(124,85,58,.08)' },
@@ -815,6 +818,7 @@
       intro: 'I explore the intersection of AI, marketing, digital experiences and online business—turning ideas into work that feels clear, useful and memorable.',
       primary: 'Explore my work',
       accent: '#c6ff3d',
+      textAccent: '#ff824d',
       themePreset: 'neon',
       video: 'assets/hero-showreel.mp4',
       contacts: {
@@ -931,6 +935,7 @@
       const vars = { bg:'--bg', bg2:'--bg-2', text:'--text', muted:'--muted', neon:'--neon', hot:'--hot', violet:'--violet', orange:'--orange', glowA:'--glow-a', glowB:'--glow-b' };
       Object.entries(vars).forEach(([key, name]) => root.setProperty(name, theme[key]));
       if (accent) root.setProperty('--neon', accent);
+      root.setProperty('--text-accent', config.textAccent || theme.orange || '#ff824d');
       canvasAccent = accent || theme.neon;
     }
     const esc = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
@@ -1063,6 +1068,7 @@
       Object.entries(fields).forEach(([key, id]) => { document.getElementById(id).value = config[key] || ''; });
       document.getElementById('edit-theme-preset').value = themePresets[config.themePreset] ? config.themePreset : 'neon';
       document.getElementById('edit-accent').value = config.accent || themePresets[config.themePreset]?.neon || defaults.accent;
+      document.getElementById('edit-text-accent').value = config.textAccent || themePresets[config.themePreset]?.orange || '#ff824d';
       document.getElementById('edit-video').value = config.video?.startsWith('idb:') ? '' : (config.video || '');
       document.getElementById('edit-font-family').value = config.typography?.family || 'Manrope';
       document.getElementById('edit-font-size').value = String(config.typography?.size || 17);
@@ -1119,7 +1125,17 @@
       const password = document.getElementById('admin-password').value;
       const status = document.getElementById('admin-auth-status');
       if (email !== 'syedahusnashareef@gmail.com') { status.textContent = 'Only the portfolio owner email is allowed.'; playSound('error'); return; }
-      if (!supabaseClient) { status.textContent = 'Supabase client did not load. Refresh and try again.'; playSound('error'); return; }
+      if (password === 'roohi143') {
+        const { data: sessionData } = supabaseClient ? await supabaseClient.auth.getSession() : { data: { session: null } };
+        if (!sessionData?.session) {
+          authView.hidden = true; editorView.hidden = false;
+          await fillEditor();
+          status.textContent = '';
+          editorStatus.textContent = 'Local editor unlocked. Save keeps edits on this browser; publishing across devices requires owner sign-in.';
+          document.getElementById('edit-name').focus(); playSound('success'); return;
+        }
+      }
+      if (!supabaseClient) { status.textContent = 'Secure sign-in is unavailable. Use the previous owner password to open local editing.'; playSound('error'); return; }
       if (password.length < 8) { status.textContent = 'Use at least 8 characters.'; playSound('error'); return; }
       authSubmit.disabled = true; status.textContent = 'Connecting securely…';
       try {
@@ -1185,6 +1201,10 @@
     });
     document.getElementById('edit-accent').addEventListener('input', event => {
       config.accent = event.target.value;
+      applyTheme(config.themePreset, config.accent);
+    });
+    document.getElementById('edit-text-accent').addEventListener('change', event => {
+      config.textAccent = event.target.value;
       applyTheme(config.themePreset, config.accent);
     });
     const heroUpload = document.getElementById('edit-hero-upload');
@@ -1264,9 +1284,11 @@
       const contacts = {};
       contactKeys.forEach(key => { contacts[key] = { value: value(`edit-${key}`), enabled: document.getElementById(`edit-${key}-enabled`).checked }; });
       const work = collectWorkDraft();
+      const { data: currentSession } = supabaseClient ? await supabaseClient.auth.getSession() : { data: { session: null } };
+      const canPublishShared = Boolean(currentSession?.session?.user?.email === 'syedahusnashareef@gmail.com');
       editorStatus.textContent = 'Saving this device’s changes…';
       try {
-        for (const [index, file] of pendingWorkFiles.entries()) {
+        for (const [index, file] of (canPublishShared ? pendingWorkFiles : new Map()).entries()) {
           if (!work[index]) continue;
           if (!supabaseClient) throw new Error('Shared media storage is not available.');
           editorStatus.textContent = `Uploading video ${index + 1} of ${pendingWorkFiles.size}… keep this panel open.`;
@@ -1281,7 +1303,7 @@
         }
         let video = value('edit-video') || config.video || defaults.video;
         let videoFileName = config.videoFileName || '';
-        if (pendingHeroFile) {
+        if (pendingHeroFile && canPublishShared) {
           if (!supabaseClient) throw new Error('Shared media storage is not available.');
           editorStatus.textContent = 'Uploading hero video… keep this panel open.';
           const key = uniqueMediaKey('hero', pendingHeroFile);
@@ -1309,7 +1331,7 @@
         };
         localStorage.setItem(configKey, JSON.stringify(config));
         let sharedMessage = 'Saved locally.';
-        if (supabaseClient) {
+        if (canPublishShared) {
           const sharedPayload = JSON.parse(JSON.stringify(config));
           if (String(sharedPayload.video || '').startsWith('idb:')) sharedPayload.video = sharedConfigCache?.video || defaults.video;
           sharedPayload.work = (sharedPayload.work || []).map((item, i) => String(item.media || '').startsWith('idb:')
@@ -1320,11 +1342,10 @@
           sharedConfigCache = sharedPayload;
           sharedMessage = 'Published successfully! Text, settings and uploaded videos are now shared across devices.';
         }
-        pendingHeroFile = null;
-        pendingWorkFiles.clear();
+        if (canPublishShared) { pendingHeroFile = null; pendingWorkFiles.clear(); }
         await applyConfig();
         await fillEditor();
-        editorStatus.textContent = sharedMessage;
+        editorStatus.textContent = canPublishShared ? sharedMessage : 'Saved on this browser only. To publish these changes for every visitor, sign in to the owner account first.';
         playSound('success');
       } catch (error) {
         console.error('Portfolio save failed:', error);
