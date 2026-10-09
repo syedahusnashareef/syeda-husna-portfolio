@@ -1419,8 +1419,8 @@
       auraCard.className = 'project aura-featured reveal visible';
       auraCard.tabIndex = 0;
       auraCard.setAttribute('aria-label', 'Aura Journal interactive product preview');
-      auraCard.innerHTML = '<div class="project-bg p4 aura-project-bg"></div><div class="aura-project-glow" aria-hidden="true"></div><div class="project-top"><span class="project-category">04 / PRODUCT DESIGN</span><span>↗</span></div><div class="aura-project-mark">AJ<span>✦</span></div><h3>Aura Journal</h3><p>A calm productivity space for notes, daily goals, weekly planning and creative routines.</p><div class="aura-project-actions"><button class="aura-demo-open" type="button">Explore interactive preview <span>↗</span></button><a class="aura-live-open" href="https://aurajournal-husna.surge.sh/" target="_blank" rel="noopener noreferrer">Launch live app <span>↗</span></a></div>';
-      grid.append(auraCard);
+      auraCard.innerHTML = '<div class="project-bg p4 aura-project-bg"></div><div class="aura-project-glow" aria-hidden="true"></div><div class="project-top"><span class="project-category">FEATURED / ZERO-CODE APP</span><span>↗</span></div><div class="aura-project-mark">AJ<span>✦</span></div><h3>Aura Journal</h3><p>A thoughtfully designed zero-code productivity app for capturing notes, organizing tasks, planning your week, and building better daily routines.</p><div class="aura-project-actions"><button class="aura-demo-open" type="button">Try interactive demo <span>↗</span></button><a class="aura-live-open" href="https://aurajournal-husna.surge.sh/" target="_blank" rel="noopener noreferrer">Visit app <span>↗</span></a></div>';
+      grid.prepend(auraCard);
       observer.observe(auraCard);
     }
     function renderWorkEditor() {
