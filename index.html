@@ -1356,7 +1356,7 @@
           sharedConfigCache = sharedPayload;
           sharedMessage = 'Published successfully! Text, settings and uploaded videos are now shared across devices.';
         }
-        if (canPublishShared) { pendingHeroFile = null; pendingWorkFiles.clear(); }
+        pendingHeroFile = null; pendingWorkFiles.clear();
         await applyConfig();
         await fillEditor();
         editorStatus.textContent = canPublishShared ? sharedMessage : 'Saved on this browser only. To publish these changes for every visitor, sign in to the owner account first.';
