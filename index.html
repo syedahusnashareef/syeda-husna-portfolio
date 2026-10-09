@@ -590,6 +590,11 @@
   .aura-featured h3,.aura-featured p,.aura-featured .project-top { z-index:2; }
   .aura-demo-open { position:relative; z-index:4; align-self:flex-start; display:inline-flex; align-items:center; gap:16px; margin-top:20px; padding:11px 15px; border:1px solid color-mix(in srgb,var(--neon) 45%,transparent); border-radius:999px; color:#f4fff9; background:rgba(8,20,18,.8); font:600 12px Manrope,sans-serif; cursor:pointer; transition:transform .2s,border-color .2s,background .2s; }
   .aura-demo-open span { color:var(--neon); font-size:17px; }
+  .aura-project-actions { position:relative; z-index:4; display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-top:20px; }
+  .aura-project-actions .aura-demo-open { margin-top:0; }
+  .aura-live-open { display:inline-flex; align-items:center; gap:10px; padding:11px 15px; border:1px solid rgba(190,173,255,.28); border-radius:999px; color:#e8ddff; background:rgba(22,17,35,.72); font:600 12px Manrope,sans-serif; text-decoration:none; transition:transform .2s,border-color .2s,background .2s; }
+  .aura-live-open:hover,.aura-live-open:focus-visible { transform:translateY(-2px); border-color:rgba(190,173,255,.75); background:rgba(42,29,63,.88); outline:none; }
+  .aura-live-open span { color:#c6a8ff; font-size:17px; }
   .aura-demo-open:hover,.aura-demo-open:focus-visible { transform:translateY(-2px); border-color:var(--neon); background:rgba(24,50,42,.9); outline:none; }
   .aura-demo-modal { position:fixed; inset:0; z-index:80; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(1,4,8,.82); backdrop-filter:blur(18px); }
   .aura-demo-modal.is-open { display:flex; animation:auraDemoFade .22s ease-out; }
@@ -1414,7 +1419,7 @@
       auraCard.className = 'project aura-featured reveal visible';
       auraCard.tabIndex = 0;
       auraCard.setAttribute('aria-label', 'Aura Journal interactive product preview');
-      auraCard.innerHTML = '<div class="project-bg p4 aura-project-bg"></div><div class="aura-project-glow" aria-hidden="true"></div><div class="project-top"><span class="project-category">04 / PRODUCT DESIGN</span><span>↗</span></div><div class="aura-project-mark">AJ<span>✦</span></div><h3>Aura Journal</h3><p>A calm productivity space for notes, daily goals, weekly planning and creative routines.</p><button class="aura-demo-open" type="button">Explore interactive preview <span>↗</span></button>';
+      auraCard.innerHTML = '<div class="project-bg p4 aura-project-bg"></div><div class="aura-project-glow" aria-hidden="true"></div><div class="project-top"><span class="project-category">04 / PRODUCT DESIGN</span><span>↗</span></div><div class="aura-project-mark">AJ<span>✦</span></div><h3>Aura Journal</h3><p>A calm productivity space for notes, daily goals, weekly planning and creative routines.</p><div class="aura-project-actions"><button class="aura-demo-open" type="button">Explore interactive preview <span>↗</span></button><a class="aura-live-open" href="https://aurajournal-husna.surge.sh/" target="_blank" rel="noopener noreferrer">Launch live app <span>↗</span></a></div>';
       grid.append(auraCard);
       observer.observe(auraCard);
     }
