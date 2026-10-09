@@ -997,7 +997,8 @@
         card.append(backdrop);
         let video = null;
         let playButton = null;
-        const mediaUrl = await resolveMediaUrl(item.media || '', '');
+        const publicFallbackMedia = defaults.work[i]?.media || '';
+        const mediaUrl = await resolveMediaUrl(item.media || '', publicFallbackMedia);
         if (mediaUrl && isVideoPath(item.media, item)) {
           video = document.createElement('video');
           video.className = 'project-media';
