@@ -767,6 +767,8 @@
     /* A small, optional Web Audio sound library: 20 distinct procedural cues, no audio files or autoplay. */
     let audioContext;
     let masterGain;
+    let ambientBus = null;
+    let ambientOscillators = [];
     let soundOn = localStorage.getItem('shSoundOn') === 'true';
     const soundButton = document.querySelector('.sound-toggle');
     const soundNames = ['click', 'hover', 'nav', 'open', 'close', 'whoosh', 'shimmer', 'sparkle', 'chime', 'success', 'error', 'submit', 'focus', 'toggle', 'pulse', 'scan', 'page', 'magnetic', 'ambient', 'admin'];
@@ -776,6 +778,38 @@
       masterGain = audioContext.createGain();
       masterGain.gain.value = .14;
       masterGain.connect(audioContext.destination);
+    }
+    // A very soft, positive sci-fi ambient pad. It starts only after the visitor enables sound.
+    function startAmbientBed() {
+      initAudio();
+      if (audioContext.state === 'suspended') audioContext.resume();
+      if (ambientOscillators.length) return;
+      ambientBus = audioContext.createGain();
+      ambientBus.gain.setValueAtTime(.001, audioContext.currentTime);
+      ambientBus.gain.linearRampToValueAtTime(.045, audioContext.currentTime + 2.4);
+      const filter = audioContext.createBiquadFilter();
+      filter.type = 'lowpass'; filter.frequency.value = 950; filter.Q.value = .35;
+      ambientBus.connect(filter).connect(masterGain);
+      [174.61, 261.63, 349.23, 392.00].forEach((frequency, index) => {
+        const oscillator = audioContext.createOscillator();
+        const voiceGain = audioContext.createGain();
+        oscillator.type = 'sine';
+        oscillator.frequency.value = frequency;
+        oscillator.detune.value = index % 2 ? -4 : 4;
+        voiceGain.gain.value = index === 0 ? .30 : .13;
+        oscillator.connect(voiceGain).connect(ambientBus);
+        oscillator.start();
+        ambientOscillators.push(oscillator);
+      });
+    }
+    function stopAmbientBed() {
+      if (!ambientBus || !audioContext) return;
+      const bus = ambientBus;
+      bus.gain.cancelScheduledValues(audioContext.currentTime);
+      bus.gain.setTargetAtTime(.001, audioContext.currentTime, .18);
+      ambientOscillators.forEach(oscillator => { try { oscillator.stop(audioContext.currentTime + .8); } catch (_) {} });
+      ambientOscillators = [];
+      ambientBus = null;
     }
     function audioTone(freq, duration, type = 'sine', volume = .12, delay = 0, detune = 0) {
       if (!soundOn) return;
@@ -825,12 +859,15 @@
       soundButton.setAttribute('aria-pressed', String(soundOn));
       soundButton.querySelector('.sound-label').textContent = soundOn ? 'sound on' : 'sound off';
     }
+    soundButton.title = 'Turn soft ambient sound and interface effects on or off';
     soundButton.addEventListener('click', () => {
       soundOn = !soundOn;
       localStorage.setItem('shSoundOn', String(soundOn));
       syncSoundButton();
-      if (soundOn) { initAudio(); playSound('chime'); }
+      if (soundOn) { initAudio(); startAmbientBed(); playSound('chime'); }
+      else stopAmbientBed();
     });
+    if (soundOn) { initAudio(); startAmbientBed(); }
     syncSoundButton();
     document.querySelectorAll('button, a').forEach(element => {
       element.addEventListener('mouseenter', () => playSound('hover'));
@@ -1554,14 +1591,25 @@
       document.querySelectorAll('.work-grid video').forEach(otherVideo => otherVideo.pause());
       if (!video) return;
       if (video.paused) {
-        video.defaultMuted = false; video.muted = false; video.removeAttribute('muted');
-        video.volume = 1; video.loop = false; video.controls = true;
+        // Stop the decorative muted background copy so only the selected player is active.
+        if (isHeroCard) {
+          const backgroundVideo = document.getElementById('hero-video');
+          if (backgroundVideo && backgroundVideo !== video) backgroundVideo.pause();
+        }
+        video.defaultMuted = false;
+        video.muted = false;
+        video.removeAttribute('muted');
+        video.volume = 1;
+        video.loop = false;
+        video.controls = true;
+        video.setAttribute('controls', '');
         video.play().then(() => {
           button.setAttribute('aria-label', 'Pause showreel');
           if (isHeroCard) button.closest('.video-card').classList.add('is-playing');
         }).catch(() => {
           button.setAttribute('aria-label', 'Play showreel');
           video.controls = true;
+          video.setAttribute('controls', '');
         });
         playSound('whoosh');
       } else {
