@@ -1229,7 +1229,6 @@
     });
     document.getElementById('add-work').addEventListener('click', () => {
       config.work = collectWorkDraft();
-      if (config.work.length >= 500) { editorStatus.textContent = 'Browser performance limit reached. Connect shared storage for large portfolios.'; return; }
       config.work.push({ enabled: true, title: 'New project', category: '', description: '', media: '' });
       renderWorkEditor();
       document.getElementById(`edit-work-${config.work.length - 1}-title`).focus();
