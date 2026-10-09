@@ -215,13 +215,7 @@
     .p6 { background: radial-gradient(circle at 70% 30%, rgba(255,255,255,.25), transparent 2%), #171717; }
     .project::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(transparent 35%, rgba(0,0,0,.88)); }
     .project-media { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; opacity: .74; filter: saturate(.8) contrast(1.06); background: #0b0b0c; transition: transform .6s, opacity .3s; }
-    .project .video-audio-toggle { position:absolute; top:14px; right:14px; z-index:8; display:inline-flex; align-items:center; gap:7px; max-width:calc(100% - 28px); padding:10px 12px; border:1px solid rgba(255,255,255,.34); border-radius:999px; color:#fff; background:rgba(7,10,14,.84); box-shadow:0 6px 20px rgba(0,0,0,.24); backdrop-filter:blur(12px); cursor:pointer; font:600 10px/1.15 "DM Mono",monospace; letter-spacing:.045em; text-transform:uppercase; }
-    .project .video-audio-toggle.is-on { border-color:var(--neon); color:var(--neon); background:rgba(4,12,10,.9); }
-    .project .video-audio-toggle:focus-visible { outline:2px solid var(--neon); outline-offset:3px; }
-    .hero-audio-toggle { position:absolute; z-index:35; top:96px; right:clamp(14px,3vw,42px); display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:42px; padding:0 15px; border:1px solid rgba(255,255,255,.3); border-radius:999px; color:#fff; background:rgba(5,8,12,.72); box-shadow:0 6px 24px rgba(0,0,0,.2); backdrop-filter:blur(14px); cursor:pointer; font:600 10px "DM Mono",monospace; letter-spacing:.045em; text-transform:uppercase; }
-    .hero-audio-toggle.is-on { border-color:var(--neon); color:var(--neon); }
-    .hero-audio-toggle:focus-visible { outline:2px solid var(--neon); outline-offset:3px; }
-    @media(max-width:700px){.hero-audio-toggle{top:92px;right:12px;min-height:38px;padding:0 11px;font-size:9px}.project .video-audio-toggle{top:10px;right:10px;padding:9px 10px;font-size:9px}}
+
     .project:hover .project-media { transform: scale(1.05); opacity: .9; }
     .project-play { position: absolute; z-index: 2; top: 46%; left: 50%; transform: translate(-50%, -50%); min-width: 58px; min-height: 58px; padding: 0 15px; border: 1px solid rgba(255,255,255,.66); border-radius: 999px; color: #fff; background: rgba(0,0,0,.58); box-shadow: 0 8px 28px rgba(0,0,0,.35); cursor: pointer; font-size: 18px; }
     .project-play:hover, .project-play:focus-visible { color: #090909; border-color: var(--neon); background: var(--neon); outline: none; }
@@ -702,7 +696,6 @@
       <video class="hero-background-video" id="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/hero-poster.jpg" aria-label="Cinematic hero background video">
         <source src="assets/hero-showreel.mp4" type="video/mp4" />
       </video>
-      <button class="hero-audio-toggle" id="hero-audio-toggle" type="button" aria-pressed="false" aria-label="Enable hero video audio">🔇 Enable video audio</button>
       <div class="hero-background-overlay"></div>
       <div class="wrap hero-grid">
         <div class="hero-copy reveal">
@@ -1800,122 +1793,66 @@
       video.volume = 1;
       video.loop = false;
       video.removeAttribute('muted');
+      video.playsInline = true;
+      video.setAttribute('playsinline', '');
 
-      const card = video.closest('.project');
-      let audioButton = card?.querySelector('.video-audio-toggle');
-      if (!audioButton && card) {
-        audioButton = document.createElement('button');
-        audioButton.type = 'button';
-        audioButton.className = 'video-audio-toggle';
-        audioButton.textContent = '🔊 PLAY WITH SOUND';
-        audioButton.setAttribute('aria-label', 'Play video with audio');
-        audioButton.title = 'Play this video with its original audio';
-        card.append(audioButton);
-      }
-
-      const syncAudioButton = () => {
-        if (!audioButton) return;
-        const isAudible = !video.muted && video.volume > 0;
-        audioButton.classList.toggle('is-on', isAudible && !video.paused);
-        audioButton.textContent = isAudible ? '🔊 AUDIO ENABLED' : '🔇 PLAY WITH SOUND';
-        audioButton.setAttribute('aria-label', isAudible ? 'Mute video audio' : 'Play video with audio');
-        audioButton.title = isAudible ? 'Tap to mute this video' : 'Tap to play or unmute this video';
-      };
-
-      if (audioButton) audioButton.addEventListener('click', event => {
-        event.preventDefault();
-        event.stopPropagation();
-        if (!video.muted && video.volume > 0 && !video.paused) {
-          video.muted = true;
-        } else {
-          video.defaultMuted = false;
-          video.muted = false;
-          video.removeAttribute('muted');
-          video.volume = 1;
-          if (video.paused) {
-            const playback = video.play();
-            if (playback && playback.catch) playback.catch(error => {
-              console.warn('Video playback was blocked by the browser:', error);
-              syncAudioButton();
-            });
-          }
-        }
-        syncAudioButton();
-      });
-
-      video.addEventListener('volumechange', syncAudioButton);
-      video.addEventListener('pause', syncAudioButton);
-      video.addEventListener('play', () => {
+      const makeAudible = () => {
         video.defaultMuted = false;
         video.muted = false;
         video.removeAttribute('muted');
-        video.volume = 1;
+        if (video.volume === 0) video.volume = 1;
+      };
+
+      // A tap/click on the actual video is the single action: start it with sound.
+      video.addEventListener('pointerdown', makeAudible, { passive: true });
+      video.addEventListener('click', () => {
+        makeAudible();
+        if (video.paused) {
+          const playback = video.play();
+          if (playback && playback.catch) playback.catch(error => {
+            console.warn('Video playback was blocked by the browser:', error);
+          });
+        }
+      });
+
+      video.addEventListener('play', () => {
+        makeAudible();
         document.querySelectorAll('.work-grid video').forEach(otherVideo => {
           if (otherVideo !== video) otherVideo.pause();
         });
-        syncAudioButton();
+        const hero = document.getElementById('hero-video');
+        if (hero && !hero.paused) hero.pause();
       });
-      syncAudioButton();
     }
     document.querySelectorAll('.work-grid video').forEach(prepareAudiblePortfolioVideo);
     applyConfig();
     loadSharedConfig();
 
     const heroVideo = document.getElementById('hero-video');
-    const heroAudioButton = document.getElementById('hero-audio-toggle');
-    let heroAudioEnabled = false;
-    const syncHeroAudioButton = () => {
-      if (!heroAudioButton) return;
-      heroAudioButton.classList.toggle('is-on', heroAudioEnabled);
-      heroAudioButton.setAttribute('aria-pressed', String(heroAudioEnabled));
-      heroAudioButton.setAttribute('aria-label', heroAudioEnabled ? 'Mute hero video audio' : 'Enable hero video audio');
-      heroAudioButton.textContent = heroAudioEnabled ? '🔊 Video audio on' : '🔇 Enable video audio';
-    };
-    const setHeroAudioEnabled = enabled => {
-      if (!heroVideo) return;
-      heroAudioEnabled = Boolean(enabled);
-      heroVideo.defaultMuted = !heroAudioEnabled;
-      heroVideo.muted = !heroAudioEnabled;
-      if (heroAudioEnabled) {
-        heroVideo.removeAttribute('muted');
-        heroVideo.volume = 1;
-        const playback = heroVideo.play();
-        if (playback && playback.catch) playback.catch(error => {
-          console.warn('Hero video playback was blocked by the browser:', error);
-        });
-      } else {
-        heroVideo.setAttribute('muted', '');
-      }
-      syncHeroAudioButton();
-    };
-    if (heroAudioButton) heroAudioButton.addEventListener('click', event => {
-      event.preventDefault();
-      event.stopPropagation();
-      setHeroAudioEnabled(!heroAudioEnabled);
-    });
-
     const startHeroVideo = () => {
       if (!heroVideo) return;
-      heroVideo.defaultMuted = !heroAudioEnabled;
-      heroVideo.muted = !heroAudioEnabled;
-      if (heroAudioEnabled) {
-        heroVideo.removeAttribute('muted');
-        heroVideo.volume = 1;
-      } else {
-        heroVideo.setAttribute('muted', '');
-      }
+      // Browsers mute autoplay by policy; the video itself is unmuted on the first direct tap.
+      heroVideo.defaultMuted = true;
+      heroVideo.muted = true;
+      heroVideo.setAttribute('muted', '');
       const playback = heroVideo.play();
       if (playback && playback.catch) playback.catch(() => {});
-      syncHeroAudioButton();
     };
     if (heroVideo && heroVideo.readyState >= 2) startHeroVideo();
     else if (heroVideo) heroVideo.addEventListener('canplay', startHeroVideo, { once: true });
     window.addEventListener('pageshow', startHeroVideo);
 
-    // Tapping a clear area of the hero is also an explicit gesture to enable original video audio.
     document.querySelector('.hero').addEventListener('click', event => {
       if (event.target.closest('a,button,.orbit-node')) return;
-      if (heroVideo) setHeroAudioEnabled(true);
+      if (!heroVideo) return;
+      heroVideo.defaultMuted = false;
+      heroVideo.muted = false;
+      heroVideo.removeAttribute('muted');
+      heroVideo.volume = 1;
+      const playback = heroVideo.play();
+      if (playback && playback.catch) playback.catch(error => {
+        console.warn('Hero video playback was blocked by the browser:', error);
+      });
     });
 
     document.querySelector('.contact-form').addEventListener('submit', event => {
