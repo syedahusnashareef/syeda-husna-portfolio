@@ -1288,6 +1288,14 @@
       const canPublishShared = Boolean(currentSession?.session?.user?.email === 'syedahusnashareef@gmail.com');
       editorStatus.textContent = 'Saving this device’s changes…';
       try {
+        if (!canPublishShared) {
+          for (const [index, file] of pendingWorkFiles.entries()) {
+            if (!work[index]) continue;
+            const key = `work-${index}-${Date.now()}`;
+            await saveMediaFile(key, file);
+            work[index].media = `idb:${key}`; work[index].mediaType = 'video'; work[index].fileName = file.name;
+          }
+        }
         for (const [index, file] of (canPublishShared ? pendingWorkFiles : new Map()).entries()) {
           if (!work[index]) continue;
           if (!supabaseClient) throw new Error('Shared media storage is not available.');
@@ -1303,6 +1311,11 @@
         }
         let video = value('edit-video') || config.video || defaults.video;
         let videoFileName = config.videoFileName || '';
+        if (pendingHeroFile && !canPublishShared) {
+          const key = `hero-${Date.now()}`;
+          await saveMediaFile(key, pendingHeroFile);
+          video = `idb:${key}`; videoFileName = pendingHeroFile.name;
+        }
         if (pendingHeroFile && canPublishShared) {
           if (!supabaseClient) throw new Error('Shared media storage is not available.');
           editorStatus.textContent = 'Uploading hero video… keep this panel open.';
