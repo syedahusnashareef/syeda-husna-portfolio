@@ -584,6 +584,7 @@
           <p class="admin-warning">Shared text and settings sync through Supabase. Video files selected from your device remain local until shared media storage is ready.</p>
           <p class="admin-status" id="admin-auth-status" role="status"></p>
           <div class="admin-toolbar"><span class="muted">Owner access · Supabase</span><button class="btn btn-primary" type="submit" id="admin-auth-submit">Sign in / Create account <span>↗</span></button></div>
+          <button class="btn" type="button" id="admin-reset-password" style="margin-top:12px">Forgot password? Email me a reset link</button>
         </form>
       </div>
       <div class="admin-view" id="admin-editor-view" hidden>
@@ -1139,6 +1140,18 @@
         status.textContent = ''; document.getElementById('edit-name').focus(); playSound('success');
       } catch (error) { status.textContent = error.message || 'Sign-in failed. Check email and password.'; playSound('error'); }
       finally { authSubmit.disabled = false; }
+    });
+    document.getElementById('admin-reset-password').addEventListener('click', async () => {
+      const email = document.getElementById('admin-email').value.trim().toLowerCase();
+      const status = document.getElementById('admin-auth-status');
+      if (email !== 'syedahusnashareef@gmail.com') { status.textContent = 'Enter the portfolio owner email first.'; return; }
+      if (!supabaseClient) { status.textContent = 'Supabase did not load. Refresh and try again.'; return; }
+      status.textContent = 'Sending password reset email…';
+      try {
+        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, { redirectTo: 'https://syedahusnashareef.github.io/syeda-husna-portfolio/' });
+        if (error) throw error;
+        status.textContent = 'Reset email sent if the account is eligible. Check Inbox and Spam.';
+      } catch (error) { status.textContent = error.message || 'Could not send reset email.'; }
     });
     const editorStatus = document.getElementById('admin-editor-status');
     const workEditor = document.getElementById('work-admin-list');
