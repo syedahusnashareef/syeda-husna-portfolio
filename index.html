@@ -612,7 +612,7 @@
           <div class="admin-section-title">Media & portfolio</div>
           <div class="admin-grid">
             <div class="field full"><label for="edit-video">Hero video URL (optional)</label><input id="edit-video" placeholder="Paste a public .mp4 URL" /></div>
-            <div class="field full"><p class="admin-help">Choose a video from your phone gallery or computer. Preview it before saving. MP4 (H.264) plays on the widest range of phones. Uploads on this GitHub Pages version stay in this browser until shared publishing is connected.</p></div>
+            <div class="field full"><p class="admin-help">Choose a video from your phone gallery or computer. Videos upload to shared Supabase storage so they can appear across devices. Keep this panel open until publishing finishes. MP4 (H.264) is recommended.</p></div>
             <div class="field full"><div class="upload-row"><label class="upload-button" for="edit-hero-upload">＋ Choose hero video from gallery<input id="edit-hero-upload" type="file" accept="video/*" /></label><span class="admin-help" id="hero-upload-name">No new video selected</span></div></div>
             <video class="media-preview full" id="edit-hero-preview" controls playsinline preload="metadata" hidden></video>
             <div class="field full"><p class="admin-help">Work cards below are editable. Use “Choose video” to pick each card’s video from the phone gallery; tap a card on the portfolio to play or pause it.</p></div>
@@ -1255,18 +1255,28 @@
       try {
         for (const [index, file] of pendingWorkFiles.entries()) {
           if (!work[index]) continue;
+          if (!supabaseClient) throw new Error('Shared media storage is not available.');
+          editorStatus.textContent = `Uploading video ${index + 1} of ${pendingWorkFiles.size}… keep this panel open.`;
           const key = uniqueMediaKey(`work-${index}`, file);
-          await saveMediaFile(key, file);
-          work[index].media = `idb:${key}`;
+          const objectPath = `work/${key}`;
+          const { error: uploadError } = await supabaseClient.storage.from('portfolio-media').upload(objectPath, file, { upsert: true, contentType: file.type || 'video/mp4' });
+          if (uploadError) throw uploadError;
+          const { data: publicUrl } = supabaseClient.storage.from('portfolio-media').getPublicUrl(objectPath);
+          work[index].media = publicUrl.publicUrl;
           work[index].mediaType = 'video';
           work[index].fileName = file.name;
         }
         let video = value('edit-video') || config.video || defaults.video;
         let videoFileName = config.videoFileName || '';
         if (pendingHeroFile) {
+          if (!supabaseClient) throw new Error('Shared media storage is not available.');
+          editorStatus.textContent = 'Uploading hero video… keep this panel open.';
           const key = uniqueMediaKey('hero', pendingHeroFile);
-          await saveMediaFile(key, pendingHeroFile);
-          video = `idb:${key}`;
+          const objectPath = `hero/${key}`;
+          const { error: uploadError } = await supabaseClient.storage.from('portfolio-media').upload(objectPath, pendingHeroFile, { upsert: true, contentType: pendingHeroFile.type || 'video/mp4' });
+          if (uploadError) throw uploadError;
+          const { data: publicUrl } = supabaseClient.storage.from('portfolio-media').getPublicUrl(objectPath);
+          video = publicUrl.publicUrl;
           videoFileName = pendingHeroFile.name;
         }
         config = {
@@ -1295,7 +1305,7 @@
           const { error } = await supabaseClient.from('portfolio_content').upsert({ id: 'main', payload: sharedPayload, updated_at: new Date().toISOString() }, { onConflict: 'id' });
           if (error) throw error;
           sharedConfigCache = sharedPayload;
-          sharedMessage = 'Published! Text, links and settings are now shared across devices. Gallery uploads selected from this device remain local until media storage is ready.';
+          sharedMessage = 'Published successfully! Text, settings and uploaded videos are now shared across devices.';
         }
         pendingHeroFile = null;
         pendingWorkFiles.clear();
