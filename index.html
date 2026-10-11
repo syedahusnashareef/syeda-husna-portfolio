@@ -225,6 +225,93 @@
     .project h3 { position: relative; z-index: 2; margin: 0 0 7px; font-size: 23px; }
     .project p { position: relative; z-index: 2; max-width: 500px; margin: 0; color: #c2c2c4; font-size: 15px; }
 
+    /* Uploaded portfolio videos: preserve original frame, never crop/stretch, keep controls accessible. */
+    .work-grid > .project.project-video-card {
+      grid-column: span var(--video-columns, 6);
+      min-height: 0;
+      height: auto;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-self: start;
+      overflow: hidden;
+      background: #08090a;
+    }
+    .work-grid > .project.project-video-card::after { display: none; }
+    .project-video-frame {
+      position: relative;
+      width: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #050505;
+      line-height: 0;
+    }
+    .project-video-frame .project-media {
+      position: relative;
+      inset: auto;
+      z-index: 1;
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: none;
+      aspect-ratio: auto;
+      object-fit: contain;
+      object-position: center;
+      opacity: 1;
+      filter: none;
+      transform: none;
+      transition: none;
+      background: #050505;
+    }
+    .project-video-card:hover .project-video-frame .project-media { transform: none; opacity: 1; }
+    .project-video-card > .project-top {
+      position: relative;
+      inset: auto;
+      z-index: 2;
+      padding: 16px 20px 0;
+      margin: 0;
+    }
+    .project-video-card > h3 {
+      position: relative;
+      z-index: 2;
+      margin: 12px 20px 7px;
+      padding: 0;
+    }
+    .project-video-card > p {
+      position: relative;
+      z-index: 2;
+      max-width: none;
+      margin: 0;
+      padding: 0 20px 20px;
+    }
+    .project-video-frame .project-play {
+      top: 50%;
+      left: 50%;
+      z-index: 4;
+      transform: translate(-50%, -50%);
+      min-width: max-content;
+      min-height: 48px;
+      height: 48px;
+      padding: 0 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .01em;
+      white-space: nowrap;
+      line-height: 1;
+    }
+    .project-video-frame .project-play:hover,
+    .project-video-frame .project-play:focus-visible {
+      transform: translate(-50%, -50%);
+    }
+    @media (max-width: 650px) {
+      .work-grid > .project.project-video-card { grid-column: 1 / -1 !important; }
+      .project-video-card > .project-top { padding: 15px 16px 0; }
+      .project-video-card > h3 { margin: 10px 16px 7px; font-size: 21px; }
+      .project-video-card > p { padding: 0 16px 17px; }
+    }
+
     .showreel-grid { display: grid; grid-template-columns: .8fr 1.5fr; gap: 70px; align-items: center; }
     .showreel-copy h2 { max-width: 500px; }
     .showreel-copy p { max-width: 390px; color: var(--muted); }
@@ -1400,6 +1487,10 @@
         const publicFallbackMedia = defaults.work[i]?.media || '';
         const mediaUrl = await resolveMediaUrl(item.media || '', publicFallbackMedia);
         if (mediaUrl && isVideoPath(item.media, item)) {
+          card.classList.add('project-video-card');
+          card.style.setProperty('--video-columns', '6');
+          const videoFrame = document.createElement('div');
+          videoFrame.className = 'project-video-frame';
           const video = document.createElement('video');
           video.className = 'project-media';
           video.controls = true;
@@ -1420,7 +1511,49 @@
           const mimeType = ({ mp4:'video/mp4', m4v:'video/mp4', webm:'video/webm', ogg:'video/ogg', mov:'video/quicktime' })[extension] || item.mimeType || '';
           if (mimeType) source.type = mimeType;
           video.append(source);
-          card.append(video);
+
+          const fitUploadedVideo = () => {
+            const width = video.videoWidth;
+            const height = video.videoHeight;
+            if (!width || !height) return;
+            const ratio = width / height;
+            videoFrame.style.aspectRatio = `${width} / ${height}`;
+            // Portraits get a narrower column; landscape videos get a wider one.
+            card.style.setProperty('--video-columns', ratio > 1.35 ? '6' : '4');
+            card.dataset.videoRatio = `${width}x${height}`;
+          };
+          video.addEventListener('loadedmetadata', fitUploadedVideo);
+          if (video.readyState >= 1) fitUploadedVideo();
+
+          const soundButton = document.createElement('button');
+          soundButton.type = 'button';
+          soundButton.className = 'project-play';
+          soundButton.textContent = '▶ Play with sound';
+          soundButton.setAttribute('aria-label', `Play ${item.title || 'portfolio video'} with sound`);
+          soundButton.addEventListener('click', event => {
+            event.preventDefault();
+            event.stopPropagation();
+            video.defaultMuted = false;
+            video.muted = false;
+            video.removeAttribute('muted');
+            video.volume = 1;
+            document.querySelectorAll('.work-grid video').forEach(other => {
+              if (other !== video) other.pause();
+            });
+            const hero = document.getElementById('hero-video');
+            if (hero && !hero.paused) hero.pause();
+            const playback = video.play();
+            if (playback && playback.catch) playback.catch(error => {
+              console.warn('Portfolio video could not start with sound:', error);
+              soundButton.hidden = false;
+              soundButton.textContent = 'Tap to play with sound';
+            });
+          });
+          video.addEventListener('play', () => { soundButton.hidden = true; });
+          video.addEventListener('pause', () => { soundButton.hidden = video.ended; });
+          video.addEventListener('ended', () => { soundButton.hidden = false; });
+          videoFrame.append(video, soundButton);
+          card.append(videoFrame);
           prepareAudiblePortfolioVideo(video);
         } else if (mediaUrl) {
           backdrop.style.backgroundImage = `url("${mediaUrl.replace(/"/g, '%22')}")`;
