@@ -301,6 +301,27 @@
       white-space: nowrap;
       line-height: 1;
     }
+    .project-video-frame .project-sound-toggle {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 6;
+      min-height: 40px;
+      padding: 0 13px;
+      border: 1px solid rgba(255,255,255,.78);
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(0,0,0,.82);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 3px 14px rgba(0,0,0,.3);
+    }
+    .project-video-frame .project-sound-toggle:focus-visible {
+      outline: 2px solid var(--neon);
+      outline-offset: 3px;
+    }
     .project-video-frame .project-play:hover,
     .project-video-frame .project-play:focus-visible {
       transform: translate(-50%, -50%);
@@ -1527,12 +1548,14 @@
 
           const soundButton = document.createElement('button');
           soundButton.type = 'button';
-          soundButton.className = 'project-play';
-          soundButton.textContent = '▶ Play with sound';
-          soundButton.setAttribute('aria-label', `Play ${item.title || 'portfolio video'} with sound`);
+          soundButton.className = 'project-sound-toggle';
+          soundButton.textContent = '🔊 Enable sound';
+          soundButton.setAttribute('aria-label', `Enable sound and play ${item.title || 'portfolio video'}`);
           soundButton.addEventListener('click', event => {
             event.preventDefault();
             event.stopPropagation();
+            // This control stays visible even after playback starts, so visitors can
+            // explicitly unmute a video if their browser/player starts it silently.
             video.defaultMuted = false;
             video.muted = false;
             video.removeAttribute('muted');
@@ -1542,16 +1565,26 @@
             });
             const hero = document.getElementById('hero-video');
             if (hero && !hero.paused) hero.pause();
-            const playback = video.play();
-            if (playback && playback.catch) playback.catch(error => {
-              console.warn('Portfolio video could not start with sound:', error);
-              soundButton.hidden = false;
-              soundButton.textContent = 'Tap to play with sound';
-            });
+            if (video.paused || video.ended) {
+              if (video.ended) video.currentTime = 0;
+              const playback = video.play();
+              if (playback && playback.catch) playback.catch(error => {
+                console.warn('Portfolio video could not start with sound:', error);
+                soundButton.textContent = 'Tap again to enable sound';
+              });
+            }
+            soundButton.textContent = '🔊 Sound on';
           });
-          video.addEventListener('play', () => { soundButton.hidden = true; });
-          video.addEventListener('pause', () => { soundButton.hidden = video.ended; });
-          video.addEventListener('ended', () => { soundButton.hidden = false; });
+          video.addEventListener('volumechange', () => {
+            soundButton.textContent = video.muted || video.volume === 0 ? '🔊 Enable sound' : '🔊 Sound on';
+          });
+          video.addEventListener('play', () => {
+            video.defaultMuted = false;
+            video.muted = false;
+            video.removeAttribute('muted');
+            if (video.volume === 0) video.volume = 1;
+            soundButton.textContent = '🔊 Sound on';
+          });
           videoFrame.append(video, soundButton);
           card.append(videoFrame);
           prepareAudiblePortfolioVideo(video);
@@ -1963,18 +1996,8 @@
         if (video.volume === 0) video.volume = 1;
       };
 
-      // A tap/click on the actual video is the single action: start it with sound.
-      video.addEventListener('pointerdown', makeAudible, { passive: true });
-      video.addEventListener('click', () => {
-        makeAudible();
-        if (video.paused) {
-          const playback = video.play();
-          if (playback && playback.catch) playback.catch(error => {
-            console.warn('Video playback was blocked by the browser:', error);
-          });
-        }
-      });
-
+      // Do not intercept clicks on native video controls; the dedicated sound button
+      // and native controls handle playback so pause/volume taps remain predictable.
       video.addEventListener('play', () => {
         makeAudible();
         document.querySelectorAll('.work-grid video').forEach(otherVideo => {
