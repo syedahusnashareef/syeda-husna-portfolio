@@ -996,7 +996,7 @@
           <div class="field"><label for="admin-email">Admin email</label><input id="admin-email" type="email" required autocomplete="email" value="syedahusnashareef@gmail.com" /></div>
           <div class="field"><label for="admin-password">Admin password</label><input id="admin-password" type="password" required minlength="8" autocomplete="current-password" placeholder="Enter your secure password" /></div>
           <p class="admin-help" id="admin-auth-help">Sign in with your owner email. First-time users can create an account; email verification may be required.</p>
-          <p class="admin-warning">Shared text and settings sync through Supabase. Video files selected from your device remain local until shared media storage is ready.</p>
+          <p class="admin-warning">Important: a local video preview is not public. Sign in with the owner account and save to upload videos to the live portfolio for every visitor.</p>
           <p class="admin-status" id="admin-auth-status" role="status"></p>
           <div class="admin-toolbar"><span class="muted">Owner access · Supabase</span><button class="btn btn-primary" type="submit" id="admin-auth-submit">Sign in / Create account <span>↗</span></button></div>
           <button class="btn" type="button" id="admin-reset-password" style="margin-top:12px">Forgot password? Email me a reset link</button>
@@ -1707,17 +1707,7 @@
       const password = document.getElementById('admin-password').value;
       const status = document.getElementById('admin-auth-status');
       if (email !== 'syedahusnashareef@gmail.com') { status.textContent = 'Only the portfolio owner email is allowed.'; playSound('error'); return; }
-      if (password === 'roohi143') {
-        const { data: sessionData } = supabaseClient ? await supabaseClient.auth.getSession() : { data: { session: null } };
-        if (!sessionData?.session) {
-          authView.hidden = true; editorView.hidden = false;
-          await fillEditor();
-          status.textContent = '';
-          editorStatus.textContent = 'Local editor unlocked. Save keeps edits on this browser; publishing across devices requires owner sign-in.';
-          document.getElementById('edit-name').focus(); playSound('success'); return;
-        }
-      }
-      if (!supabaseClient) { status.textContent = 'Secure sign-in is unavailable. Use the previous owner password to open local editing.'; playSound('error'); return; }
+      if (!supabaseClient) { status.textContent = 'Secure sign-in is unavailable right now. Refresh and try again; a local preview cannot publish videos to the live site.'; playSound('error'); return; }
       if (password.length < 8) { status.textContent = 'Use at least 8 characters.'; playSound('error'); return; }
       authSubmit.disabled = true; status.textContent = 'Connecting securely…';
       try {
@@ -1866,18 +1856,14 @@
       contactKeys.forEach(key => { contacts[key] = { value: value(`edit-${key}`), enabled: document.getElementById(`edit-${key}-enabled`).checked }; });
       const work = collectWorkDraft();
       const { data: currentSession } = supabaseClient ? await supabaseClient.auth.getSession() : { data: { session: null } };
-      const canPublishShared = Boolean(currentSession?.session?.user?.email === 'syedahusnashareef@gmail.com');
-      editorStatus.textContent = 'Saving this device’s changes…';
+      const canPublishShared = Boolean(currentSession?.session?.user?.email?.toLowerCase() === 'syedahusnashareef@gmail.com');
+      if (!canPublishShared) {
+        editorStatus.textContent = 'NOT PUBLISHED: the owner Supabase session is missing or expired. Sign in again before saving so your videos upload to the live portfolio.';
+        return;
+      }
+      editorStatus.textContent = 'Saving and publishing to the live portfolio…';
       try {
-        if (!canPublishShared) {
-          for (const [index, file] of pendingWorkFiles.entries()) {
-            if (!work[index]) continue;
-            const key = `work-${index}-${Date.now()}`;
-            await saveMediaFile(key, file);
-            work[index].media = `idb:${key}`; work[index].mediaType = 'video'; work[index].fileName = file.name;
-          }
-        }
-        for (const [index, file] of (canPublishShared ? pendingWorkFiles : new Map()).entries()) {
+        for (const [index, file] of pendingWorkFiles.entries()) {
           if (!work[index]) continue;
           if (!supabaseClient) throw new Error('Shared media storage is not available.');
           editorStatus.textContent = `Uploading video ${index + 1} of ${pendingWorkFiles.size}… keep this panel open.`;
