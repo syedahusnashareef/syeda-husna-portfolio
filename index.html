@@ -995,10 +995,10 @@
         <form class="admin-form" id="admin-auth-form">
           <div class="field"><label for="admin-email">Admin email</label><input id="admin-email" type="email" required autocomplete="email" value="syedahusnashareef@gmail.com" /></div>
           <div class="field"><label for="admin-password">Admin password</label><input id="admin-password" type="password" required minlength="8" autocomplete="current-password" placeholder="Enter your secure password" /></div>
-          <p class="admin-help" id="admin-auth-help">Sign in with your owner email. First-time users can create an account; email verification may be required.</p>
+          <p class="admin-help" id="admin-auth-help">Use your owner email and Supabase password. The previous local-only password cannot publish videos. Use Forgot password if you need to reset the Supabase password.</p>
           <p class="admin-warning">Important: a local video preview is not public. Sign in with the owner account and save to upload videos to the live portfolio for every visitor.</p>
           <p class="admin-status" id="admin-auth-status" role="status"></p>
-          <div class="admin-toolbar"><span class="muted">Owner access · Supabase</span><button class="btn btn-primary" type="submit" id="admin-auth-submit">Sign in / Create account <span>↗</span></button></div>
+          <div class="admin-toolbar"><span class="muted">Owner access · Supabase</span><button class="btn btn-primary" type="submit" id="admin-auth-submit">Sign in to publish <span>↗</span></button></div>
           <button class="btn" type="button" id="admin-reset-password" style="margin-top:12px">Forgot password? Email me a reset link</button>
         </form>
       </div>
@@ -1690,8 +1690,8 @@
       const signedIn = Boolean(data?.session?.user?.email === 'syedahusnashareef@gmail.com');
       authView.hidden = signedIn;
       editorView.hidden = !signedIn;
-      authHelp.textContent = 'Use the owner email syedahusnashareef@gmail.com. First-time account creation may require email verification.';
-      authSubmit.innerHTML = 'Sign in / Create account <span>↗</span>';
+      authHelp.textContent = 'Use your owner email and Supabase password. The previous local-only password cannot publish videos; use Forgot password if needed.';
+      authSubmit.innerHTML = 'Sign in to publish <span>↗</span>';
       if (signedIn) { await loadSharedConfig(); await fillEditor(); }
       adminOverlay.classList.add('open'); adminOverlay.setAttribute('aria-hidden', 'false'); playSound('admin');
       if (signedIn) document.getElementById('edit-name').focus(); else document.getElementById('admin-email').focus();
@@ -1711,15 +1711,10 @@
       if (password.length < 8) { status.textContent = 'Use at least 8 characters.'; playSound('error'); return; }
       authSubmit.disabled = true; status.textContent = 'Connecting securely…';
       try {
-        let result = await supabaseClient.auth.signInWithPassword({ email, password });
+        const result = await supabaseClient.auth.signInWithPassword({ email, password });
         if (result.error && /invalid login credentials/i.test(result.error.message)) {
-          const signup = await supabaseClient.auth.signUp({ email, password });
-          if (signup.error) throw signup.error;
-          if (!signup.data.session) {
-            status.textContent = 'Account request sent. Check your email to verify, then sign in here.';
-            playSound('success'); return;
-          }
-          result = { data: signup.data, error: null };
+          status.textContent = 'Incorrect Supabase password. The local-only password cannot publish videos. Use “Forgot password?” to reset your Supabase password, then sign in again.';
+          playSound('error'); return;
         }
         if (result.error) throw result.error;
         if (result.data?.user?.email !== 'syedahusnashareef@gmail.com') throw new Error('This account is not authorized as the owner.');
