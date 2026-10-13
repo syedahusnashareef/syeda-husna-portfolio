@@ -488,6 +488,12 @@
     .media-preview { display: block; width: min(100%, 440px); max-height: 260px; border: 1px solid var(--line); border-radius: 14px; background: #000; object-fit: contain; }
     #work-admin-list { display: grid; gap: 12px; }
     .work-admin-item { position: relative; }
+    .work-card-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-bottom: 4px; }
+    .work-card-actions button, .work-list-toolbar button { min-height: 40px; padding: 8px 12px; border: 1px solid color-mix(in srgb, var(--neon) 35%, transparent); border-radius: 10px; color: var(--text); background: color-mix(in srgb, var(--neon) 7%, transparent); cursor: pointer; font-size: 13px; font-weight: 700; }
+    .work-card-actions button:disabled { opacity: .42; cursor: not-allowed; }
+    .work-card-actions .remove-work { margin-left: auto; border-color: rgba(255,110,110,.32); color: #ff9b9b; background: rgba(255,80,80,.07); }
+    .work-list-toolbar { flex-wrap: wrap; justify-content: flex-start; }
+    .work-list-toolbar .admin-help { flex: 1 1 100%; }
     .work-admin-item .remove-work { justify-self: end; min-height: 38px; padding: 0 12px; border: 1px solid rgba(255,110,110,.32); border-radius: 999px; color: #ff9b9b; background: rgba(255,80,80,.07); cursor: pointer; }
     .admin-fab { position: fixed; right: 22px; bottom: 22px; z-index: 31; display: grid; place-items: center; width: 46px; height: 46px; border: 1px solid color-mix(in srgb, var(--neon) 55%, transparent); border-radius: 50%; color: var(--neon); background: rgba(7,7,7,.72); box-shadow: 0 0 25px color-mix(in srgb, var(--neon) 16%, transparent); cursor: pointer; transition: transform .2s, background .2s; }
     .admin-fab span { font: 800 13px Manrope, sans-serif; letter-spacing: -.06em; color: var(--neon); }\n    .admin-fab:hover, .admin-fab:focus-visible { transform: rotate(18deg) scale(1.08); background: color-mix(in srgb, var(--neon) 12%, transparent); outline: none; }
@@ -1032,6 +1038,13 @@
             <label class="toggle-line full"><input id="edit-sound-enabled" type="checkbox" checked /> Enable interface sound effects (video audio stays separate)</label>
             <div class="field full"><button class="btn btn-ghost" type="button" id="edit-sound-test">▶ Preview UI sound</button><p class="admin-help">Sound effects require a tap/click first on mobile. Background voice is not added; video audio remains controlled by the video player.</p></div>
           </div>
+          <div class="admin-section-title">Live publishing</div>
+          <div class="admin-grid">
+            <div class="field full"><p class="admin-help" id="owner-publish-status">Checking your secure publishing session…</p></div>
+            <div class="field full"><label for="owner-publish-email">Owner account</label><input id="owner-publish-email" type="email" value="syedahusnashareef@gmail.com" readonly /></div>
+            <div class="field full"><button class="btn btn-primary" type="button" id="owner-publish-login">✉ Send secure publishing sign-in link</button><button class="btn btn-ghost" type="button" id="owner-publish-logout" hidden>Sign out of publishing</button></div>
+            <div class="field full"><p class="admin-help">The SH Admin password opens this editor. To publish cards and original videos for everyone, first sign in using the one-time link sent to the owner email above, return to this website, open SH Admin again, and press Save. Without this session, changes stay only on this browser.</p></div>
+          </div>
           <div class="admin-section-title">Media & portfolio</div>
           <div class="admin-grid">
             <div class="field full"><label for="edit-video">Hero video URL (optional)</label><input id="edit-video" placeholder="Paste a public .mp4 URL" /></div>
@@ -1039,8 +1052,9 @@
             <div class="field full"><div class="upload-row"><label class="upload-button" for="edit-hero-upload">＋ Add hero video from Gallery<input id="edit-hero-upload" type="file" accept="video/*" /></label><span class="admin-help" id="hero-upload-name">No new video selected</span></div></div>
             <video class="media-preview full" id="edit-hero-preview" controls playsinline preload="metadata" hidden></video>
             <div class="field full"><p class="admin-help">Work 01 is your featured professional edit. Use “Add from Gallery” to choose your MP4/MOV made from raw clips and photos. The file is not re-encoded, so its original aspect ratio and soundtrack are preserved. With an active owner publishing session it goes live for everyone; without one it is saved as a local draft on this browser only. Visitors must tap Play/Sound because browsers block automatic audio.</p></div>
+            <div class="admin-toolbar full work-list-toolbar"><span class="admin-help">Add your next video before the existing 3, or add a project anywhere below.</span><button class="btn btn-primary" type="button" id="add-work-before-first">＋ Add before first work video</button><button class="btn btn-ghost" type="button" id="add-work-at-end">＋ Add at end</button></div>
             <div class="field full" id="work-admin-list"></div>
-            <div class="admin-toolbar full"><span class="admin-help">Add unlimited work cards/video sections, each with its own title, description, preview, link and gallery video.</span><button class="btn btn-ghost" type="button" id="add-work">＋ Add card / video section</button></div>
+            <div class="admin-toolbar full"><span class="admin-help">Every card has its own gallery upload, description, preview and link.</span><button class="btn btn-ghost" type="button" id="add-work">＋ Add card / video section</button></div>
           </div>
           <div class="admin-section-title">Contact & social links</div>
           <div class="admin-grid">
@@ -1575,8 +1589,8 @@
           const soundButton = document.createElement('button');
           soundButton.type = 'button';
           soundButton.className = 'project-sound-toggle';
-          soundButton.textContent = '🔊 Enable sound';
-          soundButton.setAttribute('aria-label', `Enable sound and play ${item.title || 'portfolio video'}`);
+          soundButton.textContent = '▶ Play with sound';
+          soundButton.setAttribute('aria-label', `Play ${item.title || 'portfolio video'} with sound`);
           soundButton.addEventListener('click', event => {
             event.preventDefault();
             event.stopPropagation();
@@ -1594,12 +1608,15 @@
             if (video.paused || video.ended) {
               if (video.ended) video.currentTime = 0;
               const playback = video.play();
-              if (playback && playback.catch) playback.catch(error => {
+              if (playback && playback.then) playback.then(() => {
+                soundButton.textContent = '🔊 Sound on';
+              }).catch(error => {
                 console.warn('Portfolio video could not start with sound:', error);
-                soundButton.textContent = 'Tap again to enable sound';
+                soundButton.textContent = '▶ Tap to play with sound';
               });
+            } else {
+              soundButton.textContent = '🔊 Sound on';
             }
-            soundButton.textContent = '🔊 Sound on';
           });
           video.addEventListener('volumechange', () => {
             soundButton.textContent = video.muted || video.volume === 0 ? '🔊 Enable sound' : '🔊 Sound on';
@@ -1688,9 +1705,19 @@
     }
     function renderWorkEditor() {
       const list = document.getElementById('work-admin-list');
+      list.querySelectorAll('video[data-temp-url]').forEach(video => URL.revokeObjectURL(video.dataset.tempUrl));
       list.innerHTML = (config.work || []).map((item, i) => `
         <div class="work-admin-item" data-work-index="${i}">
-          <button class="remove-work full" type="button" data-remove-work="${i}" aria-label="Remove work card ${i + 1}">Remove card</button>
+          <div class="work-card-actions full">
+            ${item.isIntroVideo
+              ? `<button type="button" data-insert-work-after="${i}">＋ Add next video section</button>`
+              : `<button type="button" data-insert-work-before="${i}">＋ Add section above</button><button type="button" data-insert-work-after="${i}">＋ Add section below</button>`}
+            <button type="button" data-move-work-up="${i}" ${i <= 1 ? 'disabled' : ''}>↑ Move up</button>
+            <button type="button" data-move-work-down="${i}" ${i === (config.work.length - 1) ? 'disabled' : ''}>↓ Move down</button>
+            ${item.isIntroVideo
+              ? `<span class="admin-help">Permanent intro-video slot · appears first when a video is added</span>`
+              : `<button class="remove-work" type="button" data-remove-work="${i}" aria-label="Remove work card ${i + 1}">Remove card</button>`}
+          </div>
           <div class="field"><label for="edit-work-${i}-title">Work ${String(i + 1).padStart(2, '0')} title</label><input id="edit-work-${i}-title" value="${esc(item.title || '')}" /></div>
           <div class="field"><label for="edit-work-${i}-category">Category / section label</label><input id="edit-work-${i}-category" value="${esc(item.category || '')}" /></div>
           <div class="field full"><label for="edit-work-${i}-description">Description</label><textarea id="edit-work-${i}-description">${esc(item.description || '')}</textarea></div>
@@ -1698,10 +1725,18 @@
           <div class="field"><label for="edit-work-${i}-link">Project / website link (optional)</label><input id="edit-work-${i}-link" type="url" value="${esc(item.link || '')}" placeholder="https://..." /></div>
           <div class="field"><label for="edit-work-${i}-button">Button text</label><input id="edit-work-${i}-button" value="${esc(item.buttonText || 'View project ↗')}" placeholder="Visit website" /></div>
           <div class="field full"><label for="edit-work-${i}-media">Video URL (optional)</label><input id="edit-work-${i}-media" value="${esc(item.media?.startsWith('idb:') ? '' : item.media || '')}" placeholder="Paste a public .mp4 URL" /></div>
-          <div class="field full"><label class="upload-button" for="edit-work-${i}-upload">＋ Add video from Gallery<input id="edit-work-${i}-upload" data-work-upload="${i}" type="file" accept="video/*" /></label><p class="admin-help">Each work card can have its own video. Add a description, preview image and project link above if needed.</p></div>
+          <div class="field full"><label class="upload-button" for="edit-work-${i}-upload">＋ Add video from Gallery<input id="edit-work-${i}-upload" data-work-upload="${i}" type="file" accept="video/*" /></label><p class="admin-help">Choose the actual video from your device. The original file and its audio track are preserved. After signing in for live publishing, press Save to publish it on the public website.</p></div>
           <video class="media-preview full" data-work-preview="${i}" controls playsinline preload="metadata" hidden></video>
           <label class="toggle-line"><input id="edit-work-${i}-enabled" type="checkbox" ${item.enabled ? 'checked' : ''} /> Show on portfolio</label>
         </div>`).join('');
+      pendingWorkFiles.forEach((file, i) => {
+        const preview = list.querySelector(`[data-work-preview="${i}"]`);
+        if (!preview) return;
+        const url = URL.createObjectURL(file);
+        preview.dataset.tempUrl = url;
+        preview.src = url;
+        preview.hidden = false;
+      });
     }
     async function fillEditor() {
       const fields = { name: 'edit-name', age: 'edit-age', headline: 'edit-headline', lead: 'edit-lead', intro: 'edit-intro', primary: 'edit-primary', accent: 'edit-accent' };
@@ -1727,7 +1762,7 @@
       heroPreview.src = heroUrl;
       document.getElementById('hero-upload-name').textContent = config.videoFileName || (config.video ? `Current video: ${config.video.split('/').pop()}` : 'No new video selected');
       for (const [i, item] of (config.work || []).entries()) {
-        if (!isVideoPath(item.media, item)) continue;
+        if (pendingWorkFiles.has(i) || !isVideoPath(item.media, item)) continue;
         const preview = document.querySelector(`[data-work-preview="${i}"]`);
         const url = await resolveMediaUrl(item.media || '', '');
         if (preview && url) { preview.src = url; preview.hidden = false; }
@@ -1769,6 +1804,64 @@
       try { await loadSharedConfig(); await fillEditor(); document.getElementById('edit-name').focus(); playSound('success'); }
       catch (error) { status.textContent = 'Admin opened, but some saved content could not load.'; }
     });
+    const ownerPublishEmail = 'syedahusnashareef@gmail.com';
+    const ownerPublishStatus = document.getElementById('owner-publish-status');
+    const ownerPublishLogin = document.getElementById('owner-publish-login');
+    const ownerPublishLogout = document.getElementById('owner-publish-logout');
+    function updateOwnerPublishUi(session) {
+      const signedInAs = session?.user?.email?.toLowerCase() || '';
+      const isOwnerSession = signedInAs === ownerPublishEmail;
+      if (ownerPublishStatus) ownerPublishStatus.textContent = isOwnerSession
+        ? '✅ Live publishing connected. Gallery videos and changes can now be published for every visitor.'
+        : '⚠️ Not signed in for live publishing. Saving without the owner session only saves a local draft on this browser.';
+      if (ownerPublishLogin) ownerPublishLogin.hidden = isOwnerSession;
+      if (ownerPublishLogout) ownerPublishLogout.hidden = !isOwnerSession;
+    }
+    async function refreshOwnerPublishUi() {
+      if (!supabaseClient) {
+        if (ownerPublishStatus) ownerPublishStatus.textContent = 'Supabase could not load. Live publishing is unavailable; check the page connection and refresh.';
+        if (ownerPublishLogin) ownerPublishLogin.disabled = true;
+        return;
+      }
+      const { data, error } = await supabaseClient.auth.getSession();
+      if (error) {
+        if (ownerPublishStatus) ownerPublishStatus.textContent = 'Could not check the live publishing session: ' + error.message;
+        return;
+      }
+      updateOwnerPublishUi(data.session);
+    }
+    ownerPublishLogin?.addEventListener('click', async () => {
+      if (!supabaseClient) return;
+      ownerPublishLogin.disabled = true;
+      ownerPublishLogin.textContent = 'Sending secure link…';
+      if (ownerPublishStatus) ownerPublishStatus.textContent = 'Sending a one-time sign-in link to ' + ownerPublishEmail + '…';
+      try {
+        const redirectTo = window.location.origin + window.location.pathname;
+        const { error } = await supabaseClient.auth.signInWithOtp({
+          email: ownerPublishEmail,
+          options: { shouldCreateUser: false, emailRedirectTo: redirectTo }
+        });
+        if (error) throw error;
+        if (ownerPublishStatus) ownerPublishStatus.textContent = '✅ Sign-in link requested for ' + ownerPublishEmail + '. Open that email, tap the newest sign-in link, return to this site, open SH Admin again, then Save to publish. If Supabase reports a redirect URL issue, this site URL must be allowed in Supabase Auth URL Configuration.';
+      } catch (error) {
+        if (ownerPublishStatus) ownerPublishStatus.textContent = 'Could not send sign-in link: ' + (error?.message || 'Unknown error') + '. Check Supabase Auth email settings and allowed redirect URLs.';
+      } finally {
+        ownerPublishLogin.disabled = false;
+        ownerPublishLogin.textContent = '✉ Send secure publishing sign-in link';
+      }
+    });
+    ownerPublishLogout?.addEventListener('click', async () => {
+      if (!supabaseClient) return;
+      ownerPublishLogout.disabled = true;
+      const { error } = await supabaseClient.auth.signOut();
+      if (ownerPublishStatus) ownerPublishStatus.textContent = error ? 'Could not sign out: ' + error.message : 'Signed out. Saving changes will create a local draft until you sign in again.';
+      await refreshOwnerPublishUi();
+      ownerPublishLogout.disabled = false;
+    });
+    if (supabaseClient?.auth?.onAuthStateChange) {
+      supabaseClient.auth.onAuthStateChange((_event, session) => updateOwnerPublishUi(session));
+    }
+    refreshOwnerPublishUi();
     const editorStatus = document.getElementById('admin-editor-status');
     const workEditor = document.getElementById('work-admin-list');
     function collectWorkDraft() {
@@ -1848,21 +1941,72 @@
       document.getElementById(`edit-work-${config.work.length - 1}-title`).focus();
       editorStatus.textContent = 'New work card added. Fill it in, then save on this device.';
     });
-    workEditor.addEventListener('click', event => {
-      const remove = event.target.closest('[data-remove-work]');
-      if (!remove) return;
-      config.work = collectWorkDraft();
-      const index = Number(remove.dataset.removeWork);
-      config.work.splice(index, 1);
-      const remappedFiles = new Map();
+    function remapPendingWorkFiles(indexMapper) {
+      const remapped = new Map();
       pendingWorkFiles.forEach((file, oldIndex) => {
-        if (oldIndex < index) remappedFiles.set(oldIndex, file);
-        else if (oldIndex > index) remappedFiles.set(oldIndex - 1, file);
+        const newIndex = indexMapper(oldIndex);
+        if (newIndex !== null && newIndex !== undefined && newIndex >= 0) remapped.set(newIndex, file);
       });
       pendingWorkFiles.clear();
-      remappedFiles.forEach((file, newIndex) => pendingWorkFiles.set(newIndex, file));
+      remapped.forEach((file, index) => pendingWorkFiles.set(index, file));
+    }
+    function makeWorkCardDraft() {
+      return { enabled: true, title: 'New video / project', category: 'NEW WORK', description: '', image: '', link: '', buttonText: 'View project ↗', media: '' };
+    }
+    function insertWorkCardAt(position) {
+      config.work = collectWorkDraft();
+      const pos = Math.max(1, Math.min(position, config.work.length)); // keep the introduction slot first
+      config.work.splice(pos, 0, makeWorkCardDraft());
+      remapPendingWorkFiles(oldIndex => oldIndex >= pos ? oldIndex + 1 : oldIndex);
       renderWorkEditor();
-      editorStatus.textContent = 'Work card removed from the draft. Save to apply it on this device.';
+      document.getElementById(`edit-work-${pos}-title`)?.focus();
+      editorStatus.textContent = `New card/video section added at position ${pos + 1}. Fill in its details, add a video from Gallery, then Save.`;
+    }
+    document.getElementById('add-work').addEventListener('click', () => insertWorkCardAt((config.work || []).length));
+    document.getElementById('add-work-at-end').addEventListener('click', () => insertWorkCardAt((config.work || []).length));
+    document.getElementById('add-work-before-first').addEventListener('click', () => {
+      config.work = collectWorkDraft();
+      const firstNonIntro = config.work.findIndex(item => !item.isIntroVideo);
+      insertWorkCardAt(firstNonIntro < 0 ? config.work.length : firstNonIntro);
+    });
+    workEditor.addEventListener('click', event => {
+      const before = event.target.closest('[data-insert-work-before]');
+      const after = event.target.closest('[data-insert-work-after]');
+      const moveUp = event.target.closest('[data-move-work-up]');
+      const moveDown = event.target.closest('[data-move-work-down]');
+      const remove = event.target.closest('[data-remove-work]');
+      const control = before || after || moveUp || moveDown || remove;
+      if (!control) return;
+      config.work = collectWorkDraft();
+      const index = Number(control.dataset.insertWorkBefore
+        ?? control.dataset.insertWorkAfter
+        ?? control.dataset.moveWorkUp
+        ?? control.dataset.moveWorkDown
+        ?? control.dataset.removeWork);
+      if (before) {
+        insertWorkCardAt(index);
+        return;
+      }
+      if (after) {
+        insertWorkCardAt(index + 1);
+        return;
+      }
+      if (remove) {
+        if (config.work[index]?.isIntroVideo) return;
+        config.work.splice(index, 1);
+        remapPendingWorkFiles(oldIndex => oldIndex === index ? null : oldIndex > index ? oldIndex - 1 : oldIndex);
+        renderWorkEditor();
+        editorStatus.textContent = 'Card removed from the draft. Press Save to apply the change.';
+        return;
+      }
+      const targetIndex = moveUp ? index - 1 : index + 1;
+      if (index <= 0 || targetIndex <= 0 || targetIndex >= config.work.length) return;
+      const moving = config.work[index];
+      config.work.splice(index, 1);
+      config.work.splice(targetIndex, 0, moving);
+      remapPendingWorkFiles(oldIndex => oldIndex === index ? targetIndex : oldIndex === targetIndex ? index : oldIndex);
+      renderWorkEditor();
+      editorStatus.textContent = 'Card order changed. Press Save to publish the new order.';
     });
     workEditor.addEventListener('change', event => {
       const input = event.target.closest('[data-work-upload]');
@@ -1981,7 +2125,7 @@
         playSound('success');
       } catch (error) {
         console.error('Portfolio save failed:', error);
-        editorStatus.textContent = `Could not save this video on the device: ${error.message || 'browser storage is unavailable'}`;
+        editorStatus.textContent = `Save/publish failed: ${error.message || 'browser storage or live publishing is unavailable'}. If you are not signed in, use the secure publishing link above and try Save again.`;
         playSound('error');
       }
     });
