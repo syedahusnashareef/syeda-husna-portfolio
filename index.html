@@ -1095,7 +1095,7 @@
     let masterGain;
     let ambientBus = null;
     let ambientOscillators = [];
-    let soundOn = localStorage.getItem('shSoundOn') === 'true';
+    let soundOn = false; // Sound starts off on each visit because browsers require a user gesture to enable audio.
     const soundButton = document.querySelector('.sound-toggle');
     const soundNames = ['click', 'hover', 'nav', 'open', 'close', 'whoosh', 'shimmer', 'sparkle', 'chime', 'success', 'error', 'submit', 'focus', 'toggle', 'pulse', 'scan', 'page', 'magnetic', 'ambient', 'admin'];
     function initAudio() {
@@ -1188,7 +1188,6 @@
     soundButton.title = 'Turn soft ambient sound and interface effects on or off';
     soundButton.addEventListener('click', () => {
       soundOn = !soundOn;
-      localStorage.setItem('shSoundOn', String(soundOn));
       syncSoundButton();
       if (soundOn) { initAudio(); startAmbientBed(); playSound('chime'); }
       else stopAmbientBed();
@@ -1391,7 +1390,6 @@
       document.documentElement.style.setProperty('--portfolio-font', '"' + String(t.family || 'Manrope').replace(/[^a-zA-Z0-9 _-]/g, '') + '", system-ui, sans-serif');
       document.documentElement.style.setProperty('--portfolio-font-size', (Number(t.size) || 17) + 'px');
       document.documentElement.style.setProperty('--portfolio-font-weight', String(Number(t.weight) || 400));
-      if (typeof soundOn !== 'undefined') soundOn = config.soundEnabled !== false;
       if (typeof masterGain !== 'undefined' && masterGain) masterGain.gain.value = Math.max(0, Math.min(1, Number(config.soundVolume ?? 0.55)));
     }
     function applyTheme(preset = config.themePreset, accent = config.accent) {
@@ -1756,7 +1754,11 @@
     document.getElementById('edit-sound-volume')?.addEventListener('input', event => {
       if (typeof masterGain !== 'undefined' && masterGain) masterGain.gain.value = Number(event.target.value) / 100;
     });
-    document.getElementById('edit-sound-enabled')?.addEventListener('change', event => { soundOn = event.target.checked; if (soundOn) playSound('success'); });
+    document.getElementById('edit-sound-enabled')?.addEventListener('change', event => {
+      soundOn = event.target.checked;
+      syncSoundButton();
+      if (soundOn) { initAudio(); startAmbientBed(); playSound('success'); } else stopAmbientBed();
+    });
     document.getElementById('edit-theme-preset').addEventListener('change', event => {
       config.themePreset = event.target.value;
       config.accent = themePresets[config.themePreset].neon;
