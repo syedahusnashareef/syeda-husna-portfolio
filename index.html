@@ -993,13 +993,10 @@
       </div>
       <div class="admin-view" id="admin-auth-view">
         <form class="admin-form" id="admin-auth-form">
-          <div class="field"><label for="admin-email">Admin email</label><input id="admin-email" type="email" required autocomplete="email" value="syedahusnashareef@gmail.com" /></div>
-          <div class="field"><label for="admin-password">Admin password</label><input id="admin-password" type="password" required minlength="8" autocomplete="current-password" placeholder="Enter your secure password" /></div>
-          <p class="admin-help" id="admin-auth-help">Use your owner email and Supabase password. The previous local-only password cannot publish videos. Use Forgot password if you need to reset the Supabase password.</p>
-          <p class="admin-warning">Important: a local video preview is not public. Sign in with the owner account and save to upload videos to the live portfolio for every visitor.</p>
+          <div class="field"><label for="admin-password">Admin password</label><input id="admin-password" type="password" required autocomplete="current-password" placeholder="Enter password" /></div>
+          <p class="admin-help" id="admin-auth-help">Enter your admin password to open the control room.</p>
           <p class="admin-status" id="admin-auth-status" role="status"></p>
-          <div class="admin-toolbar"><span class="muted">Owner access · Supabase</span><button class="btn btn-primary" type="submit" id="admin-auth-submit">Sign in to publish <span>↗</span></button></div>
-          <button class="btn" type="button" id="admin-reset-password" style="margin-top:12px">Forgot password? Email me a reset link</button>
+          <div class="admin-toolbar"><span class="muted">Password-only access</span><button class="btn btn-primary" type="submit" id="admin-auth-submit">Open admin panel <span>↗</span></button></div>
         </form>
       </div>
       <div class="admin-view" id="admin-editor-view" hidden>
@@ -1687,14 +1684,17 @@
     const authSubmit = document.getElementById('admin-auth-submit');
     async function openAdmin() {
       const { data } = supabaseClient ? await supabaseClient.auth.getSession() : { data: { session: null } };
-      const signedIn = Boolean(data?.session?.user?.email === 'syedahusnashareef@gmail.com');
-      authView.hidden = signedIn;
-      editorView.hidden = !signedIn;
-      authHelp.textContent = 'Use your owner email and Supabase password. The previous local-only password cannot publish videos; use Forgot password if needed.';
-      authSubmit.innerHTML = 'Sign in to publish <span>↗</span>';
+      const signedIn = Boolean(data?.session?.user?.email?.toLowerCase() === 'syedahusnashareef@gmail.com');
+      const pinUnlocked = sessionStorage.getItem('shPortfolioPinUnlocked') === 'yes';
+      const canOpenEditor = signedIn || pinUnlocked;
+      authView.hidden = canOpenEditor;
+      editorView.hidden = !canOpenEditor;
+      authHelp.textContent = 'Enter your admin password to open the control room.';
+      authSubmit.innerHTML = 'Open admin panel <span>↗</span>';
       if (signedIn) { await loadSharedConfig(); await fillEditor(); }
+      else if (pinUnlocked) { loadLocalConfig(); await fillEditor(); }
       adminOverlay.classList.add('open'); adminOverlay.setAttribute('aria-hidden', 'false'); playSound('admin');
-      if (signedIn) document.getElementById('edit-name').focus(); else document.getElementById('admin-email').focus();
+      if (canOpenEditor) document.getElementById('edit-name').focus(); else document.getElementById('admin-password').focus();
     }
     function closeAdmin() { adminOverlay.classList.remove('open'); adminOverlay.setAttribute('aria-hidden', 'true'); }
     document.querySelectorAll('.admin-trigger, .admin-fab').forEach(button => button.addEventListener('click', openAdmin));
@@ -1703,38 +1703,14 @@
     document.addEventListener('keydown', event => { if (event.key === 'Escape' && adminOverlay.classList.contains('open')) closeAdmin(); });
     document.getElementById('admin-auth-form').addEventListener('submit', async event => {
       event.preventDefault();
-      const email = document.getElementById('admin-email').value.trim().toLowerCase();
       const password = document.getElementById('admin-password').value;
       const status = document.getElementById('admin-auth-status');
-      if (email !== 'syedahusnashareef@gmail.com') { status.textContent = 'Only the portfolio owner email is allowed.'; playSound('error'); return; }
-      if (!supabaseClient) { status.textContent = 'Secure sign-in is unavailable right now. Refresh and try again; a local preview cannot publish videos to the live site.'; playSound('error'); return; }
-      if (password.length < 8) { status.textContent = 'Use at least 8 characters.'; playSound('error'); return; }
-      authSubmit.disabled = true; status.textContent = 'Connecting securely…';
-      try {
-        const result = await supabaseClient.auth.signInWithPassword({ email, password });
-        if (result.error && /invalid login credentials/i.test(result.error.message)) {
-          status.textContent = 'Incorrect Supabase password. The local-only password cannot publish videos. Use “Forgot password?” to reset your Supabase password, then sign in again.';
-          playSound('error'); return;
-        }
-        if (result.error) throw result.error;
-        if (result.data?.user?.email !== 'syedahusnashareef@gmail.com') throw new Error('This account is not authorized as the owner.');
-        authView.hidden = true; editorView.hidden = false;
-        await loadSharedConfig(); await fillEditor();
-        status.textContent = ''; document.getElementById('edit-name').focus(); playSound('success');
-      } catch (error) { status.textContent = error.message || 'Sign-in failed. Check email and password.'; playSound('error'); }
-      finally { authSubmit.disabled = false; }
-    });
-    document.getElementById('admin-reset-password').addEventListener('click', async () => {
-      const email = document.getElementById('admin-email').value.trim().toLowerCase();
-      const status = document.getElementById('admin-auth-status');
-      if (email !== 'syedahusnashareef@gmail.com') { status.textContent = 'Enter the portfolio owner email first.'; return; }
-      if (!supabaseClient) { status.textContent = 'Supabase did not load. Refresh and try again.'; return; }
-      status.textContent = 'Sending password reset email…';
-      try {
-        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, { redirectTo: 'https://syedahusnashareef.github.io/syeda-husna-portfolio/' });
-        if (error) throw error;
-        status.textContent = 'Reset email sent if the account is eligible. Check Inbox and Spam.';
-      } catch (error) { status.textContent = error.message || 'Could not send reset email.'; }
+      if (password !== 'roohi143') { status.textContent = 'Incorrect password. Try again.'; playSound('error'); return; }
+      sessionStorage.setItem('shPortfolioPinUnlocked', 'yes');
+      authView.hidden = true; editorView.hidden = false;
+      status.textContent = '';
+      try { await fillEditor(); document.getElementById('edit-name').focus(); playSound('success'); }
+      catch (error) { status.textContent = 'Admin opened, but some saved content could not load.'; }
     });
     const editorStatus = document.getElementById('admin-editor-status');
     const workEditor = document.getElementById('work-admin-list');
