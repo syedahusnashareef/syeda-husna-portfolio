@@ -1530,7 +1530,7 @@
         const backdrop = document.createElement('div');
         backdrop.className = `project-bg p${(i % 6) + 1}`;
         card.append(backdrop);
-        const publicFallbackMedia = item.isIntroVideo ? '' : (defaults.work[i]?.media || '');
+        const publicFallbackMedia = item.isIntroVideo ? '' : (defaults.work.find(defaultItem => defaultItem.title === item.title)?.media || '');
         const mediaUrl = await resolveMediaUrl(item.media || '', publicFallbackMedia);
         const previewImageUrl = item.image || '';
         if (mediaUrl && isVideoPath(item.media, item)) {
