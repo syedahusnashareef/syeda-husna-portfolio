@@ -224,6 +224,7 @@
     .project-top { position: absolute; z-index: 2; top: 22px; left: 24px; right: 24px; display: flex; justify-content: space-between; color: rgba(255,255,255,.7); font: 10px "DM Mono", monospace; text-transform: uppercase; letter-spacing: .1em; }
     .project h3 { position: relative; z-index: 2; margin: 0 0 7px; font-size: 23px; }
     .project p { position: relative; z-index: 2; max-width: 500px; margin: 0; color: #c2c2c4; font-size: 15px; }
+    .project .project-cta { position: relative; z-index: 2; align-self: flex-start; margin: 16px 0 0; text-decoration: none; }
 
     /* Uploaded portfolio videos: preserve original frame, never crop/stretch, keep controls accessible. */
     .work-grid > .project.project-video-card {
@@ -1039,7 +1040,7 @@
             <video class="media-preview full" id="edit-hero-preview" controls playsinline preload="metadata" hidden></video>
             <div class="field full"><p class="admin-help">Work 01 is your featured professional edit. Use “Add from Gallery” to choose your MP4/MOV made from raw clips and photos. The file is not re-encoded, so its original aspect ratio and soundtrack are preserved. With an active owner publishing session it goes live for everyone; without one it is saved as a local draft on this browser only. Visitors must tap Play/Sound because browsers block automatic audio.</p></div>
             <div class="field full" id="work-admin-list"></div>
-            <div class="admin-toolbar full"><span class="admin-help">Add or remove work cards anytime.</span><button class="btn btn-ghost" type="button" id="add-work">＋ Add work card</button></div>
+            <div class="admin-toolbar full"><span class="admin-help">Add unlimited work cards/video sections, each with its own title, description, preview, link and gallery video.</span><button class="btn btn-ghost" type="button" id="add-work">＋ Add card / video section</button></div>
           </div>
           <div class="admin-section-title">Contact & social links</div>
           <div class="admin-grid">
@@ -1285,6 +1286,7 @@
       },
       projects: ['UGC Ads — Product Story', 'Cinematic Video Editing', 'Website Developer', 'Digital space', 'Soft launch', 'In progress'],
       work: [
+        { enabled: true, isIntroVideo: true, title: 'Introduction — My Creative Work', category: 'INTRODUCTION / MEET THE CREATOR', description: 'A short introduction to my creative journey, projects and the work I love building.', media: '' },
         { enabled: true, title: 'Professional Video Editing — Raw to Refined', category: '01 / PROFESSIONAL EDITING', description: 'A polished visual edit crafted from original footage and photographs, bringing the moments together with thoughtful pacing, smooth transitions and cinematic storytelling.', media: 'assets/work-cinematic-editing.mp4' },
         { enabled: true, title: 'UGC Ads — Product Story', category: '02 / UGC ADS', description: 'Short-form product storytelling shaped to feel authentic, clear and engaging for social-first audiences.', media: 'assets/work-ugc-ads.mp4' },
         { enabled: true, title: 'Website Developer', category: '03 / Website developer', description: 'A digital experience concept that connects story, structure and interaction.', media: 'assets/work-website-developer.mp4' },
@@ -1297,6 +1299,17 @@
     const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_cOoJK2Y998qmbVeHzxYQFA_Ketf6qDP';
     const supabaseClient = window.supabase?.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
     let sharedConfigCache = null;
+    function ensureIntroWorkItem(items) {
+      const list = Array.isArray(items) ? items : [];
+      if (!list.some(item => item?.isIntroVideo || item?.title === 'Introduction — My Creative Work')) {
+        list.unshift({ enabled: true, isIntroVideo: true, title: 'Introduction — My Creative Work', category: 'INTRODUCTION / MEET THE CREATOR', description: 'A short introduction to my creative journey, projects and the work I love building.', media: '' });
+      } else {
+        const index = list.findIndex(item => item?.isIntroVideo || item?.title === 'Introduction — My Creative Work');
+        if (index > 0) list.unshift(list.splice(index, 1)[0]);
+        list[0].isIntroVideo = true;
+      }
+      return list;
+    }
     async function loadSharedConfig() {
       if (!supabaseClient) return;
       try {
@@ -1304,7 +1317,7 @@
         if (error) throw error;
         if (data?.payload && typeof data.payload === 'object') {
           sharedConfigCache = data.payload;
-          config = { ...defaults, ...data.payload, contacts: { ...defaults.contacts, ...(data.payload.contacts || {}) }, work: Array.isArray(data.payload.work) ? data.payload.work : defaults.work };
+          config = { ...defaults, ...data.payload, contacts: { ...defaults.contacts, ...(data.payload.contacts || {}) }, work: ensureIntroWorkItem(Array.isArray(data.payload.work) ? data.payload.work : defaults.work) };
           localStorage.setItem(configKey, JSON.stringify(config));
           await applyConfig();
         }
@@ -1323,7 +1336,7 @@
       if (firstWork.media) firstWork.mediaType = firstWork.mediaType || 'video';
       localStorage.setItem(configKey, JSON.stringify(storedConfig));
     }
-    let config = { ...defaults, ...storedConfig, contacts: { ...defaults.contacts, ...(storedConfig.contacts || {}) }, work: Array.isArray(storedConfig.work) ? storedConfig.work : defaults.work };
+    let config = { ...defaults, ...storedConfig, contacts: { ...defaults.contacts, ...(storedConfig.contacts || {}) }, work: ensureIntroWorkItem(Array.isArray(storedConfig.work) ? storedConfig.work : defaults.work) };
     let pendingHeroFile = null;
     const pendingWorkFiles = new Map();
     const mediaObjectUrls = new Map();
@@ -1508,7 +1521,7 @@
       const grid = document.querySelector('.work-grid');
       grid.replaceChildren();
       for (const [i, item] of (config.work || defaults.work).entries()) {
-        if (!item.enabled) continue;
+        if (!item.enabled || (item.isIntroVideo && !item.media)) continue;
         const card = document.createElement('article');
         card.className = `project reveal visible`;
         card.dataset.workIndex = String(i);
@@ -1517,11 +1530,12 @@
         const backdrop = document.createElement('div');
         backdrop.className = `project-bg p${(i % 6) + 1}`;
         card.append(backdrop);
-        const publicFallbackMedia = defaults.work[i]?.media || '';
+        const publicFallbackMedia = item.isIntroVideo ? '' : (defaults.work[i]?.media || '');
         const mediaUrl = await resolveMediaUrl(item.media || '', publicFallbackMedia);
+        const previewImageUrl = item.image || '';
         if (mediaUrl && isVideoPath(item.media, item)) {
           card.classList.add('project-video-card');
-          card.style.setProperty('--video-columns', '6');
+          card.style.setProperty('--video-columns', item.isIntroVideo ? '12' : '6');
           const videoFrame = document.createElement('div');
           videoFrame.className = 'project-video-frame';
           const video = document.createElement('video');
@@ -1552,7 +1566,7 @@
             const ratio = width / height;
             videoFrame.style.aspectRatio = `${width} / ${height}`;
             // Portraits get a narrower column; landscape videos get a wider one.
-            card.style.setProperty('--video-columns', ratio > 1.35 ? '12' : '4');
+            card.style.setProperty('--video-columns', item.isIntroVideo || ratio > 1.35 ? '12' : '4');
             card.dataset.videoRatio = `${width}x${height}`;
           };
           video.addEventListener('loadedmetadata', fitUploadedVideo);
@@ -1600,8 +1614,8 @@
           videoFrame.append(video, soundButton);
           card.append(videoFrame);
           prepareAudiblePortfolioVideo(video);
-        } else if (mediaUrl) {
-          backdrop.style.backgroundImage = `url("${mediaUrl.replace(/"/g, '%22')}")`;
+        } else if (previewImageUrl || mediaUrl) {
+          backdrop.style.backgroundImage = `url("${(previewImageUrl || mediaUrl).replace(/"/g, '%22')}")`;
           backdrop.style.backgroundSize = 'cover';
           backdrop.style.backgroundPosition = 'center';
         }
@@ -1618,6 +1632,15 @@
         const description = document.createElement('p');
         description.textContent = item.description || '';
         card.append(top, title, description);
+        if (item.link) {
+          const action = document.createElement('a');
+          action.className = 'btn btn-ghost project-cta';
+          action.href = item.link;
+          action.target = '_blank';
+          action.rel = 'noopener noreferrer';
+          action.textContent = item.buttonText || 'View project ↗';
+          card.append(action);
+        }
         grid.append(card);
         observer.observe(card);
       }
@@ -1669,10 +1692,13 @@
         <div class="work-admin-item" data-work-index="${i}">
           <button class="remove-work full" type="button" data-remove-work="${i}" aria-label="Remove work card ${i + 1}">Remove card</button>
           <div class="field"><label for="edit-work-${i}-title">Work ${String(i + 1).padStart(2, '0')} title</label><input id="edit-work-${i}-title" value="${esc(item.title || '')}" /></div>
-          <div class="field"><label for="edit-work-${i}-category">Category</label><input id="edit-work-${i}-category" value="${esc(item.category || '')}" /></div>
+          <div class="field"><label for="edit-work-${i}-category">Category / section label</label><input id="edit-work-${i}-category" value="${esc(item.category || '')}" /></div>
           <div class="field full"><label for="edit-work-${i}-description">Description</label><textarea id="edit-work-${i}-description">${esc(item.description || '')}</textarea></div>
+          <div class="field full"><label for="edit-work-${i}-image">Preview image URL (optional)</label><input id="edit-work-${i}-image" value="${esc(item.image || '')}" placeholder="Paste a public image URL for this card" /></div>
+          <div class="field"><label for="edit-work-${i}-link">Project / website link (optional)</label><input id="edit-work-${i}-link" type="url" value="${esc(item.link || '')}" placeholder="https://..." /></div>
+          <div class="field"><label for="edit-work-${i}-button">Button text</label><input id="edit-work-${i}-button" value="${esc(item.buttonText || 'View project ↗')}" placeholder="Visit website" /></div>
           <div class="field full"><label for="edit-work-${i}-media">Video URL (optional)</label><input id="edit-work-${i}-media" value="${esc(item.media?.startsWith('idb:') ? '' : item.media || '')}" placeholder="Paste a public .mp4 URL" /></div>
-          <div class="field full"><label class="upload-button" for="edit-work-${i}-upload">＋ Add from Gallery<input id="edit-work-${i}-upload" data-work-upload="${i}" type="file" accept="video/*" /></label></div>
+          <div class="field full"><label class="upload-button" for="edit-work-${i}-upload">＋ Add video from Gallery<input id="edit-work-${i}-upload" data-work-upload="${i}" type="file" accept="video/*" /></label><p class="admin-help">Each work card can have its own video. Add a description, preview image and project link above if needed.</p></div>
           <video class="media-preview full" data-work-preview="${i}" controls playsinline preload="metadata" hidden></video>
           <label class="toggle-line"><input id="edit-work-${i}-enabled" type="checkbox" ${item.enabled ? 'checked' : ''} /> Show on portfolio</label>
         </div>`).join('');
@@ -1756,6 +1782,9 @@
           title: value(`edit-work-${i}-title`),
           category: value(`edit-work-${i}-category`),
           description: value(`edit-work-${i}-description`),
+          image: value(`edit-work-${i}-image`) || previous.image || '',
+          link: value(`edit-work-${i}-link`) || previous.link || '',
+          buttonText: value(`edit-work-${i}-button`) || previous.buttonText || 'View project ↗',
           media,
           mediaType: previous.mediaType || (isVideoPath(media, previous) ? 'video' : ''),
           fileName: previous.fileName || ''
@@ -1814,7 +1843,7 @@
     });
     document.getElementById('add-work').addEventListener('click', () => {
       config.work = collectWorkDraft();
-      config.work.push({ enabled: true, title: 'New project', category: '', description: '', media: '' });
+      config.work.push({ enabled: true, title: 'New project', category: '', description: '', image: '', link: '', buttonText: 'View project ↗', media: '' });
       renderWorkEditor();
       document.getElementById(`edit-work-${config.work.length - 1}-title`).focus();
       editorStatus.textContent = 'New work card added. Fill it in, then save on this device.';
