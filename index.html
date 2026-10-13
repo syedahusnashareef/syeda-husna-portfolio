@@ -1311,6 +1311,18 @@
       } catch (error) { console.warn('Shared portfolio content is not available yet:', error); }
     }
     const storedConfig = JSON.parse(localStorage.getItem(configKey) || 'null') || {};
+    // Upgrade only the untouched first-card placeholders; preserve any personal video URL/file already selected.
+    if (Array.isArray(storedConfig.work) && storedConfig.work[0]
+      && ['UGC Ads — Product Story', 'Cinematic Video Editing'].includes(storedConfig.work[0].title)) {
+      const firstWork = storedConfig.work[0];
+      const wasDefaultUgcClip = firstWork.title === 'UGC Ads — Product Story' && firstWork.media === 'assets/work-ugc-ads.mp4';
+      firstWork.title = 'Professional Video Editing — Raw to Refined';
+      firstWork.category = '01 / PROFESSIONAL EDITING';
+      firstWork.description = 'A polished visual edit crafted from original footage and photographs, bringing the moments together with thoughtful pacing, smooth transitions and cinematic storytelling.';
+      if (wasDefaultUgcClip) firstWork.media = 'assets/work-cinematic-editing.mp4';
+      if (firstWork.media) firstWork.mediaType = firstWork.mediaType || 'video';
+      localStorage.setItem(configKey, JSON.stringify(storedConfig));
+    }
     let config = { ...defaults, ...storedConfig, contacts: { ...defaults.contacts, ...(storedConfig.contacts || {}) }, work: Array.isArray(storedConfig.work) ? storedConfig.work : defaults.work };
     let pendingHeroFile = null;
     const pendingWorkFiles = new Map();
