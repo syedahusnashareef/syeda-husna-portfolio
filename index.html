@@ -1692,7 +1692,7 @@
       authHelp.textContent = 'Enter your admin password to open the control room.';
       authSubmit.innerHTML = 'Open admin panel <span>↗</span>';
       if (signedIn) { await loadSharedConfig(); await fillEditor(); }
-      else if (pinUnlocked) { loadLocalConfig(); await fillEditor(); }
+      else if (pinUnlocked) { await fillEditor(); }
       adminOverlay.classList.add('open'); adminOverlay.setAttribute('aria-hidden', 'false'); playSound('admin');
       if (canOpenEditor) document.getElementById('edit-name').focus(); else document.getElementById('admin-password').focus();
     }
