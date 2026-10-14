@@ -1589,44 +1589,61 @@
           const soundButton = document.createElement('button');
           soundButton.type = 'button';
           soundButton.className = 'project-sound-toggle';
-          soundButton.textContent = '▶ Play with sound';
+          soundButton.textContent = '▶ Play video + sound';
           soundButton.setAttribute('aria-label', `Play ${item.title || 'portfolio video'} with sound`);
-          soundButton.addEventListener('click', event => {
-            event.preventDefault();
-            event.stopPropagation();
-            // This control stays visible even after playback starts, so visitors can
-            // explicitly unmute a video if their browser/player starts it silently.
+          const setSoundButtonState = () => {
+            soundButton.textContent = video.muted || video.volume === 0
+              ? '🔊 Tap to enable sound'
+              : (video.paused ? '▶ Play video + sound' : '🔊 Sound on');
+          };
+          const makeVideoAudible = () => {
             video.defaultMuted = false;
             video.muted = false;
             video.removeAttribute('muted');
             video.volume = 1;
+          };
+          soundButton.addEventListener('click', async event => {
+            event.preventDefault();
+            event.stopPropagation();
+            // Unmute synchronously inside the user's tap before asking the browser to play.
+            makeVideoAudible();
             document.querySelectorAll('.work-grid video').forEach(other => {
               if (other !== video) other.pause();
             });
             const hero = document.getElementById('hero-video');
             if (hero && !hero.paused) hero.pause();
-            if (video.paused || video.ended) {
+            try {
               if (video.ended) video.currentTime = 0;
-              const playback = video.play();
-              if (playback && playback.then) playback.then(() => {
-                soundButton.textContent = '🔊 Sound on';
-              }).catch(error => {
-                console.warn('Portfolio video could not start with sound:', error);
-                soundButton.textContent = '▶ Tap to play with sound';
-              });
-            } else {
+              // Ensure the selected source is loaded before playback.
+              if (video.networkState === HTMLMediaElement.NETWORK_EMPTY) video.load();
+              await video.play();
+              // Re-apply after playback begins for mobile browsers that reset media state.
+              makeVideoAudible();
               soundButton.textContent = '🔊 Sound on';
+            } catch (error) {
+              console.warn('Portfolio video playback/audio error:', error);
+              soundButton.textContent = video.error
+                ? '⚠ Video could not load'
+                : '▶ Tap again to play with sound';
+              soundButton.title = video.error
+                ? 'This video file could not be loaded. Check the video URL/file format.'
+                : 'Tap to retry playback with sound.';
             }
           });
-          video.addEventListener('volumechange', () => {
-            soundButton.textContent = video.muted || video.volume === 0 ? '🔊 Enable sound' : '🔊 Sound on';
-          });
+          video.addEventListener('volumechange', setSoundButtonState);
           video.addEventListener('play', () => {
-            video.defaultMuted = false;
-            video.muted = false;
-            video.removeAttribute('muted');
-            if (video.volume === 0) video.volume = 1;
+            // Never allow two work videos to compete for audio.
+            makeVideoAudible();
+            document.querySelectorAll('.work-grid video').forEach(other => {
+              if (other !== video) other.pause();
+            });
+            const hero = document.getElementById('hero-video');
+            if (hero && !hero.paused) hero.pause();
             soundButton.textContent = '🔊 Sound on';
+          });
+          video.addEventListener('error', () => {
+            soundButton.textContent = '⚠ Video could not load';
+            soundButton.title = 'The video source failed to load. Try another MP4/WebM file or check the URL.';
           });
           videoFrame.append(video, soundButton);
           card.append(videoFrame);
@@ -2156,6 +2173,8 @@
       video.removeAttribute('muted');
       video.playsInline = true;
       video.setAttribute('playsinline', '');
+      video.setAttribute('webkit-playsinline', '');
+      video.preload = 'auto';
 
       const makeAudible = () => {
         video.defaultMuted = false;
@@ -2164,8 +2183,7 @@
         if (video.volume === 0) video.volume = 1;
       };
 
-      // Do not intercept clicks on native video controls; the dedicated sound button
-      // and native controls handle playback so pause/volume taps remain predictable.
+      // Native controls remain usable; all other work videos pause when one starts.
       video.addEventListener('play', () => {
         makeAudible();
         document.querySelectorAll('.work-grid video').forEach(otherVideo => {
@@ -2173,6 +2191,16 @@
         });
         const hero = document.getElementById('hero-video');
         if (hero && !hero.paused) hero.pause();
+      });
+      video.addEventListener('loadedmetadata', () => {
+        // Browsers that expose audioTracks can identify silent source files accurately.
+        if (video.audioTracks && video.audioTracks.length === 0) {
+          const button = video.closest('.project-video-frame')?.querySelector('.project-sound-toggle');
+          if (button) {
+            button.textContent = 'ℹ No audio in file';
+            button.title = 'This video file contains no audio track. Add a version with its soundtrack included.';
+          }
+        }
       });
     }
     document.querySelectorAll('.work-grid video').forEach(prepareAudiblePortfolioVideo);
