@@ -1808,7 +1808,7 @@
       if (pinUnlocked) document.getElementById('edit-name').focus(); else document.getElementById('admin-password').focus();
     }
     function closeAdmin() { adminOverlay.classList.remove('open'); adminOverlay.setAttribute('aria-hidden', 'true'); }
-    document.querySelectorAll('.admin-trigger, .admin-fab').forEach(button => button.addEventListener('click', openAdmin));
+    document.querySelectorAll('.admin-trigger, .admin-fab').forEach(button => button.addEventListener('click', event => { event.preventDefault(); window.location.href = 'admin.html'; }));
     document.querySelector('.admin-close').addEventListener('click', closeAdmin);
     adminOverlay.addEventListener('click', event => { if (event.target === adminOverlay) closeAdmin(); });
     document.addEventListener('keydown', event => { if (event.key === 'Escape' && adminOverlay.classList.contains('open')) closeAdmin(); });
